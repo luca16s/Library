@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <PackageId>$(Authors.Replace("Î", "I").Replace("é", "e").Replace("'", "").Replace(" ", "")).$(AssemblyName)</PackageId>
+    <Authors>Îakaré Software'oka</Authors>
+    <Copyright>$(Authors)</Copyright>
+    <PackageProjectUrl>https://github.com/Iakare-Software-oka/CoreLibrary</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Iakare-Software-oka/CoreLibrary</RepositoryUrl>
+    <NeutralLanguage>pt-BR</NeutralLanguage>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="10.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.10" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\KapiCoreLib.Data\KapiCoreLib.Data.csproj" />
+    <ProjectReference Include="..\KapiCoreLibs\KapiCoreLib.csproj" />
+  </ItemGroup>
+
+</Project>
