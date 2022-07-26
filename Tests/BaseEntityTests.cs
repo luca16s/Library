@@ -1,4 +1,4 @@
-﻿namespace KapiCoreLib.Tests
+﻿namespace Tests
 {
     using System;
 

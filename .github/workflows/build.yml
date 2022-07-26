@@ -34,7 +34,7 @@ jobs:
       run: |
         dotnet pack --configuration Release --output out
         cd out
-        dotnet nuget push *.nupkg --api-key ${{ secrets.GITHUB_TOKEN }} --source "https://nuget.pkg.github.com/luca16s/index.json" --skip-duplicate
+        dotnet nuget push *.nupkg --skip-duplicate --no-symbols true
     - name: Apagar pacotes antigos
       uses: actions/delete-package-versions@v1.0.3
       with:

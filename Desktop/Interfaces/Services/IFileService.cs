@@ -6,7 +6,8 @@
 //     See LICENSE file in the project root for full license information.
 // </copyright>
 // -----------------------------------------------------------------------
-namespace KapiCoreLib.Desktop.Interfaces.Services
+
+namespace Desktop.Interfaces.Services
 {
     /// <summary>
     /// Interface para operações com arquivos.

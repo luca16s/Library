@@ -6,7 +6,8 @@
 //     See LICENSE file in the project root for full license information.
 // </copyright>
 // -----------------------------------------------------------------------
-namespace KapiCoreLib.Desktop.Utils
+
+namespace Desktop.Utils
 {
     using System;
     using System.IO;

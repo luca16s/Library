@@ -10,22 +10,16 @@
     <PackageProjectUrl>https://github.com/Iakare-Software-oka/CoreLibrary</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Iakare-Software-oka/CoreLibrary</RepositoryUrl>
     <NeutralLanguage>pt-BR</NeutralLanguage>
-    <Title>Îakaré Software'Oka - Web Library</Title>
+    <Title>Îakaré Software'Oka - Data Library</Title>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="11.0.1" />
-    <PackageReference Include="MediatR" Version="10.0.1" />
-    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="10.0.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.7" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CQRS\CQRS.csproj" />
-    <ProjectReference Include="..\KapiCoreLib.Data\Data.csproj" />
-    <ProjectReference Include="..\KapiCoreLibs\Core.csproj" />
+    <ProjectReference Include="..\Core\Core.csproj" />
   </ItemGroup>
 
 </Project>
