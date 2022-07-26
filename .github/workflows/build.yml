@@ -34,7 +34,3 @@ jobs:
       run: |
         dotnet pack --configuration Release --output out
         dotnet nuget push "out\*.nupkg" --api-key ${{ secrets.GITHUB_TOKEN }} --source "https://nuget.pkg.github.com/luca16s/index.json" --skip-duplicate
-    - name: Apagar pacotes antigos
-      uses: actions/delete-package-versions@v1.0.3
-      with:
-        package-name: CoreLibrary
