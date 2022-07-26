@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="EnumModel.cs" company="Îakaré Software'Oka">
+// <copyright file="Command.cs" company="Îakaré Software'Oka">
 //     Copyright (c) Îakaré Software'Oka.
 //     All rights reserved.
 //     Licensed under the MIT license.
@@ -7,21 +7,28 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Core.Models
+namespace CQRS.Commands
 {
+    using CQRS.Events;
+
+    using System;
+    using System.Text.Json.Serialization;
+
     /// <summary>
-    /// Classe modelo para conversão de enumerador em lista.
+    /// Classe base de Comando.
     /// </summary>
-    public class EnumModel
+    public abstract class Command : Message
     {
         /// <summary>
-        /// Descrição do enum.
+        /// Resultado do comando.
         /// </summary>
-        public string? Description { get; set; }
+        [JsonIgnore]
+        public object? Result { get; set; }
 
         /// <summary>
-        /// Valor do enum.
+        /// Timestamp de execução do comando.
         /// </summary>
-        public Enum? Value { get; set; }
+        [JsonIgnore]
+        protected DateTime Timestamp { get; private set; } = DateTime.UtcNow;
     }
 }

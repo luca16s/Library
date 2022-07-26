@@ -1,4 +1,4 @@
-﻿namespace CoreLibrary.Tests
+﻿namespace KapiCoreLib.Tests
 {
     public enum EError
     {

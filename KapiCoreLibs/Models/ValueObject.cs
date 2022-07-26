@@ -1,13 +1,13 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="ValueObject.cs"  company="Îakaré Software'oka">
-//     Copyright (c) Îakaré Software'oka.
+// <copyright file="ValueObject.cs"  company="Îakaré Software'Oka">
+//     Copyright (c) Îakaré Software'Oka.
 //     All rights reserved.
 //     Licensed under the MIT license.
 //     See LICENSE file in the project root for full license information.
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace KapiCoreLib.Models
+namespace Core.Models
 {
     /// <summary>
     /// Classe base para objetos de valor.
@@ -33,7 +33,7 @@ namespace KapiCoreLib.Models
 
             ValueObject? other = (ValueObject)obj;
 
-            return this.GetEqualityComponents().SequenceEqual(other.GetEqualityComponents());
+            return GetEqualityComponents().SequenceEqual(other.GetEqualityComponents());
         }
 
         /// <summary>
@@ -82,7 +82,7 @@ namespace KapiCoreLib.Models
         /// </returns>
         protected static bool NotEqualOperator(ValueObject left, ValueObject right)
         {
-            return !(EqualOperator(left, right));
+            return !EqualOperator(left, right);
         }
 
         /// <summary>

@@ -1,17 +1,19 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="EnumExtension.cs" company="Îakaré Software'oka">
-//     Copyright (c) Îakaré Software'oka.
+// <copyright file="EnumExtension.cs" company="Îakaré Software'Oka">
+//     Copyright (c) Îakaré Software'Oka.
 //     All rights reserved.
 //     Licensed under the MIT license.
 //     See LICENSE file in the project root for full license information.
 // </copyright>
 // -----------------------------------------------------------------------
+
 using System.ComponentModel;
 
-using KapiCoreLib.Exceptions;
-using KapiCoreLib.Models;
+using Core.Exceptions;
 
-namespace KapiCoreLib.Extensions
+using Core.Models;
+
+namespace Core.Extensions
 {
     /// <summary>
     /// Classe de extensão para operações com enumeradores.

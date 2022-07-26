@@ -1,33 +1,34 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="IFactory.cs" company="Îakaré Software'oka">
-//     Copyright (c) Îakaré Software'oka.
+// <copyright file="IFactory.cs" company="Îakaré Software'Oka">
+//     Copyright (c) Îakaré Software'Oka.
 //     All rights reserved.
 //     Licensed under the MIT license.
 //     See LICENSE file in the project root for full license information.
 // </copyright>
 // -----------------------------------------------------------------------
-namespace KapiCoreLib.Interfaces.Patterns
+
+namespace Core.Interfaces.Patterns
 {
     /// <summary>
     /// Interface para criação de fábricas.
     /// </summary>
-    /// <typeparam name="T">
+    /// <typeparam name="TEntity">
     /// Tipo que define entidade a ser instanciada.
     /// </typeparam>
     /// <typeparam name="TReturn">
     /// Entidade Instanciada.
     /// </typeparam>
-    public interface IFactory<T, out TReturn>
+    public interface IFactory<TEntity, out TReturn>
     {
         /// <summary>
         /// Instancia um tipo concreto.
         /// </summary>
-        /// <param name="type">
-        /// Tipo a ser instanciado.
+        /// <param name="entity">
+        /// Entidade a ser instanciada.
         /// </param>
         /// <returns>
-        /// Tipo concreto.
+        /// <see cref="TEntity"> Tipo concreto.
         /// </returns>
-        TReturn Create(T type);
+        TReturn Create(TEntity entity);
     }
 }

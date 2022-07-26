@@ -1,27 +1,32 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="IBaseRepositoryAsync.cs" company="Îakaré Software'oka">
-//     Copyright (c) Îakaré Software'oka.
+// <copyright file="IRepository.cs" company="Îakaré Software'Oka">
+//     Copyright (c) Îakaré Software'Oka.
 //     All rights reserved.
 //     Licensed under the MIT license.
 //     See LICENSE file in the project root for full license information.
 // </copyright>
 // -----------------------------------------------------------------------
-namespace KapiCoreLib.Data.Interfaces.Repositories
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
 
-    using KapiCoreLib.Models;
+namespace Data.Interfaces.Repositories
+{
+    using Core.Models;
+
+    using System;
+    using System.Linq.Expressions;
+    using System.Threading.Tasks;
 
     /// <summary>
     /// Interface assíncrona para salvamento no banco de dados.
     /// </summary>
-    /// <typeparam name="T">
+    /// <typeparam name="TEntity">
     /// Entidade que será salva.
     /// </typeparam>
-    public interface IBaseRepositoryAsync<T>
-        where T : BaseEntity
+    /// <typeparam name="TType">
+    /// Tipo do identificador da Entidade.
+    /// </typeparam>
+    public interface IRepository<TEntity, TType>
+        where TEntity : Entity<TType>
+        where TType : struct
     {
         /// <summary>
         /// Adiciona nova entidade no banco de dados de forma assíncrona.
@@ -32,7 +37,7 @@ namespace KapiCoreLib.Data.Interfaces.Repositories
         /// <returns>
         /// Entidade salva.
         /// </returns>
-        Task<T> AddItemAsync(T item);
+        void Create(TEntity item);
 
         /// <summary>
         /// Deleta uma entidade no banco de dados.
@@ -40,7 +45,7 @@ namespace KapiCoreLib.Data.Interfaces.Repositories
         /// <param name="item">
         /// Entidade a ser deletada.
         /// </param>
-        void DeleteItem(T item);
+        void Delete(TEntity item);
 
         /// <summary>
         /// Retorna todas as entidades do banco de dados de forma assíncrona.
@@ -48,7 +53,7 @@ namespace KapiCoreLib.Data.Interfaces.Repositories
         /// <returns>
         /// Todas as entidades.
         /// </returns>
-        Task<IEnumerable<T>> GetAllItemsAsync();
+        IQueryable<TEntity?> GetAll(int amount);
 
         /// <summary>
         /// Retorna uma entidade com base em um identificador de forma assíncrona.
@@ -59,7 +64,7 @@ namespace KapiCoreLib.Data.Interfaces.Repositories
         /// <returns>
         /// Entidade encontrada.
         /// </returns>
-        Task<T> GetItemAsync(Guid id);
+        Task<TEntity?> Get(Guid id);
 
         /// <summary>
         /// Atualiza uma entidade com base em um identificador passado.
@@ -73,6 +78,17 @@ namespace KapiCoreLib.Data.Interfaces.Repositories
         /// <returns>
         /// Entidade atualizada.
         /// </returns>
-        Task<T> UpdateItem(Guid id, T item);
+        void Update(Guid id, TEntity item);
+
+        /// <summary>
+        /// Busca determinados itens na base de dados.
+        /// </summary>
+        /// <param name="predicate">
+        /// Termo de busca.
+        /// </param>
+        /// <returns>
+        /// Lista de itens encontrados.
+        /// </returns>
+        IQueryable<TEntity?> Search(Expression<Func<TEntity, bool>> predicate);
     }
 }

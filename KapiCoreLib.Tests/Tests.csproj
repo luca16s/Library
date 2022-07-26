@@ -29,10 +29,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\KapiCoreLib.Data\KapiCoreLib.Data.csproj" />
-    <ProjectReference Include="..\KapiCoreLib.Desktop\KapiCoreLib.Desktop.csproj" />
-    <ProjectReference Include="..\KapiCoreLib.Web\KapiCoreLib.Web.csproj" />
-    <ProjectReference Include="..\KapiCoreLibs\KapiCoreLib.csproj" />
+    <ProjectReference Include="..\KapiCoreLib.Data\Data.csproj" />
+    <ProjectReference Include="..\KapiCoreLib.Desktop\Desktop.csproj" />
+    <ProjectReference Include="..\KapiCoreLib.Web\Web.csproj" />
+    <ProjectReference Include="..\KapiCoreLibs\Core.csproj" />
   </ItemGroup>
 
 </Project>

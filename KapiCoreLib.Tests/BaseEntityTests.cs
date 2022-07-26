@@ -1,15 +1,28 @@
-﻿namespace CoreLibrary.Tests
+﻿namespace KapiCoreLib.Tests
 {
     using System;
 
-    using FluentAssertions;
+    using Core.Models;
 
-    using KapiCoreLib.Models;
+    using FluentAssertions;
 
     using Xunit;
 
     public class BaseEntityTest
     {
+        public class ClasseTeste : Entity<Guid>
+        {
+            public ClasseTeste(Guid id)
+                : base(id)
+            {
+            }
+
+            public override bool IsConsistent()
+            {
+                throw new NotImplementedException();
+            }
+        }
+
         [Fact]
         public void CheckIfGuidPassedIsEqual()
         {
@@ -17,7 +30,7 @@
             Guid generatedGuid = Guid.NewGuid();
 
             //Act
-            BaseEntity entity = new(generatedGuid);
+            ClasseTeste entity = new(generatedGuid);
 
             //Verify
             _ = generatedGuid.Should().Be(entity.Id);

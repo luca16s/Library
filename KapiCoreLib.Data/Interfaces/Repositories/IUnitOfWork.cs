@@ -1,19 +1,20 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="IUnitOfWorkAsync.cs" company="Îakaré Software'oka">
-//     Copyright (c) Îakaré Software'oka.
+// <copyright file="IUnitOfWork.cs" company="Îakaré Software'Oka">
+//     Copyright (c) Îakaré Software'Oka.
 //     All rights reserved.
 //     Licensed under the MIT license.
 //     See LICENSE file in the project root for full license information.
 // </copyright>
 // -----------------------------------------------------------------------
-namespace KapiCoreLib.Data.Interfaces.Repositories
+
+namespace Data.Interfaces.Repositories
 {
     using Microsoft.EntityFrameworkCore.Storage;
 
     /// <summary>
     /// Classe para servir de interface no salvamento do banco de dados.
     /// </summary>
-    public interface IUnitOfWorkAsync
+    public interface IUnitOfWork
     {
         /// <summary>
         /// Inicia transação com o banco de dados.
@@ -21,7 +22,7 @@ namespace KapiCoreLib.Data.Interfaces.Repositories
         /// <returns>
         /// Retorna a transação.
         /// </returns>
-        Task<IDbContextTransaction> BeginTransactionAsync();
+        Task<IDbContextTransaction> BeginTransaction();
 
         /// <summary>
         /// Comita a transação do banco.
@@ -32,7 +33,7 @@ namespace KapiCoreLib.Data.Interfaces.Repositories
         /// <returns>
         /// Retorna a task.
         /// </returns>
-        Task CommitTransactionAsync(IDbContextTransaction transaction);
+        Task CommitTransaction(IDbContextTransaction transaction);
 
         /// <summary>
         /// Reverte alterações.

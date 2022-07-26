@@ -1,12 +1,13 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="BaseViewModel.cs" company="Îakaré Software'oka">
-//     Copyright (c) Îakaré Software'oka.
+// <copyright file="BaseViewModel.cs" company="Îakaré Software'Oka">
+//     Copyright (c) Îakaré Software'Oka.
 //     All rights reserved.
 //     Licensed under the MIT license.
 //     See LICENSE file in the project root for full license information.
 // </copyright>
 // -----------------------------------------------------------------------
-namespace KapiCoreLib.Web.ViewModels
+
+namespace Web.ViewModels
 {
     using System;
 

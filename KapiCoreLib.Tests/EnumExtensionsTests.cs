@@ -1,13 +1,13 @@
-﻿namespace CoreLibrary.Tests
+﻿namespace KapiCoreLib.Tests
 {
     using System;
     using System.Collections.Generic;
 
-    using FluentAssertions;
+    using Core.Exceptions;
+    using Core.Extensions;
+    using Core.Models;
 
-    using KapiCoreLib.Exceptions;
-    using KapiCoreLib.Extensions;
-    using KapiCoreLib.Models;
+    using FluentAssertions;
 
     using Xunit;
 

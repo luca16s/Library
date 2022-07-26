@@ -1,26 +1,26 @@
-﻿// -----------------------------------------------------------------------
-// <copyright file="EnumDescriptionNotFoundException.cs" company="Îakaré Software'oka">
-//     Copyright (c) Îakaré Software'oka.
+﻿// ------------------------------------------------------------------------------------
+// <copyright file="EnumDescriptionNotFoundException.cs" company="Îakaré Software'Oka">
+//     Copyright (c) Îakaré Software'Oka.
 //     All rights reserved.
 //     Licensed under the MIT license.
 //     See LICENSE file in the project root for full license information.
 // </copyright>
-// -----------------------------------------------------------------------
+// ------------------------------------------------------------------------------------
 
-namespace KapiCoreLib.Exceptions
+namespace Core.Exceptions
 {
+    using Core.Properties;
+
     /// <summary>
     /// Exceção caso descrição do enum não tenha sido encontrada.
     /// </summary>
     public class EnumDescriptionNotFoundException : Exception
     {
-        private const string DefaultMessage = "Enum informado não contém descrição.";
-
         /// <summary>
         /// Inicia uma nova instância da classe <see cref="EnumDescriptionNotFoundException" />.
         /// </summary>
         public EnumDescriptionNotFoundException()
-            : base(DefaultMessage) { }
+            : base(Resources.EnumDescriptionNotFound) { }
 
         /// <summary>
         /// Inicia uma nova instância da classe <see cref="EnumDescriptionNotFoundException" />.
@@ -29,7 +29,7 @@ namespace KapiCoreLib.Exceptions
         /// Mensagem a ser mostrada.
         /// </param>
         public EnumDescriptionNotFoundException(string message)
-            : base($"{DefaultMessage}\n - {message}") { }
+            : base($"{Resources.EnumDescriptionNotFound}\n - {message}") { }
 
         /// <summary>
         /// Inicia uma nova instância da classe <see cref="EnumDescriptionNotFoundException" />.
@@ -41,6 +41,6 @@ namespace KapiCoreLib.Exceptions
         /// Mensagem herdada.
         /// </param>
         public EnumDescriptionNotFoundException(string message, Exception inner)
-            : base($"{DefaultMessage}\n - {message}", inner) { }
+            : base($"{Resources.EnumDescriptionNotFound}\n - {message}", inner) { }
     }
 }

@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="EnumModel.cs" company="Îakaré Software'Oka">
+// <copyright file="Event.cs" company="Îakaré Software'Oka">
 //     Copyright (c) Îakaré Software'Oka.
 //     All rights reserved.
 //     Licensed under the MIT license.
@@ -7,21 +7,20 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Core.Models
+namespace CQRS.Events
 {
+    using MediatR;
+
+    using System;
+
     /// <summary>
-    /// Classe modelo para conversão de enumerador em lista.
+    /// Classe base de Evento.
     /// </summary>
-    public class EnumModel
+    public abstract class Event : Message, INotification
     {
         /// <summary>
-        /// Descrição do enum.
+        /// Timestamp de execução do evento.
         /// </summary>
-        public string? Description { get; set; }
-
-        /// <summary>
-        /// Valor do enum.
-        /// </summary>
-        public Enum? Value { get; set; }
+        protected DateTime Timestamp { get; private set; } = DateTime.UtcNow;
     }
 }

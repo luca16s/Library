@@ -1,10 +1,10 @@
-﻿namespace CoreLibrary.Tests
+﻿namespace KapiCoreLib.Tests
 {
     using Bogus;
 
-    using FluentAssertions;
+    using Core.Models;
 
-    using KapiCoreLib.Models;
+    using FluentAssertions;
 
     using Xunit;
 

@@ -1,14 +1,16 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="EnumItemNotFoundException.cs" company="Îakaré Software'oka">
-//     Copyright (c) Îakaré Software'oka.
+// <copyright file="EnumItemNotFoundException.cs" company="Îakaré Software'Oka">
+//     Copyright (c) Îakaré Software'Oka.
 //     All rights reserved.
 //     Licensed under the MIT license.
 //     See LICENSE file in the project root for full license information.
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace KapiCoreLib.Exceptions
+namespace Core.Exceptions
 {
+    using Core.Properties;
+
     /// <summary>
     /// Exceção caso item do enum não tenha sido encontrado.
     /// </summary>
@@ -17,13 +19,8 @@ namespace KapiCoreLib.Exceptions
         /// <summary>
         /// Inicia uma nova instância da classe <see cref="EnumItemNotFoundException" />.
         /// </summary>
-        private const string DefaultMessage = "Item não encontrado no enumerador.";
-
-        /// <summary>
-        /// Inicia uma nova instância da classe <see cref="EnumItemNotFoundException" />.
-        /// </summary>
         public EnumItemNotFoundException()
-            : base(DefaultMessage) { }
+            : base(Resources.EnumItemNotFound) { }
 
         /// <summary>
         /// Inicia uma nova instância da classe <see cref="EnumItemNotFoundException" />.
@@ -32,7 +29,7 @@ namespace KapiCoreLib.Exceptions
         /// Mensagem a ser mostrada.
         /// </param>
         public EnumItemNotFoundException(string message)
-            : base($"{DefaultMessage}\n - {message}") { }
+            : base($"{Resources.EnumItemNotFound}\n - {message}") { }
 
         /// <summary>
         /// Inicia uma nova instância da classe <see cref="EnumItemNotFoundException" />.
@@ -44,6 +41,6 @@ namespace KapiCoreLib.Exceptions
         /// Mensagem herdada.
         /// </param>
         public EnumItemNotFoundException(string message, Exception inner)
-            : base($"{DefaultMessage}\n - {message}", inner) { }
+            : base($"{Resources.EnumItemNotFound}\n - {message}", inner) { }
     }
 }

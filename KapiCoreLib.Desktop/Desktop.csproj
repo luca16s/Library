@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <PackageId>$(AssemblyName)</PackageId>
+    <Authors>Îakaré Software'Oka</Authors>
+    <Copyright>$(Authors)</Copyright>
+    <PackageProjectUrl>https://github.com/luca16s/KapiCoreLib</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/luca16s/KapiCoreLib</RepositoryUrl>
+    <NeutralLanguage>pt-BR</NeutralLanguage>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Title>Îakaré Software'Oka - Desktop Library</Title>
+  </PropertyGroup>
+
+</Project>

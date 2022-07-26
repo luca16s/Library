@@ -1,10 +1,9 @@
-﻿namespace CoreLibrary.Tests
+﻿namespace KapiCoreLib.Tests
 {
+    using Core.Exceptions;
+    using Core.Extensions;
 
     using FluentAssertions;
-
-    using KapiCoreLib.Exceptions;
-    using KapiCoreLib.Extensions;
 
     using Xunit;
 
