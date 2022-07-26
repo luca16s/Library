@@ -5,7 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <PackageId>$(AssemblyName)</PackageId>
+    <PackageId>ISO.$(AssemblyName)</PackageId>
     <Title>Îakaré Software'Oka - CQRS Library</Title>
     <Authors>Îakaré Software'Oka</Authors>
     <Copyright>$(Authors)</Copyright>
