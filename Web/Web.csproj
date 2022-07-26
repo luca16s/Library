@@ -7,8 +7,8 @@
     <PackageId>$(AssemblyName)</PackageId>
     <Authors>Îakaré Software'Oka</Authors>
     <Copyright>$(Authors)</Copyright>
-    <PackageProjectUrl>https://github.com/Iakare-Software-oka/CoreLibrary</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/Iakare-Software-oka/CoreLibrary</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/luca16s/IakareLibraries</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/luca16s/IakareLibraries</RepositoryUrl>
     <NeutralLanguage>pt-BR</NeutralLanguage>
     <Title>Îakaré Software'Oka - Web Library</Title>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>

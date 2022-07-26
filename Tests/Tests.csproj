@@ -4,6 +4,10 @@
     <TargetFramework>net6.0</TargetFramework>
 
     <IsPackable>false</IsPackable>
+
+    <RepositoryUrl>https://github.com/luca16s/IakareLibraries</RepositoryUrl>
+
+    <PackageProjectUrl>https://github.com/luca16s/IakareLibraries</PackageProjectUrl>
   </PropertyGroup>
 
   <ItemGroup>

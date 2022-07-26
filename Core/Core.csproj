@@ -10,8 +10,8 @@
     <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
     <PackageId>$(AssemblyName)</PackageId>
     <Copyright>$(Authors)</Copyright>
-    <PackageProjectUrl>https://github.com/luca16s/KapiCoreLib</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/luca16s/KapiCoreLib</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/luca16s/IakareLibraries</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/luca16s/IakareLibraries</RepositoryUrl>
     <RepositoryType></RepositoryType>
     <Title>Îakaré Software'Oka - Core Library</Title>
   </PropertyGroup>
