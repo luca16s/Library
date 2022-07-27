@@ -82,13 +82,26 @@
         }
 
         [Fact]
-        public void EqualsShouldBeFalseIfComparedWithNull()
+        public void EqualsShouldBeFalseIfComparedWithNullOnRight()
         {
             Guid guidA = Guid.NewGuid();
 
             ClasseGuid entity = new(guidA);
 
             var result = entity == null;
+
+            _ = result.Should().Be(false);
+        }
+
+        [Fact]
+        public void EqualsShouldBeFalseIfComparedWithNullOnLeft()
+        {
+            Guid guidA = Guid.NewGuid();
+
+            ClasseGuid entity = new(guidA);
+            ClasseGuid entityNull = null;
+
+            var result = entityNull == entity;
 
             _ = result.Should().Be(false);
         }
