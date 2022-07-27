@@ -32,10 +32,7 @@ namespace Core.Interfaces.Services
         /// <param name="item">
         /// Entidade a ser salva.
         /// </param>
-        /// <returns>
-        /// Entidade salva.
-        /// </returns>
-        void Create(TEntity item);
+        Task Create(TEntity item);
 
         /// <summary>
         /// Deleta uma entidade no banco de dados de forma assíncrona.
@@ -43,7 +40,7 @@ namespace Core.Interfaces.Services
         /// <param name="item">
         /// Entidade a ser deletada.
         /// </param>
-        void Delete(TEntity item);
+        Task Delete(TEntity item);
 
         /// <summary>
         /// Retorna todas as entidades do banco de dados de forma assíncrona.
@@ -76,10 +73,7 @@ namespace Core.Interfaces.Services
         /// <param name="item">
         /// Entidade a ser atualizada.
         /// </param>
-        /// <returns>
-        /// Entidade atualizada.
-        /// </returns>
-        void Update(Guid id, TEntity item);
+        Task Update(Guid id, TEntity item);
 
         /// <summary>
         /// Busca determinados itens na base de dados.

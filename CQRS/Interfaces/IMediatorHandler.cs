@@ -34,9 +34,6 @@ namespace CQRS.Interfaces
         /// <param name="cancellation">
         /// Token de cancelamento.
         /// </param>
-        /// <returns>
-        /// Task
-        /// </returns>
         Task RaiseEvent<T>(T evento,
                            bool enqueue = false,
                            CancellationToken cancellation = default) where T : Event;
@@ -56,9 +53,6 @@ namespace CQRS.Interfaces
         /// <param name="cancellation">
         /// Token de cancelamento.
         /// </param>
-        /// <returns>
-        /// Task
-        /// </returns>
         Task SendCommand<T>(T comando,
                             bool enqueue = false,
                             CancellationToken cancellation = default) where T : Command;
@@ -75,9 +69,6 @@ namespace CQRS.Interfaces
         /// <param name="cancellation">
         /// Token de cancelamento.
         /// </param>
-        /// <returns>
-        /// Task
-        /// </returns>
         Task PublishQueue<T>(T comando, CancellationToken cancellation = default);
     }
 }

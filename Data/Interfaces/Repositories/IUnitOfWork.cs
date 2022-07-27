@@ -38,6 +38,6 @@ namespace Data.Interfaces.Repositories
         /// <summary>
         /// Reverte alterações.
         /// </summary>
-        void RollbackTransaction();
+        Task RollbackTransaction();
     }
 }

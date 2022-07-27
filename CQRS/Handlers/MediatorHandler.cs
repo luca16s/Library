@@ -72,8 +72,6 @@ namespace CQRS.Handlers
         /// <param name="cancellation">
         /// Token de cancelamento.
         /// </param>
-        /// <returns>
-        /// </returns>
         public Task SendCommand<T>(T comando,
                                    bool shouldEnqueue = false,
                                    CancellationToken cancellation = default)
@@ -99,8 +97,6 @@ namespace CQRS.Handlers
         /// <param name="cancellation">
         /// Token de cancelamento.
         /// </param>
-        /// <returns>
-        /// </returns>
         public Task RaiseEvent<T>(T evento,
                                   bool enqueue = false,
                                   CancellationToken cancellation = default)
@@ -118,8 +114,6 @@ namespace CQRS.Handlers
         /// <param name="cancellation">
         /// Token de cancelamento.
         /// </param>
-        /// <returns>
-        /// </returns>
         public Task PublishQueue<T>(T comando,
                                     CancellationToken cancellation = default)
         {
