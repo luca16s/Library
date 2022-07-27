@@ -8,14 +8,12 @@
 
     using Xunit;
 
-    public class BaseEntityTest
+    public class EntityTest
     {
         public class ClasseTeste : Entity<Guid>
         {
             public ClasseTeste(Guid id)
-                : base(id)
-            {
-            }
+                : base(id) { }
 
             public override bool IsConsistent()
             {
@@ -24,7 +22,7 @@
         }
 
         [Fact]
-        public void CheckIfGuidPassedIsEqual()
+        public void IdShouldBeEqualGuidPassed()
         {
             //Arrange
             Guid generatedGuid = Guid.NewGuid();
