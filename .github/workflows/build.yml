@@ -18,6 +18,10 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 6.0.x
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v2
+      with:
+        languages: csharp
     - name: Restaurando pacotes
       run: dotnet restore
     - name: Construindo projetos
@@ -33,4 +37,6 @@ jobs:
         name: codecov-umbrella
         fail_ci_if_error: true
         verbose: true
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v2
 
