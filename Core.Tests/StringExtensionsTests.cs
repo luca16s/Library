@@ -1,4 +1,4 @@
-﻿namespace Tests
+﻿namespace Core.Tests
 {
     using Core.Exceptions;
     using Core.Extensions;

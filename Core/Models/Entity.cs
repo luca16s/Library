@@ -96,20 +96,11 @@ namespace Core.Models
         /// </returns>
         public override bool Equals(object? obj)
         {
-            if (obj is null or not Entity<TType>)
-            {
-                return false;
-            }
+            if (obj is null or not Entity<TType>) return false;            
 
-            if (ReferenceEquals(this, obj))
-            {
-                return true;
-            }
+            if (ReferenceEquals(this, obj)) return true;
 
-            if (GetType() != obj.GetType())
-            {
-                return false;
-            }
+            if (GetType() != obj.GetType()) return false;
 
             Entity<TType> item = (Entity<TType>)obj;
 

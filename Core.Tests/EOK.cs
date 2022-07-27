@@ -1,4 +1,4 @@
-﻿namespace Tests
+﻿namespace Core.Tests
 {
     using System.ComponentModel;
 
