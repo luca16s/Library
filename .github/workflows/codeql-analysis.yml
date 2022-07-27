@@ -20,7 +20,7 @@ jobs:
         language: [ 'csharp' ]
     steps:
     - name: Checkout repository
-      uses: actions/checkout@vv2
+      uses: actions/checkout@v2
       with:
         fetch-depth: 0
     - name: Setup .NET
