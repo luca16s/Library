@@ -33,7 +33,4 @@ jobs:
         name: codecov-umbrella
         fail_ci_if_error: true
         verbose: true
-    - name: Publicar pacote
-      run: |
-        dotnet pack --configuration Release --output out
-        dotnet nuget push "out\*.nupkg" --api-key ${{ secrets.GITHUB_TOKEN }} --source "https://nuget.pkg.github.com/luca16s/index.json" --skip-duplicate
+

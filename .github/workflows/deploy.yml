@@ -1,0 +1,28 @@
+name: Core Library CD
+on:
+  push:
+    tags:
+      - '*'
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+    - name: Realizando checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    - name: Nerdbank.GitVersioning
+      uses: dotnet/nbgv@v0.4.0
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 6.0.x
+    - name: Restaurando pacotes
+      run: dotnet restore
+    - name: Construindo projetos
+      run: dotnet build -c Release --no-restore
+    - name: Publicar pacote
+      run: |
+        dotnet pack --configuration Release --output out
+        dotnet nuget push "out\*.nupkg" --api-key ${{ secrets.GITHUB_TOKEN }} --source "https://nuget.pkg.github.com/luca16s/index.json" --skip-duplicate
+
