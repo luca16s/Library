@@ -8,13 +8,16 @@ jobs:
   build:
     runs-on: windows-latest
     steps:
-    - uses: actions/checkout@v2
+    - name: Realizando checkout
+      uses: actions/checkout@v2
       with:
         fetch-depth: 0
+    - name: Nerdbank.GitVersioning
+      uses: dotnet/nbgv@v0.4.0
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 5.0.x
+        dotnet-version: 6.0.x
     - name: Restaurando pacotes
       run: dotnet restore
     - name: Construindo projetos
@@ -30,12 +33,4 @@ jobs:
         name: codecov-umbrella
         fail_ci_if_error: true
         verbose: true
-    - name: Publicar pacote
-      run: |
-        dotnet pack --configuration Release --output out
-        cd out
-        dotnet nuget push *.nupkg --api-key ${{ secrets.GITHUB_TOKEN }} --source "https://nuget.pkg.github.com/luca16s/index.json" --skip-duplicate
-    - name: Apagar pacotes antigos
-      uses: actions/delete-package-versions@v1.0.3
-      with:
-        package-name: CoreLibrary
+
