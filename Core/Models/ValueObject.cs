@@ -26,10 +26,9 @@ namespace Core.Models
         /// </returns>
         public override bool Equals(object? obj)
         {
-            if (obj == null || obj.GetType() != GetType())
-            {
-                return false;
-            }
+            if (obj is null || obj.GetType() != GetType()) return false;
+
+            if (ReferenceEquals(this, obj)) return true;
 
             ValueObject? other = (ValueObject)obj;
 
@@ -50,39 +49,41 @@ namespace Core.Models
         }
 
         /// <summary>
-        /// Verifica se um objeto é igual a outro.
+        /// Verifica se objeto de valor é igual.
         /// </summary>
         /// <param name="left">
-        /// Objeto original.
+        /// Entidade a esquerda.
         /// </param>
         /// <param name="right">
-        /// Objeto a ser comparado.
+        /// Entidade a direita.
         /// </param>
         /// <returns>
-        /// Verdadeiro caso igual.
-        /// Falso caso diferente.
+        /// True: Objeto de valor igual.
+        /// False: Objeto de valor diferente.
         /// </returns>
-        protected static bool EqualOperator(ValueObject left, ValueObject right)
+        public static bool operator ==(ValueObject left, ValueObject right)
         {
-            return !(left is null ^ right is null) && (left is null || left.Equals(right));
+            return Equals(left, null) ?
+                Equals(right, null) :
+                left.Equals(right);
         }
 
         /// <summary>
-        /// Verifica se um objeto é diferente do outro.
+        /// Verifica se o objeto de valor é diferente.
         /// </summary>
         /// <param name="left">
-        /// Objeto original.
+        /// Objeto de valor a esquerda.
         /// </param>
         /// <param name="right">
-        /// Objeto a ser comparado.
+        /// Objeto de valor a direita.
         /// </param>
         /// <returns>
-        /// Verdadeiro caso diferente.
-        /// Falso caso igual.
+        /// True: Objeto de valor diferente.
+        /// False: Objeto de valor igual.
         /// </returns>
-        protected static bool NotEqualOperator(ValueObject left, ValueObject right)
+        public static bool operator !=(ValueObject left, ValueObject right)
         {
-            return !EqualOperator(left, right);
+            return !(left == right);
         }
 
         /// <summary>
