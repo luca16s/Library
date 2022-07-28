@@ -3,8 +3,13 @@
     using Core.Models;
 
     using FluentAssertions;
+    using FluentValidation.Results;
+
+    using Shouldly;
 
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
 
     using Xunit;
 
@@ -194,6 +199,61 @@
             var result = entityA.Equals(entityB);
 
             _ = result.Should().Be(true);
+        }
+
+        [Fact]
+        public void GetHashCodeShouldReturnHash()
+        {
+            const int id = 1;
+            const int expected = 30;
+
+            ClasseInt entity = new(id);
+
+            var result = entity.GetHashCode();
+
+            _ = result.Should().Be(expected);
+        }
+
+        [Fact]
+        public void AddValidationErrorShouldNotAddErrorIfParamIsNull()
+        {
+            const int id = 1;
+
+            ClasseInt entity = new(id);
+
+            entity.AddValidationError(null);
+        }
+
+        [Fact]
+        public void AddValidationErrorShouldNotAddErrorIfErrorIsNull()
+        {
+            const int id = 1;
+            ValidationFailure expected = new("Property", "ErrorMessage");
+            ValidationResult validationResult = null;
+
+            ClasseInt entity = new(id);
+
+            entity.AddValidationError(validationResult);
+
+            entity.ValidationResult.Errors.ShouldNotContain(expected);
+        }
+
+        [Fact]
+        public void AddValidationErrorShouldAddError()
+        {
+            const int id = 1;
+            ValidationFailure expected = new("Property", "ErrorMessage");
+            var validationResult = new ValidationResult();
+            validationResult.Errors.Add(expected);
+
+            ClasseInt entity = new(id);
+
+            entity.AddValidationError(validationResult);
+
+            var result = entity.ValidationResult.Errors.First();
+
+            _ = result.PropertyName.Should().Be(expected.PropertyName);
+            _ = result.ErrorMessage.Should().Be(expected.ErrorMessage);
         }
     }
 }

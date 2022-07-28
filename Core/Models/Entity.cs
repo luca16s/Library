@@ -60,6 +60,8 @@ namespace Core.Models
         /// </param>
         public void AddValidationError(ValidationResult validationResult)
         {
+            if (validationResult == null) return;
+
             foreach (ValidationFailure? error in validationResult.Errors)
             {
                 if (error == null) continue;
