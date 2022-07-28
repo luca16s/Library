@@ -60,6 +60,8 @@ namespace Core.Models
         /// </param>
         public void AddValidationError(ValidationResult validationResult)
         {
+            if (validationResult == null) return;
+
             foreach (ValidationFailure? error in validationResult.Errors)
             {
                 if (error == null) continue;
@@ -96,20 +98,11 @@ namespace Core.Models
         /// </returns>
         public override bool Equals(object? obj)
         {
-            if (obj is null or not Entity<TType>)
-            {
-                return false;
-            }
+            if (obj is null) return false;
 
-            if (ReferenceEquals(this, obj))
-            {
-                return true;
-            }
+            if (obj is not Entity<TType> || GetType() != obj.GetType()) return false;
 
-            if (GetType() != obj.GetType())
-            {
-                return false;
-            }
+            if (ReferenceEquals(this, obj)) return true;
 
             Entity<TType> item = (Entity<TType>)obj;
 
