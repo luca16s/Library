@@ -20,8 +20,8 @@
         {
             _ = this.Invoking(g => default(Enum).Description())
                  .Should()
-                 .Throw<NullReferenceException>()
-                 .WithMessage("Valor do enum não pode ser nulo.");
+                 .Throw<ArgumentNullException>()
+                 .WithMessage("Valor do enum não pode ser nulo. (Parameter 'value')");
         }
 
         [Fact]

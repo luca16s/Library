@@ -34,16 +34,11 @@ namespace Core.Extensions
         /// </exception>
         public static string Description(this Enum value)
         {
-            if (value is null) throw new NullReferenceException("Valor do enum não pode ser nulo.");
+            if (value is null)
+                throw new ArgumentNullException(nameof(value), "Valor do enum não pode ser nulo.");
 
             var valueType = value.GetType();
-
-            if (valueType is null) throw new NullReferenceException("Tipo do enum não é válido.");
-
-            var field = valueType.GetField(value.ToString());
-
-            if (field is null) throw new NullReferenceException("Field não é válido.");
-
+            var field = valueType.GetField(value.ToString()) ?? throw new NullReferenceException("Field não é válido.");
             var attributes = field.GetCustomAttributes(typeof(DescriptionAttribute), false) ?? Array.Empty<Array>();
 
             if (attributes.Length > 0 &&
