@@ -2,6 +2,8 @@
 {
     using Core.Extensions;
 
+    using FluentAssertions;
+
     using System;
 
     using Xunit;
@@ -11,11 +13,11 @@
         [Fact]
         public void ShouldReturnUnixDateFormat()
         {
-            var expected = 1659139200;
+            double expected = 1659139200;
             var date = new DateTime(2022, 07, 30, 00, 00, 00);
-            var result = date.ToUnixEpochDate();
+            var actual = date.ToUnixEpochDate();
 
-            Assert.Equal(expected, result);
+            _ = expected.Should().Be(actual);
         }
 
         [Fact]

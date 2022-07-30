@@ -28,6 +28,8 @@ namespace Core.Validations
 
         protected DomainSpecification(TEntity entidade)
         {
+            if (entidade is null) throw new ArgumentNullException(nameof(entidade), "Entidade não pode ser nula.");
+
             _entidade = entidade;
         }
 

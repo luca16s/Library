@@ -50,5 +50,22 @@ namespace Core.Extensions
 
             throw new EnumItemNotFoundException(value);
         }
+
+        /// <summary>
+        /// Formata mensagem de erro.
+        /// </summary>
+        /// <param name="message">
+        /// Mensagem a ser passada.
+        /// </param>
+        /// <param name="property">
+        /// Lista de propriedades.
+        /// </param>
+        /// <returns>
+        /// Mensagem formatada.
+        /// </returns>
+        public static string FormatMessage(this string message, params string[] property)
+        {
+            return string.Format(message, property);
+        }
     }
 }

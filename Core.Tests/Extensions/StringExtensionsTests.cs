@@ -6,6 +6,7 @@
     using FluentAssertions;
 
     using Xunit;
+    using static Core.Tests.Validations.DomainValidatorTests;
 
     public class StringExtensionsTests
     {
@@ -28,6 +29,15 @@
                 .Should()
                 .Throw<EnumItemNotFoundException>()
                 .WithMessage($"Item não encontrado no enumerador.\n - {texto}");
+        }
+
+        [Fact]
+        public void ShouldReturnFormatedMessage()
+        {
+            var expected = "Mensagem teste Nome";
+            var actual = "Mensagem teste {0}".FormatMessage("Nome");
+
+            _ = expected.Should().Be(actual);
         }
     }
 }

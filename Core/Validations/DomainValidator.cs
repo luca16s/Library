@@ -30,6 +30,8 @@ namespace Core.Validations
 
         protected DomainValidator(TEntity entidade)
         {
+            if (entidade is null) throw new ArgumentNullException(nameof(entidade), "Entidade não pode ser nula.");
+
             _entidade = entidade;
         }
 
@@ -37,22 +39,5 @@ namespace Core.Validations
         /// Valida Entidade de domínio.
         /// </summary>
         protected abstract void Validar();
-
-        /// <summary>
-        /// Formata mensagem de erro.
-        /// </summary>
-        /// <param name="message">
-        /// Mensagem a ser passada.
-        /// </param>
-        /// <param name="property">
-        /// Lista de propriedades.
-        /// </param>
-        /// <returns>
-        /// Mensagem formatada.
-        /// </returns>
-        protected string FormatMessage(string message, params string[] property)
-        {
-            return string.Format(message, property);
-        }
     }
 }
