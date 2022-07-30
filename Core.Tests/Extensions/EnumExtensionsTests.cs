@@ -1,42 +1,27 @@
-﻿namespace Core.Tests
+﻿namespace Core.Tests.Extensions
 {
     using System;
     using System.Collections.Generic;
+    using System.Reflection;
 
     using Core.Exceptions;
     using Core.Extensions;
     using Core.Models;
-
     using FluentAssertions;
+
+    using Microsoft.VisualStudio.CodeCoverage;
 
     using Xunit;
 
     public class EnumExtensionsTests
     {
         [Fact]
-        public void DescriptionShouldReturnValueOfDescriptionAnnotation()
-        {
-            string description = EOK.TESTE1.Description();
-
-            _ = description.Should().Be("TESTE 1");
-        }
-
-        [Fact]
         public void DescriptionShouldStringEmptyWhenNull()
         {
             _ = this.Invoking(g => default(Enum).Description())
                  .Should()
-                 .Throw<EnumDescriptionNotFoundException>()
-                 .WithMessage("Enum informado não contém descrição.");
-        }
-
-        [Fact]
-        public void DescriptionShouldThrowExceptionWhenNoDescriptionIsProvided()
-        {
-            _ = this.Invoking(g => EError.TESTE3.Description())
-                .Should()
-                .Throw<EnumDescriptionNotFoundException>()
-                .WithMessage("Enum informado não contém descrição.");
+                 .Throw<NullReferenceException>()
+                 .WithMessage("Valor do enum não pode ser nulo.");
         }
 
         [Fact]
@@ -55,6 +40,23 @@
                 .And.HaveCount(3)
                 .And.OnlyHaveUniqueItems()
                 .And.BeEquivalentTo(listaModelo);
+        }
+
+        [Fact]
+        public void DescriptionShouldReturnValueOfDescriptionAnnotation()
+        {
+            string description = EOK.TESTE1.Description();
+
+            _ = description.Should().Be("TESTE 1");
+        }
+
+        [Fact]
+        public void DescriptionShouldThrowExceptionWhenNoDescriptionIsProvided()
+        {
+            _ = this.Invoking(g => EError.TESTE3.Description())
+                .Should()
+                .Throw<EnumDescriptionNotFoundException>()
+                .WithMessage("Enum informado não contém descrição.");
         }
     }
 }
