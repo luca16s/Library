@@ -6,7 +6,6 @@
     using FluentAssertions;
 
     using Xunit;
-    using static Core.Tests.Validations.DomainValidatorTests;
 
     public class StringExtensionsTests
     {

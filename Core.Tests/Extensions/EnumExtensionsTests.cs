@@ -1,15 +1,13 @@
 ﻿namespace Core.Tests.Extensions
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Reflection;
-
     using Core.Exceptions;
     using Core.Extensions;
     using Core.Models;
+
     using FluentAssertions;
 
-    using Microsoft.VisualStudio.CodeCoverage;
+    using System;
+    using System.Collections.Generic;
 
     using Xunit;
 

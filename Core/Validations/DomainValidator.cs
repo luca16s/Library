@@ -13,6 +13,8 @@ namespace Core.Validations
 
     using FluentValidation;
 
+    using System.Diagnostics.CodeAnalysis;
+
     /// <summary>
     /// Classe de validação de domínio.
     /// </summary>
@@ -22,6 +24,7 @@ namespace Core.Validations
     /// <typeparam name="TType">
     /// Tipo do identificador da entidade.
     /// </typeparam>
+    [ExcludeFromCodeCoverageAttribute]
     public abstract class DomainValidator<TEntity, TType> : AbstractValidator<TEntity>
         where TEntity : Entity<TType>
         where TType : struct

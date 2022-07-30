@@ -1,10 +1,10 @@
 ﻿namespace Core.Tests
 {
-    using System;
-
     using Core.Exceptions;
 
     using FluentAssertions;
+
+    using System;
 
     using Xunit;
 

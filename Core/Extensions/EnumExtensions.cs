@@ -7,11 +7,10 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using System.ComponentModel;
-
 using Core.Exceptions;
-
 using Core.Models;
+
+using System.ComponentModel;
 
 namespace Core.Extensions
 {

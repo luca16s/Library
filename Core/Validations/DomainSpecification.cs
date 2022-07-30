@@ -11,6 +11,8 @@ namespace Core.Validations
 {
     using Core.Models;
 
+    using System.Diagnostics.CodeAnalysis;
+
     /// <summary>
     /// Classe de especificação de domínio.
     /// </summary>
@@ -20,6 +22,7 @@ namespace Core.Validations
     /// <typeparam name="TType">
     /// Tipo do identificador da entidade.
     /// </typeparam>
+    [ExcludeFromCodeCoverageAttribute]
     public abstract class DomainSpecification<TEntity, TType>
         where TEntity : Entity<TType>
         where TType : struct

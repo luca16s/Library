@@ -9,9 +9,9 @@
 
 namespace Web.ViewModels
 {
-    using System;
-
     using Microsoft.AspNetCore.Mvc;
+
+    using System;
 
     /// <summary>
     /// ViewModel base.
