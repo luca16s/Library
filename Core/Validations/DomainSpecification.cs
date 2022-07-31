@@ -19,13 +19,13 @@ namespace Core.Validations
     /// <typeparam name="TEntity">
     /// Entidade.
     /// </typeparam>
-    /// <typeparam name="TType">
-    /// Tipo do identificador da entidade.
+    /// <typeparam name="TId">
+    /// Tipo do identificador.
     /// </typeparam>
-    [ExcludeFromCodeCoverageAttribute]
-    public abstract class DomainSpecification<TEntity, TType>
-        where TEntity : Entity<TType>
-        where TType : struct
+    [ExcludeFromCodeCoverage]
+    public abstract class DomainSpecification<TEntity, TId>
+        where TId : struct
+        where TEntity : Entity<TId>
     {
         protected readonly TEntity _entidade;
 

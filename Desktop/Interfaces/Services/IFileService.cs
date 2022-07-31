@@ -37,7 +37,9 @@ namespace Desktop.Interfaces.Services
         /// <param name="fileName">
         /// Nome do arquivo.
         /// </param>
-        /// <returns>Arquivos lidos.</returns>
+        /// <returns>
+        /// Arquivos lidos.
+        /// </returns>
         T Read<T>(string folderPath, string fileName);
 
         /// <summary>

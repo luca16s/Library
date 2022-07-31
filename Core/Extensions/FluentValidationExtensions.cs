@@ -19,7 +19,7 @@ namespace Core.Extensions
     /// <summary>
     /// Classe de extensão para operações com Classes de validação.
     /// </summary>
-    [ExcludeFromCodeCoverageAttribute]
+    [ExcludeFromCodeCoverage]
     public static class FluentValidationExtensions
     {
         /// <summary>

@@ -60,8 +60,11 @@ namespace CQRS.Handlers
         /// <summary>
         /// Enviar comandos.
         /// </summary>
-        /// <typeparam name="T">
+        /// <typeparam name="TCommand">
         /// Tipo do comando a ser enviado.
+        /// </typeparam>
+        /// <typeparam name="TId">
+        /// Tipo do identificador.
         /// </typeparam>
         /// <param name="comando">
         /// Comando a ser enviado.
@@ -72,10 +75,10 @@ namespace CQRS.Handlers
         /// <param name="cancellation">
         /// Token de cancelamento.
         /// </param>
-        public Task SendCommand<T>(T comando,
+        public Task SendCommand<TCommand, TId>(TCommand comando,
                                    bool shouldEnqueue = false,
                                    CancellationToken cancellation = default)
-            where T : Command
+            where TCommand : Command<TId> where TId : struct
         {
             return shouldEnqueue ?
                 PublishQueue(comando, cancellation) :
@@ -85,8 +88,11 @@ namespace CQRS.Handlers
         /// <summary>
         /// Lançar evento.
         /// </summary>
-        /// <typeparam name="T">
+        /// <typeparam name="TCommand">
         /// Tipo do evento.
+        /// </typeparam>
+        /// <typeparam name="TId">
+        /// Tipo do identificador.
         /// </typeparam>
         /// <param name="evento">
         /// Evento a ser lançado.
@@ -97,15 +103,15 @@ namespace CQRS.Handlers
         /// <param name="cancellation">
         /// Token de cancelamento.
         /// </param>
-        public Task RaiseEvent<T>(T evento,
+        public Task RaiseEvent<TCommand, TId>(TCommand evento,
                                   bool enqueue = false,
                                   CancellationToken cancellation = default)
-            where T : Event => _mediator.Publish(evento, cancellation);
+            where TCommand : Event<TId> where TId : struct => _mediator.Publish(evento, cancellation);
 
         /// <summary>
         /// Publicar Fila
         /// </summary>
-        /// <typeparam name="T">
+        /// <typeparam name="TCommand">
         /// Tipo do comando.
         /// </typeparam>
         /// <param name="comando">
@@ -114,7 +120,7 @@ namespace CQRS.Handlers
         /// <param name="cancellation">
         /// Token de cancelamento.
         /// </param>
-        public Task PublishQueue<T>(T comando,
+        public Task PublishQueue<TCommand>(TCommand comando,
                                     CancellationToken cancellation = default)
         {
             using (IConnection? connection = _connectionFactory.CreateConnection())
@@ -122,7 +128,7 @@ namespace CQRS.Handlers
                 using (IModel? channel = connection.CreateModel())
                 {
                     _ = channel.QueueDeclare(
-                        queue: typeof(T).FullName,
+                        queue: typeof(TCommand).FullName,
                         durable: true,
                         exclusive: false,
                         autoDelete: false,
@@ -132,11 +138,11 @@ namespace CQRS.Handlers
                     byte[]? bodyMessage = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(comando));
 
                     channel.BasicPublish(exchange: "",
-                                         routingKey: typeof(T).FullName,
+                                         routingKey: typeof(TCommand).FullName,
                                          basicProperties: null,
                                          body: bodyMessage);
 
-                    Console.WriteLine($"Mensagem do tipo {typeof(T).FullName} enviada.");
+                    Console.WriteLine($"Mensagem do tipo {typeof(TCommand).FullName} enviada.");
                 }
             }
 

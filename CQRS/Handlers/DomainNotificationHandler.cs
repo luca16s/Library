@@ -20,25 +20,32 @@ namespace CQRS.Handlers
     /// <summary>
     /// Classe manipuladora de notificação de domínio.
     /// </summary>
-    public class DomainNotificationHandler : INotificationHandler<DomainNotification>
+    /// <typeparam name="TId">
+    /// Tipo do identificador.
+    /// </typeparam>
+    public class DomainNotificationHandler<TId> : INotificationHandler<DomainNotification<TId>>
+        where TId : struct
     {
-        private List<DomainNotification> _notifications;
+        private List<DomainNotification<TId>> _notifications;
 
         /// <summary>
         /// Constrói uma nova instância da classe manipuladora de notificação de domínio.
         /// </summary>
         public DomainNotificationHandler()
         {
-            _notifications = new List<DomainNotification>();
+            _notifications = new List<DomainNotification<TId>>();
         }
 
         /// <summary>
         /// Busca todas as notificações.
         /// </summary>
+        /// <typeparam name="TId">
+        /// Tipo do identificador.
+        /// </typeparam>
         /// <returns>
         /// Lista das notificações adicionadas.
         /// </returns>
-        public virtual List<DomainNotification> GetNotifications()
+        public virtual List<DomainNotification<TId>> GetNotifications()
         {
             return _notifications;
         }
@@ -46,14 +53,16 @@ namespace CQRS.Handlers
         /// <summary>
         /// Manipulador de notificação de domínio.
         /// </summary>
+        /// <typeparam name="TId">
+        /// Tipo do identificador.
+        /// </typeparam>
         /// <param name="message">
         /// Mensagem a ser adicionada.
         /// </param>
         /// <param name="cancellationToken">
         /// Token de cancelamento.
         /// </param>
-        /// <returns></returns>
-        public Task Handle(DomainNotification message, CancellationToken cancellationToken)
+        public Task Handle(DomainNotification<TId> message, CancellationToken cancellationToken)
         {
             _notifications.Add(message);
             return Task.CompletedTask;
@@ -84,7 +93,7 @@ namespace CQRS.Handlers
         /// </summary>
         public void Dispose()
         {
-            _notifications = new List<DomainNotification>();
+            _notifications = new List<DomainNotification<TId>>();
         }
     }
 }

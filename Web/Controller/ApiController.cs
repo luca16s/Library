@@ -24,13 +24,16 @@ namespace Web.Controller
     /// <summary>
     /// Controller base para API.
     /// </summary>
+    /// <typeparam name="TId">
+    /// Tipo do identificador.
+    /// </typeparam>
     [ApiController]
     [Produces("application/json")]
-    public class ApiController : ControllerBase
+    public class ApiController<TId> : ControllerBase where TId : struct
     {
         protected readonly IMapper _mapper;
         protected readonly IMediatorHandler _mediator;
-        protected readonly DomainNotificationHandler _notifications;
+        protected readonly DomainNotificationHandler<TId> _notifications;
 
         /// <summary>
         /// Constrói uma nova instância da classe de api de controller.
@@ -48,17 +51,17 @@ namespace Web.Controller
         (
             IMapper mapper,
             IMediatorHandler mediator,
-            INotificationHandler<DomainNotification> notifications
+            INotificationHandler<DomainNotification<TId>> notifications
         )
         {
             _mapper = mapper;
             _mediator = mediator;
-            _notifications = (DomainNotificationHandler)notifications;
+            _notifications = (DomainNotificationHandler<TId>)notifications;
         }
 
         [NonAction]
         protected new async Task<IActionResult> Response<TCommand>(TCommand command)
-            where TCommand : Command
+            where TCommand : Command<TId>
         {
             if (!ModelState.IsValid)
             {
@@ -99,7 +102,7 @@ namespace Web.Controller
         [NonAction]
         protected async Task NotifyError(string codigo, string mensagem)
         {
-            await _mediator.RaiseEvent(new DomainNotification(codigo, mensagem));
+            await _mediator.RaiseEvent<DomainNotification<TId>, TId>(new DomainNotification<TId>(codigo, mensagem));
         }
     }
 }

@@ -21,12 +21,12 @@ namespace Data.Interfaces.Repositories
     /// <typeparam name="TEntity">
     /// Entidade que será salva.
     /// </typeparam>
-    /// <typeparam name="TType">
-    /// Tipo do identificador da Entidade.
+    /// <typeparam name="TId">
+    /// Tipo do identificador.
     /// </typeparam>
-    public interface IRepository<TEntity, TType>
-        where TEntity : Entity<TType>
-        where TType : struct
+    public interface IRepository<TEntity, TId>
+        where TId : struct
+        where TEntity : Entity<TId>
     {
         /// <summary>
         /// Adiciona nova entidade no banco de dados de forma assíncrona.
@@ -61,7 +61,7 @@ namespace Data.Interfaces.Repositories
         /// <returns>
         /// Entidade encontrada.
         /// </returns>
-        Task<TEntity?> Get(Guid id);
+        Task<TEntity?> Get(TId id);
 
         /// <summary>
         /// Atualiza uma entidade com base em um identificador passado.
@@ -72,7 +72,7 @@ namespace Data.Interfaces.Repositories
         /// <param name="item">
         /// Entidade a ser atualizada.
         /// </param>
-        Task Update(Guid id, TEntity item);
+        Task Update(TId id, TEntity item);
 
         /// <summary>
         /// Busca determinados itens na base de dados.

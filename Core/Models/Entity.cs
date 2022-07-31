@@ -14,10 +14,10 @@ namespace Core.Models
     /// <summary>
     /// Entidade base.
     /// </summary>
-    /// <typeparam name="TType">
+    /// <typeparam name="TId">
     /// Tipo do identificador da entidade.
     /// </typeparam>
-    public abstract class Entity<TType> where TType : struct
+    public abstract class Entity<TId> where TId : struct
     {
         private int? _requestedHashCode;
 
@@ -28,7 +28,7 @@ namespace Core.Models
         /// <param name="id">
         /// Identificador.
         /// </param>
-        public Entity(TType id)
+        public Entity(TId id)
         {
             Id = id;
         }
@@ -36,7 +36,7 @@ namespace Core.Models
         /// <summary>
         /// Obtém identificador da entidade.
         /// </summary>
-        public TType Id { get; private set; }
+        public TId Id { get; private set; }
 
         /// <summary>
         /// Lista com as validações executadas para entidade.
@@ -100,11 +100,11 @@ namespace Core.Models
         {
             if (obj is null) return false;
 
-            if (obj is not Entity<TType> || GetType() != obj.GetType()) return false;
+            if (obj is not Entity<TId> || GetType() != obj.GetType()) return false;
 
             if (ReferenceEquals(this, obj)) return true;
 
-            Entity<TType> item = (Entity<TType>)obj;
+            Entity<TId> item = (Entity<TId>)obj;
 
             return item.Id.Equals(Id);
         }
@@ -122,7 +122,7 @@ namespace Core.Models
         /// True: Entidade igual.
         /// False: Entidade diferente.
         /// </returns>
-        public static bool operator ==(Entity<TType> left, Entity<TType> right)
+        public static bool operator ==(Entity<TId> left, Entity<TId> right)
         {
             return Equals(left, null) ?
                 Equals(right, null) :
@@ -142,7 +142,7 @@ namespace Core.Models
         /// True: Entidade diferente.
         /// False: Entidade igual.
         /// </returns>
-        public static bool operator !=(Entity<TType> left, Entity<TType> right)
+        public static bool operator !=(Entity<TId> left, Entity<TId> right)
         {
             return !(left == right);
         }
