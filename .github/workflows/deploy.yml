@@ -23,6 +23,7 @@ jobs:
       run: dotnet build -c Release --no-restore
     - name: Publicando pacote
       run: |
+        nbgv prepare-release
         dotnet pack --configuration Release --output out
         dotnet nuget push "out\*.nupkg" --api-key ${{ secrets.GITHUB_TOKEN }} --source "https://nuget.pkg.github.com/luca16s/index.json" --skip-duplicate
 
