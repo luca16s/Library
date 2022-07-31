@@ -9,19 +9,22 @@
 
 namespace Web.ViewModels
 {
-    using System;
-
     using Microsoft.AspNetCore.Mvc;
+
+    using System;
 
     /// <summary>
     /// ViewModel base.
     /// </summary>
-    public class BaseViewModel
+    /// <typeparam name="TId">
+    /// Tipo do identificador.
+    /// </typeparam>
+    public class BaseViewModel<TId> where TId : struct
     {
         /// <summary>
         /// Identificador padrão de entidades.
         /// </summary>
         [HiddenInput(DisplayValue = false)]
-        public Guid Id { get; set; }
+        public TId Id { get; set; }
     }
 }

@@ -8,17 +8,17 @@ jobs:
   build:
     runs-on: windows-latest
     steps:
-    - name: Realizando checkout
+    - name: Realizando checkout do Projeto
       uses: actions/checkout@v3
       with:
         fetch-depth: 0
-    - name: Nerdbank.GitVersioning
+    - name: Preparando versionador
       uses: dotnet/nbgv@v0.4.0
-    - name: Setup .NET
+    - name: Preparando .NET
       uses: actions/setup-dotnet@v2
       with:
         dotnet-version: 6.0.x
-    - name: Initialize CodeQL
+    - name: Iniciando CodeQL
       uses: github/codeql-action/init@v2
       with:
         languages: csharp
@@ -37,6 +37,6 @@ jobs:
         name: codecov-umbrella
         fail_ci_if_error: true
         verbose: true
-    - name: Perform CodeQL Analysis
+    - name: Realizando análise de código
       uses: github/codeql-action/analyze@v2
 

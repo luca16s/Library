@@ -1,4 +1,4 @@
-﻿namespace Core.Tests
+﻿namespace Core.Tests.Extensions
 {
     using Core.Exceptions;
     using Core.Extensions;
@@ -28,6 +28,15 @@
                 .Should()
                 .Throw<EnumItemNotFoundException>()
                 .WithMessage($"Item não encontrado no enumerador.\n - {texto}");
+        }
+
+        [Fact]
+        public void ShouldReturnFormatedMessage()
+        {
+            var expected = "Mensagem teste Nome";
+            var actual = "Mensagem teste {0}".FormatMessage("Nome");
+
+            _ = expected.Should().Be(actual);
         }
     }
 }

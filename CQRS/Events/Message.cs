@@ -17,13 +17,16 @@ namespace CQRS.Events
     /// <summary>
     /// Classe base da mensagem.
     /// </summary>
-    public abstract class Message : IRequest<bool>
+    /// <typeparam name="TId">
+    /// Tipo do identificador.
+    /// </typeparam>
+    public abstract class Message<TId> : IRequest<bool> where TId : struct
     {
         /// <summary>
         /// Id da agregação.
         /// </summary>
         [JsonIgnore]
-        public Guid AggregateId { get; protected set; }
+        public TId AggregateId { get; protected set; }
 
         /// <summary>
         /// Tipo da mensagem.

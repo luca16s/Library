@@ -3,11 +3,10 @@
     using Core.Models;
 
     using FluentAssertions;
-    using System;
+
     using System.Collections.Generic;
 
     using Xunit;
-    using static Core.Tests.Models.EntityTest;
 
     public class ValueObjectTests
     {

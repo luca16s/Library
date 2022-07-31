@@ -7,11 +7,10 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using System.ComponentModel;
-
 using Core.Exceptions;
-
 using Core.Models;
+
+using System.ComponentModel;
 
 namespace Core.Extensions
 {
@@ -34,16 +33,18 @@ namespace Core.Extensions
         /// </exception>
         public static string Description(this Enum value)
         {
-            object[] attributes = value
-                ?.GetType()
-                ?.GetField(value.ToString())
-                ?.GetCustomAttributes(typeof(DescriptionAttribute), false)
-                ?? Array.Empty<Array>();
+            if (value is null)
+                throw new ArgumentNullException(nameof(value), "Valor do enum não pode ser nulo.");
 
-            return attributes.Length > 0
-                && attributes.First() is DescriptionAttribute description
-                ? description.Description
-                : throw new EnumDescriptionNotFoundException();
+            var valueType = value.GetType();
+            var field = valueType.GetField(value.ToString()) ?? throw new NullReferenceException("Field não é válido.");
+            var attributes = field.GetCustomAttributes(typeof(DescriptionAttribute), false) ?? Array.Empty<Array>();
+
+            if (attributes.Length > 0 &&
+                attributes.First() is DescriptionAttribute description
+               ) return description.Description;
+
+            throw new EnumDescriptionNotFoundException();
         }
 
         /// <summary>

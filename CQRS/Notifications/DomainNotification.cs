@@ -16,12 +16,19 @@ namespace CQRS.Notifications
     /// <summary>
     /// Notificação de domínio.
     /// </summary>
-    public class DomainNotification : Event
+    /// <typeparam name="TId">
+    /// Tipo do identificador.
+    /// </typeparam>
+    public class DomainNotification<TId> : Event<TId>
+        where TId : struct
     {
         /// <summary>
         /// Identificador da notigicação.
         /// </summary>
-        public Guid NotificationId { get; private set; } = Guid.NewGuid();
+        /// <typeparam name="TId">
+        /// Tipo do identificador.
+        /// </typeparam>
+        public TId NotificationId { get; private set; }
 
         /// <summary>
         /// Chave da notificação.

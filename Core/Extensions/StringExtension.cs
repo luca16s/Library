@@ -22,7 +22,7 @@ namespace Core.Extensions
         /// <summary>
         /// Busca o valor de um enum através de uma string.
         /// </summary>
-        /// <typeparam name="T">
+        /// <typeparam name="TEnum">
         /// Tipo do enum.
         /// </typeparam>
         /// <param name="value">
@@ -34,21 +34,38 @@ namespace Core.Extensions
         /// <exception cref="ArgumentException">
         /// Item não encontrado.
         /// </exception>
-        public static T? GetEnumValueFromDescription<T>(this string value) where T : Enum
+        public static TEnum? GetEnumValueFromDescription<TEnum>(this string value) where TEnum : Enum
         {
-            foreach (FieldInfo field in typeof(T).GetFields())
+            foreach (FieldInfo field in typeof(TEnum).GetFields())
             {
                 if (Attribute.GetCustomAttribute(field, typeof(DescriptionAttribute))
                     is DescriptionAttribute descriptionAttribute)
                 {
                     if (descriptionAttribute.Description.Equals(value, StringComparison.Ordinal))
                     {
-                        return (T?)field.GetValue(value);
+                        return (TEnum?)field.GetValue(value);
                     }
                 }
             }
 
             throw new EnumItemNotFoundException(value);
+        }
+
+        /// <summary>
+        /// Formata mensagem de erro.
+        /// </summary>
+        /// <param name="message">
+        /// Mensagem a ser passada.
+        /// </param>
+        /// <param name="property">
+        /// Lista de propriedades.
+        /// </param>
+        /// <returns>
+        /// Mensagem formatada.
+        /// </returns>
+        public static string FormatMessage(this string message, params string[] property)
+        {
+            return string.Format(message, property);
         }
     }
 }

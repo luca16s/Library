@@ -19,12 +19,12 @@ namespace Core.Interfaces.Services
     /// <typeparam name="TEntity">
     /// Entidade que será salva.
     /// </typeparam>
-    /// <typeparam name="TType">
-    /// Tipo do identificador da entidade.
+    /// <typeparam name="TId">
+    /// Tipo do identificador.
     /// </typeparam>
-    public interface IService<TEntity, TType>
-        where TEntity : Entity<TType>
-        where TType : struct
+    public interface IService<TEntity, TId>
+        where TEntity : Entity<TId>
+        where TId : struct
     {
         /// <summary>
         /// Adiciona nova entidade no banco de dados de forma assíncrona.
@@ -62,7 +62,7 @@ namespace Core.Interfaces.Services
         /// <returns>
         /// Entidade encontrada.
         /// </returns>
-        Task<TEntity?> Get(Guid id);
+        Task<TEntity?> Get(TId id);
 
         /// <summary>
         /// Atualiza uma entidade com base em um identificador passado de forma assíncrona.
@@ -73,7 +73,7 @@ namespace Core.Interfaces.Services
         /// <param name="item">
         /// Entidade a ser atualizada.
         /// </param>
-        Task Update(Guid id, TEntity item);
+        Task Update(TId id, TEntity item);
 
         /// <summary>
         /// Busca determinados itens na base de dados.

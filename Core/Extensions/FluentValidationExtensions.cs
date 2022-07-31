@@ -14,9 +14,12 @@ namespace Core.Extensions
 
     using FluentValidation;
 
+    using System.Diagnostics.CodeAnalysis;
+
     /// <summary>
     /// Classe de extensão para operações com Classes de validação.
     /// </summary>
+    [ExcludeFromCodeCoverage]
     public static class FluentValidationExtensions
     {
         /// <summary>
