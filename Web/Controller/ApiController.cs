@@ -21,6 +21,8 @@ namespace Web.Controller
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.ModelBinding;
 
+    using Web.ViewModels;
+
     /// <summary>
     /// Controller base para API.
     /// </summary>
@@ -60,8 +62,9 @@ namespace Web.Controller
         }
 
         [NonAction]
-        protected new async Task<IActionResult> Response<TCommand>(TCommand command)
+        protected new async Task<IActionResult> Response<TCommand, TViewModel>(TCommand command)
             where TCommand : Command<TId>
+            where TViewModel : ViewModel<TId>
         {
             if (!ModelState.IsValid)
             {
@@ -69,12 +72,11 @@ namespace Web.Controller
             }
 
             return OperacaoValida() ?
-                Ok(command?.Result) :
+                Ok(
+                    _mapper.Map<TViewModel>(command?.Result)
+                ) :
                 BadRequest(
-                    new
-                    {
-                        errors = _notifications.GetNotifications().Select(p => p.Value)
-                    }
+                    new { errors = _notifications.GetNotifications().Select(p => p.Value) }
                 );
         }
 
