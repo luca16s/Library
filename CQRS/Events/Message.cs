@@ -23,10 +23,10 @@ namespace CQRS.Events
     public abstract class Message<TId> : IRequest<bool> where TId : struct
     {
         /// <summary>
-        /// Id da agregação.
+        /// Identificador.
         /// </summary>
         [JsonIgnore]
-        public TId AggregateId { get; protected set; }
+        public TId Id { get; protected set; }
 
         /// <summary>
         /// Tipo da mensagem.
@@ -34,6 +34,9 @@ namespace CQRS.Events
         [JsonIgnore]
         public string MessageType { get; protected set; }
 
+        /// <summary>
+        /// Inicializa uma nova instância da classe Message.
+        /// </summary>
         protected Message()
         {
             MessageType = GetType().Name;

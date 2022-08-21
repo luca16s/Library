@@ -14,6 +14,8 @@
     <RepositoryUrl>https://github.com/luca16s/IakareLibraries</RepositoryUrl>
     <RepositoryType></RepositoryType>
     <Title>Îakaré Software'Oka - Core Library</Title>
+    <AssemblyVersion>1.1.0.0</AssemblyVersion>
+    <FileVersion>1.1.0.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
