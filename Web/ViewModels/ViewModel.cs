@@ -19,7 +19,7 @@ namespace Web.ViewModels
     /// <typeparam name="TId">
     /// Tipo do identificador.
     /// </typeparam>
-    public class BaseViewModel<TId> where TId : struct
+    public class ViewModel<TId> where TId : struct
     {
         /// <summary>
         /// Identificador padrão de entidades.
