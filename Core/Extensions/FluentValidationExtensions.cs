@@ -23,34 +23,27 @@ namespace Core.Extensions
     public static class FluentValidationExtensions
     {
         /// <summary>
-        /// Verifica se entidade é válida.
+        /// Método de extensão que valida se texto contém somente dígitos.
         /// </summary>
-        /// <typeparam name="TEntity">
-        /// Entidade a ser validada.
+        /// <typeparam name="T">
+        /// Tipo da entidade a ser validada.
         /// </typeparam>
-        /// <typeparam name="TProperty">
-        /// Propriedade a ser validada.
-        /// </typeparam>
-        /// <typeparam name="TType">
-        /// Tipo da propriedade.
-        /// </typeparam>
-        /// <param name="preMadeRules">
-        /// Regras pré-definidas a serem executadas.
-        /// </param>
-        /// <param name="predicate">
-        /// Func com as propriedades a serem validadas.
+        /// <param name="ruleBuilder">
+        /// RuleBuilder para realizar validação.
         /// </param>
         /// <returns>
-        /// Retorna o RuleBuilder da Entidade passada.
+        /// Retorna RuleBuilder pós validação.
         /// </returns>
-        public static IRuleBuilderOptions<TEntity, TProperty> IsValid<TEntity, TProperty, TType>(
-            this IRuleBuilder<TEntity,
-            TProperty> preMadeRules,
-            DomainSpecification<TEntity, TType> predicate)
-            where TEntity : Entity<TType>
-            where TType : struct
+        public static IRuleBuilderOptions<T, string> ShouldOnlyHaveDigits<T>(
+            this IRuleBuilder<T, string> ruleBuilder
+        )
         {
-            return preMadeRules.Must(p => predicate.IsValid());
+            return ruleBuilder.Must(property =>
+            {
+                return !string.IsNullOrWhiteSpace(property) &&
+                property is string value &&
+                value.All(c => c is >= '0' and <= '9');
+            });
         }
     }
 }
