@@ -4,6 +4,12 @@
     <TargetFramework>net6.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
+    <Title>Îakaré Software'Oka - Desktop Library</Title>
+    <Authors>Îakaré Software'Oka</Authors>
+    <PackageProjectUrl>https://github.com/luca16s/IakareLibraries</PackageProjectUrl>
+    <Copyright>$(Authors)</Copyright>
+    <NeutralLanguage>pt-BR</NeutralLanguage>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
   </PropertyGroup>
 
 </Project>
