@@ -11,19 +11,6 @@
             InitializeComponent();
         }
 
-        public object Color
-        {
-            get
-            {
-                string data = GetValue(ColorProperty).ToString() ?? string.Empty;
-
-                return string.IsNullOrWhiteSpace(data)
-                    ? DependencyProperty.UnsetValue
-                    : data;
-            }
-            set => SetValue(ColorProperty, value);
-        }
-
         public object Image
         {
             get
@@ -37,9 +24,22 @@
             set => SetValue(ImageProperty, value);
         }
 
-        private static readonly DependencyProperty ColorProperty =
+        public object ImageColor
+        {
+            get
+            {
+                string data = GetValue(ImageColorProperty).ToString() ?? string.Empty;
+
+                return string.IsNullOrWhiteSpace(data)
+                    ? DependencyProperty.UnsetValue
+                    : data;
+            }
+            set => SetValue(ImageColorProperty, value);
+        }
+
+        private static readonly DependencyProperty ImageColorProperty =
            DependencyProperty.Register(
-               nameof(Color),
+               nameof(ImageColor),
                typeof(object),
                typeof(ButtonComponent));
 

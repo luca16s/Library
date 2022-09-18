@@ -55,8 +55,8 @@
                 Width="24"
                 Height="24">
                 <Path
-                    Style="{Binding Color, ElementName=IakareButton}"
-                    Data="{Binding Image, ElementName=IakareButton}" />
+                    Data="{Binding Image, ElementName=IakareButton}"
+                    Style="{Binding ImageColor, ElementName=IakareButton}"/>
             </Canvas>
         </Viewbox>
     </Button>
