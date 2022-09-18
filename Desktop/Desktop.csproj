@@ -10,6 +10,7 @@
     <Copyright>$(Authors)</Copyright>
     <NeutralLanguage>pt-BR</NeutralLanguage>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <RepositoryUrl>https://github.com/luca16s/IakareLibraries</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>
