@@ -75,9 +75,8 @@
 
         public event RoutedEventHandler Click
         {
-            add { Button.Click += value; }
-            remove { Button.Click += value; }
+            add { ButtonBase.Click += value; }
+            remove { ButtonBase.Click += value; }
         }
     }
-}
 }

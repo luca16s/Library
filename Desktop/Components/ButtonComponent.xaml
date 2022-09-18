@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="450"
              d:DesignWidth="800"
-             x:Name="ButtonComponent">
+             x:Name="IakareButton">
     <UserControl.Resources>
         <ControlTemplate
             x:Key="ButtonTemplate"
@@ -40,23 +40,23 @@
         </ControlTemplate>
     </UserControl.Resources>
     <Button
-        x:Name="Button"
+        x:Name="ButtonBase"
         Template="{StaticResource ButtonTemplate}"
-        Width="{Binding Width, ElementName=ButtonComponent}"
-        Height="{Binding Height, ElementName=ButtonComponent}"
-        Margin="{Binding Margin, ElementName=ButtonComponent}"
-        ToolTip="{Binding ToolTip, ElementName=ButtonComponent}"
-        Command="{Binding ButtonCommand, ElementName=ButtonComponent}"
-        CommandParameter="{Binding ButtonCommandParameters, ElementName=ButtonComponent}">
+        Width="{Binding Width, ElementName=IakareButton}"
+        Height="{Binding Height, ElementName=IakareButton}"
+        Margin="{Binding Margin, ElementName=IakareButton}"
+        ToolTip="{Binding ToolTip, ElementName=IakareButton}"
+        Command="{Binding ButtonCommand, ElementName=IakareButton}"
+        CommandParameter="{Binding ButtonCommandParameters, ElementName=IakareButton}">
         <Viewbox
-            Width="{Binding Width, ElementName=ButtonComponent}"
-            Height="{Binding Height, ElementName=ButtonComponent}">
+            Width="{Binding Width, ElementName=IakareButton}"
+            Height="{Binding Height, ElementName=IakareButton}">
             <Canvas
                 Width="24"
                 Height="24">
                 <Path
-                    Style="{Binding Color, ElementName=ButtonComponent}"
-                    Data="{Binding Image, ElementName=ButtonComponent}" />
+                    Style="{Binding Color, ElementName=IakareButton}"
+                    Data="{Binding Image, ElementName=IakareButton}" />
             </Canvas>
         </Viewbox>
     </Button>
