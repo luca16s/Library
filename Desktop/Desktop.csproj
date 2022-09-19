@@ -11,6 +11,7 @@
     <NeutralLanguage>pt-BR</NeutralLanguage>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <RepositoryUrl>https://github.com/luca16s/IakareLibraries</RepositoryUrl>
+    <PackageId>ISO.$(AssemblyName)</PackageId>
   </PropertyGroup>
 
   <ItemGroup>
