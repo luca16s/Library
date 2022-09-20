@@ -63,7 +63,7 @@
 
         public object ButtonCommandParameters
         {
-            get => (object)GetValue(CommandParameters);
+            get => GetValue(CommandParameters);
             set => SetValue(CommandParameters, value);
         }
 
@@ -75,8 +75,8 @@
 
         public event RoutedEventHandler Click
         {
-            add { ButtonBase.Click += value; }
-            remove { ButtonBase.Click += value; }
+            add { Button.Click += value; }
+            remove { Button.Click += value; }
         }
     }
 }
