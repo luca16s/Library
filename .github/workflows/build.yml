@@ -1,0 +1,42 @@
+name: Core Library CI
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+    - name: Realizando checkout do Projeto
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+    - name: Preparando versionador
+      uses: dotnet/nbgv@v0.4.0
+    - name: Preparando .NET
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: 6.0.x
+    - name: Iniciando CodeQL
+      uses: github/codeql-action/init@v2
+      with:
+        languages: csharp
+    - name: Restaurando pacotes
+      run: dotnet restore
+    - name: Construindo projetos
+      run: dotnet build -c Release --no-restore
+    - name: Rodando testes
+      run: dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput='../cobertura.xml'
+    - name: Enviando dados de cobertura
+      uses: codecov/codecov-action@v3
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        file: ./cobertura.xml
+        flags: unittests
+        name: codecov-umbrella
+        fail_ci_if_error: true
+        verbose: true
+    - name: Realizando análise de código
+      uses: github/codeql-action/analyze@v2
+

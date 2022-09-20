@@ -1,0 +1,46 @@
+﻿// ------------------------------------------------------------------------------------
+// <copyright file="EnumDescriptionNotFoundException.cs" company="Îakaré Software'Oka">
+//     Copyright (c) Îakaré Software'Oka.
+//     All rights reserved.
+//     Licensed under the MIT license.
+//     See LICENSE file in the project root for full license information.
+// </copyright>
+// ------------------------------------------------------------------------------------
+
+namespace Core.Exceptions
+{
+    using Core.Properties;
+
+    /// <summary>
+    /// Exceção caso descrição do enum não tenha sido encontrada.
+    /// </summary>
+    public class EnumDescriptionNotFoundException : Exception
+    {
+        /// <summary>
+        /// Inicia uma nova instância da classe <see cref="EnumDescriptionNotFoundException" />.
+        /// </summary>
+        public EnumDescriptionNotFoundException()
+            : base(Resources.EnumDescriptionNotFound) { }
+
+        /// <summary>
+        /// Inicia uma nova instância da classe <see cref="EnumDescriptionNotFoundException" />.
+        /// </summary>
+        /// <param name="message">
+        /// Mensagem a ser mostrada.
+        /// </param>
+        public EnumDescriptionNotFoundException(string message)
+            : base($"{Resources.EnumDescriptionNotFound}\n - {message}") { }
+
+        /// <summary>
+        /// Inicia uma nova instância da classe <see cref="EnumDescriptionNotFoundException" />.
+        /// </summary>
+        /// <param name="message">
+        /// Mensagem a ser mostrada.
+        /// </param>
+        /// <param name="inner">
+        /// Mensagem herdada.
+        /// </param>
+        public EnumDescriptionNotFoundException(string message, Exception inner)
+            : base($"{Resources.EnumDescriptionNotFound}\n - {message}", inner) { }
+    }
+}
