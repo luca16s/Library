@@ -20,7 +20,9 @@ namespace CQRS.Commands
     /// <typeparam name="TId">
     /// Tipo do identificador.
     /// </typeparam>
-    public abstract class Command<TId> : Message<TId> where TId : struct
+    public abstract class Command<TId, TResponse> : Message<TId, TResponse>
+        where TId : struct
+        where TResponse : class
     {
         /// <summary>
         /// Resultado do comando.

@@ -37,9 +37,12 @@ namespace CQRS.Interfaces
         /// <param name="cancellation">
         /// Token de cancelamento.
         /// </param>
-        Task RaiseEvent<TCommand, TId>(TCommand evento,
+        Task RaiseEvent<TCommand, TId, TResponse>(TCommand evento,
                            bool enqueue = false,
-                           CancellationToken cancellation = default) where TCommand : Event<TId> where TId : struct;
+                           CancellationToken cancellation = default)
+            where TCommand : Event<TId, TResponse>
+            where TResponse : class
+            where TId : struct;
 
         /// <summary>
         /// Envia o comando.
@@ -59,9 +62,13 @@ namespace CQRS.Interfaces
         /// <param name="cancellation">
         /// Token de cancelamento.
         /// </param>
-        Task SendCommand<TCommand, TId>(TCommand comando,
-                            bool enqueue = false,
-                            CancellationToken cancellation = default) where TCommand : Command<TId> where TId : struct;
+        Task SendCommand<TCommand, TId, TResponse>(
+            TCommand comando,
+            bool enqueue = false,
+            CancellationToken cancellation = default)
+            where TCommand : Command<TId, TResponse>
+            where TResponse : class
+            where TId : struct;
 
         /// <summary>
         /// Publicar fila.

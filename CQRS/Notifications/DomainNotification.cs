@@ -11,16 +11,15 @@ namespace CQRS.Notifications
 {
     using CQRS.Events;
 
-    using System;
-
     /// <summary>
     /// Notificação de domínio.
     /// </summary>
     /// <typeparam name="TId">
     /// Tipo do identificador.
     /// </typeparam>
-    public class DomainNotification<TId> : Event<TId>
+    public class DomainNotification<TId, TResponse> : Event<TId, TResponse>
         where TId : struct
+        where TResponse : class
     {
         /// <summary>
         /// Identificador da notigicação.

@@ -26,19 +26,20 @@ namespace CQRS.Handlers
     /// <typeparam name="TId">
     /// Tipo do identificador.
     /// </typeparam>
-    public abstract class CommandHandler<TId>
+    public abstract class CommandHandler<TId, TResponse>
         where TId : struct
+        where TResponse : class
     {
         protected readonly IMediatorHandler _mediator;
-        protected readonly DomainNotificationHandler<TId> _notifications;
+        protected readonly DomainNotificationHandler<TId, TResponse> _notifications;
 
         protected CommandHandler(
             IMediatorHandler mediator,
-            INotificationHandler<DomainNotification<TId>> notifications
+            INotificationHandler<DomainNotification<TId, TResponse>> notifications
         )
         {
             _mediator = mediator;
-            _notifications = (DomainNotificationHandler<TId>)notifications;
+            _notifications = (DomainNotificationHandler<TId, TResponse>)notifications;
         }
 
         protected bool ValidateEntity(Entity<TId> entity)
@@ -71,7 +72,7 @@ namespace CQRS.Handlers
                 return;
             }
 
-            _ = _mediator.RaiseEvent<DomainNotification<TId>, TId>(new DomainNotification<TId>(nome, mensagem));
+            _ = _mediator.RaiseEvent<DomainNotification<TId, TResponse>, TId, TResponse>(new DomainNotification<TId, TResponse>(nome, mensagem));
         }
 
         protected bool HasNotifications() => _notifications.HasNotifications();

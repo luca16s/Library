@@ -23,17 +23,18 @@ namespace CQRS.Handlers
     /// <typeparam name="TId">
     /// Tipo do identificador.
     /// </typeparam>
-    public class DomainNotificationHandler<TId> : INotificationHandler<DomainNotification<TId>>
+    public class DomainNotificationHandler<TId, TResponse> : INotificationHandler<DomainNotification<TId, TResponse>>
         where TId : struct
+        where TResponse : class
     {
-        private List<DomainNotification<TId>> _notifications;
+        private List<DomainNotification<TId, TResponse>> _notifications;
 
         /// <summary>
         /// Constrói uma nova instância da classe manipuladora de notificação de domínio.
         /// </summary>
         public DomainNotificationHandler()
         {
-            _notifications = new List<DomainNotification<TId>>();
+            _notifications = new List<DomainNotification<TId, TResponse>>();
         }
 
         /// <summary>
@@ -45,7 +46,7 @@ namespace CQRS.Handlers
         /// <returns>
         /// Lista das notificações adicionadas.
         /// </returns>
-        public virtual List<DomainNotification<TId>> GetNotifications()
+        public virtual List<DomainNotification<TId, TResponse>> GetNotifications()
         {
             return _notifications;
         }
@@ -62,7 +63,7 @@ namespace CQRS.Handlers
         /// <param name="cancellationToken">
         /// Token de cancelamento.
         /// </param>
-        public Task Handle(DomainNotification<TId> message, CancellationToken cancellationToken)
+        public Task Handle(DomainNotification<TId, TResponse> message, CancellationToken cancellationToken)
         {
             _notifications.Add(message);
             return Task.CompletedTask;
@@ -93,7 +94,7 @@ namespace CQRS.Handlers
         /// </summary>
         public void Dispose()
         {
-            _notifications = new List<DomainNotification<TId>>();
+            _notifications = new List<DomainNotification<TId, TResponse>>();
         }
     }
 }

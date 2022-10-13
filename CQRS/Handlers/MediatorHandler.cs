@@ -75,10 +75,12 @@ namespace CQRS.Handlers
         /// <param name="cancellation">
         /// Token de cancelamento.
         /// </param>
-        public Task SendCommand<TCommand, TId>(TCommand comando,
+        public Task SendCommand<TCommand, TId, TResponse>(TCommand comando,
                                    bool shouldEnqueue = false,
                                    CancellationToken cancellation = default)
-            where TCommand : Command<TId> where TId : struct
+            where TCommand : Command<TId, TResponse>
+            where TResponse : class
+            where TId : struct
         {
             return shouldEnqueue ?
                 PublishQueue(comando, cancellation) :
@@ -103,10 +105,14 @@ namespace CQRS.Handlers
         /// <param name="cancellation">
         /// Token de cancelamento.
         /// </param>
-        public Task RaiseEvent<TCommand, TId>(TCommand evento,
-                                  bool enqueue = false,
-                                  CancellationToken cancellation = default)
-            where TCommand : Event<TId> where TId : struct => _mediator.Publish(evento, cancellation);
+        public Task RaiseEvent<TCommand, TId, TResponse>(
+            TCommand evento,
+            bool enqueue = false,
+            CancellationToken cancellation = default)
+            where TResponse : class
+            where TCommand : Event<TId, TResponse>
+            where TId : struct
+            => _mediator.Publish(evento, cancellation);
 
         /// <summary>
         /// Publicar Fila
