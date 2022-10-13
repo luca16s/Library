@@ -28,6 +28,9 @@ namespace CQRS.Interfaces
         /// <typeparam name="TId">
         /// Tipo do identificador.
         /// </typeparam>
+        /// <typeparam name="TResponse">
+        /// Tipo do retorno.
+        /// </typeparam>
         /// <param name="evento">
         /// Evento a ser lançado.
         /// </param>
@@ -41,7 +44,7 @@ namespace CQRS.Interfaces
                            bool enqueue = false,
                            CancellationToken cancellation = default)
             where TCommand : Event<TId, TResponse>
-            where TResponse : struct
+            where TResponse : class
             where TId : struct;
 
         /// <summary>
@@ -52,6 +55,9 @@ namespace CQRS.Interfaces
         /// </typeparam>
         /// <typeparam name="TId">
         /// Tipo do identificador.
+        /// </typeparam>
+        /// <typeparam name="TResponse">
+        /// Tipo do retorno.
         /// </typeparam>
         /// <param name="comando">
         /// Comando a ser enviado.
@@ -67,7 +73,7 @@ namespace CQRS.Interfaces
             bool enqueue = false,
             CancellationToken cancellation = default)
             where TCommand : Command<TId, TResponse>
-            where TResponse : struct
+            where TResponse : class
             where TId : struct;
 
         /// <summary>

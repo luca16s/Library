@@ -23,9 +23,12 @@ namespace CQRS.Handlers
     /// <typeparam name="TId">
     /// Tipo do identificador.
     /// </typeparam>
+    /// <typeparam name="TResponse">
+    /// Tipo do retorno.
+    /// </typeparam>
     public class DomainNotificationHandler<TId, TResponse> : INotificationHandler<DomainNotification<TId, TResponse>>
         where TId : struct
-        where TResponse : struct
+        where TResponse : class
     {
         private List<DomainNotification<TId, TResponse>> _notifications;
 
@@ -43,6 +46,9 @@ namespace CQRS.Handlers
         /// <typeparam name="TId">
         /// Tipo do identificador.
         /// </typeparam>
+        /// <typeparam name="TResponse">
+        /// Tipo do retorno.
+        /// </typeparam>
         /// <returns>
         /// Lista das notificações adicionadas.
         /// </returns>
@@ -56,6 +62,9 @@ namespace CQRS.Handlers
         /// </summary>
         /// <typeparam name="TId">
         /// Tipo do identificador.
+        /// </typeparam>
+        /// <typeparam name="TResponse">
+        /// Tipo do retorno.
         /// </typeparam>
         /// <param name="message">
         /// Mensagem a ser adicionada.

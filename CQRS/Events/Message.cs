@@ -20,9 +20,12 @@ namespace CQRS.Events
     /// <typeparam name="TId">
     /// Tipo do identificador.
     /// </typeparam>
+    /// <typeparam name="TResponse">
+    /// Tipo do retorno.
+    /// </typeparam>
     public abstract class Message<TId, TResponse> : IRequest<TResponse>
         where TId : struct
-        where TResponse : struct
+        where TResponse : class
     {
         /// <summary>
         /// Identificador.

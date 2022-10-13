@@ -66,6 +66,9 @@ namespace CQRS.Handlers
         /// <typeparam name="TId">
         /// Tipo do identificador.
         /// </typeparam>
+        /// <typeparam name="TResponse">
+        /// Tipo do retorno.
+        /// </typeparam>
         /// <param name="comando">
         /// Comando a ser enviado.
         /// </param>
@@ -79,7 +82,7 @@ namespace CQRS.Handlers
                                    bool shouldEnqueue = false,
                                    CancellationToken cancellation = default)
             where TCommand : Command<TId, TResponse>
-            where TResponse : struct
+            where TResponse : class
             where TId : struct
         {
             return shouldEnqueue ?
@@ -96,6 +99,9 @@ namespace CQRS.Handlers
         /// <typeparam name="TId">
         /// Tipo do identificador.
         /// </typeparam>
+        /// <typeparam name="TResponse">
+        /// Tipo do retorno.
+        /// </typeparam>
         /// <param name="evento">
         /// Evento a ser lançado.
         /// </param>
@@ -109,7 +115,7 @@ namespace CQRS.Handlers
             TCommand evento,
             bool enqueue = false,
             CancellationToken cancellation = default)
-            where TResponse : struct
+            where TResponse : class
             where TCommand : Event<TId, TResponse>
             where TId : struct
             => _mediator.Publish(evento, cancellation);

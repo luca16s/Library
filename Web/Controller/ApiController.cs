@@ -29,11 +29,14 @@ namespace Web.Controller
     /// <typeparam name="TId">
     /// Tipo do identificador.
     /// </typeparam>
+    /// <typeparam name="TResponse">
+    /// Tipo do retorno.
+    /// </typeparam>
     [ApiController]
     [Produces("application/json")]
     public class ApiController<TId, TResponse> : ControllerBase
         where TId : struct
-        where TResponse : struct
+        where TResponse : class
     {
         protected readonly IMapper _mapper;
         protected readonly IMediatorHandler _mediator;

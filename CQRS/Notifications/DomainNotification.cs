@@ -17,9 +17,12 @@ namespace CQRS.Notifications
     /// <typeparam name="TId">
     /// Tipo do identificador.
     /// </typeparam>
+    /// <typeparam name="TResponse">
+    /// Tipo do retorno.
+    /// </typeparam>
     public class DomainNotification<TId, TResponse> : Event<TId, TResponse>
         where TId : struct
-        where TResponse : struct
+        where TResponse : class
     {
         /// <summary>
         /// Identificador da notigicação.

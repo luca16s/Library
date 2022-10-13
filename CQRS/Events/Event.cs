@@ -19,9 +19,12 @@ namespace CQRS.Events
     /// <typeparam name="TId">
     /// Tipo do identificador.
     /// </typeparam>
+    /// <typeparam name="TResponse">
+    /// Tipo do retorno.
+    /// </typeparam>
     public abstract class Event<TId, TResponse> : Message<TId, TResponse>, INotification
         where TId : struct
-        where TResponse : struct
+        where TResponse : class
     {
         /// <summary>
         /// Timestamp de execução do evento.

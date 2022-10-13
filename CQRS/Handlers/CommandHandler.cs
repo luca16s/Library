@@ -26,9 +26,12 @@ namespace CQRS.Handlers
     /// <typeparam name="TId">
     /// Tipo do identificador.
     /// </typeparam>
+    /// <typeparam name="TResponse">
+    /// Tipo do retorno.
+    /// </typeparam>
     public abstract class CommandHandler<TId, TResponse>
         where TId : struct
-        where TResponse : struct
+        where TResponse : class
     {
         protected readonly IMediatorHandler _mediator;
         protected readonly DomainNotificationHandler<TId, TResponse> _notifications;
