@@ -1,7 +1,7 @@
 name: Core Library CD
 on:
   push:
-    tags:
+    main:
       - '*'
 jobs:
   build:
