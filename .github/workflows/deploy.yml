@@ -2,7 +2,7 @@ name: Core Library CD
 on:
   push:
     tags:
-      - '*'
+      - 'v*.*.*'
 jobs:
   build:
     runs-on: windows-latest
@@ -24,6 +24,6 @@ jobs:
     - name: Publicando pacote
       run: |
         nbgv prepare-release
-        dotnet pack --configuration Release --output out
+        dotnet pack --configuration Release --output out /p:Version=$GITHUB_REF_NAME
         dotnet nuget push "out\*.nupkg" --api-key ${{ secrets.GITHUB_TOKEN }} --source "https://nuget.pkg.github.com/luca16s/index.json" --skip-duplicate
 
