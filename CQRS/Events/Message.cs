@@ -22,7 +22,7 @@ namespace CQRS.Events
     /// </typeparam>
     public abstract class Message<TId, TResponse> : IRequest<TResponse>
         where TId : struct
-        where TResponse : class
+        where TResponse : struct
     {
         /// <summary>
         /// Identificador.

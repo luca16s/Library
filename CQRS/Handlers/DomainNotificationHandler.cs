@@ -25,7 +25,7 @@ namespace CQRS.Handlers
     /// </typeparam>
     public class DomainNotificationHandler<TId, TResponse> : INotificationHandler<DomainNotification<TId, TResponse>>
         where TId : struct
-        where TResponse : class
+        where TResponse : struct
     {
         private List<DomainNotification<TId, TResponse>> _notifications;
 

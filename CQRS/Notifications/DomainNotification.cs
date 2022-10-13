@@ -19,7 +19,7 @@ namespace CQRS.Notifications
     /// </typeparam>
     public class DomainNotification<TId, TResponse> : Event<TId, TResponse>
         where TId : struct
-        where TResponse : class
+        where TResponse : struct
     {
         /// <summary>
         /// Identificador da notigicação.

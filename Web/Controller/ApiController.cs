@@ -33,7 +33,7 @@ namespace Web.Controller
     [Produces("application/json")]
     public class ApiController<TId, TResponse> : ControllerBase
         where TId : struct
-        where TResponse : class
+        where TResponse : struct
     {
         protected readonly IMapper _mapper;
         protected readonly IMediatorHandler _mediator;

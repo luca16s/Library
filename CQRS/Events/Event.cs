@@ -21,7 +21,7 @@ namespace CQRS.Events
     /// </typeparam>
     public abstract class Event<TId, TResponse> : Message<TId, TResponse>, INotification
         where TId : struct
-        where TResponse : class
+        where TResponse : struct
     {
         /// <summary>
         /// Timestamp de execução do evento.
