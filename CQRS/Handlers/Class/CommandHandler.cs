@@ -7,12 +7,12 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace CQRS.Handlers
+namespace CQRS.Handlers.Class
 {
     using Core.Models;
 
-    using CQRS.Interfaces;
-    using CQRS.Notifications;
+    using CQRS.Interfaces.Class;
+    using CQRS.Notifications.Class;
 
     using FluentValidation.Results;
 

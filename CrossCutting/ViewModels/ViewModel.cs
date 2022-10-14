@@ -7,7 +7,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Web.ViewModels
+namespace CrossCutting.ViewModels
 {
     using Microsoft.AspNetCore.Mvc;
 

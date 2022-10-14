@@ -7,9 +7,9 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace CQRS.Handlers
+namespace CQRS.Handlers.Class
 {
-    using CQRS.Notifications;
+    using CQRS.Notifications.Class;
 
     using MediatR;
 

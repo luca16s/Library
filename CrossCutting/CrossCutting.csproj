@@ -4,28 +4,19 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <Title>Îakaré Software'Oka - CrossCutting Library</Title>
     <PackageId>ISO.$(AssemblyName)</PackageId>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Authors>Îakaré Software'Oka</Authors>
     <Copyright>$(Authors)</Copyright>
     <PackageProjectUrl>https://github.com/luca16s/IakareLibraries</PackageProjectUrl>
     <RepositoryUrl>https://github.com/luca16s/IakareLibraries</RepositoryUrl>
-    <NeutralLanguage>pt-BR</NeutralLanguage>
-    <Title>Îakaré Software'Oka - Data Library</Title>
-    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <AssemblyVersion>$(VersionPrefix)</AssemblyVersion>
     <FileVersion>$(VersionPrefix)</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.10" />
-    <PackageReference Include="Nerdbank.GitVersioning" Version="3.5.113">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Core\Core.csproj" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.DataAnnotations" Version="2.2.0" />
   </ItemGroup>
 
 </Project>

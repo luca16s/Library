@@ -13,7 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data", "Data\Data.csproj", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CQRS", "CQRS\CQRS.csproj", "{2C762853-6528-429B-80CD-7541107F1D51}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Desktop", "Desktop\Desktop.csproj", "{AECB341E-1ADE-4995-89B6-8BB857D7FDB5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Desktop", "Desktop\Desktop.csproj", "{AECB341E-1ADE-4995-89B6-8BB857D7FDB5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrossCutting", "CrossCutting\CrossCutting.csproj", "{B76AFA49-5E6D-4CB7-AB00-A9B08C09C1F7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{AECB341E-1ADE-4995-89B6-8BB857D7FDB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AECB341E-1ADE-4995-89B6-8BB857D7FDB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AECB341E-1ADE-4995-89B6-8BB857D7FDB5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B76AFA49-5E6D-4CB7-AB00-A9B08C09C1F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B76AFA49-5E6D-4CB7-AB00-A9B08C09C1F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B76AFA49-5E6D-4CB7-AB00-A9B08C09C1F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B76AFA49-5E6D-4CB7-AB00-A9B08C09C1F7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

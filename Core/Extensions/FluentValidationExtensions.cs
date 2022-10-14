@@ -9,9 +9,6 @@
 
 namespace Core.Extensions
 {
-    using Core.Models;
-    using Core.Validations;
-
     using FluentValidation;
 
     using System.Diagnostics.CodeAnalysis;

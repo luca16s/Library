@@ -7,21 +7,21 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Web.Controller
+namespace Web.Controller.Struct
 {
     using AutoMapper;
 
-    using CQRS.Commands;
-    using CQRS.Handlers;
-    using CQRS.Interfaces;
-    using CQRS.Notifications;
+    using CQRS.Commands.Struct;
+    using CQRS.Handlers.Struct;
+    using CQRS.Interfaces.Struct;
+    using CQRS.Notifications.Struct;
+
+    using CrossCutting.ViewModels;
 
     using MediatR;
 
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.ModelBinding;
-
-    using Web.ViewModels;
 
     /// <summary>
     /// Controller base para API.
@@ -36,7 +36,7 @@ namespace Web.Controller
     [Produces("application/json")]
     public class ApiController<TId, TResponse> : ControllerBase
         where TId : struct
-        where TResponse : class
+        where TResponse : struct
     {
         protected readonly IMapper _mapper;
         protected readonly IMediatorHandler _mediator;

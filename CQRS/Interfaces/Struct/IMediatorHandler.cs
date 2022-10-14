@@ -7,10 +7,10 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace CQRS.Interfaces
+namespace CQRS.Interfaces.Struct
 {
-    using CQRS.Commands;
-    using CQRS.Events;
+    using CQRS.Events.Struct;
+    using CQRS.Commands.Struct;
 
     using System.Threading.Tasks;
 
@@ -44,7 +44,7 @@ namespace CQRS.Interfaces
                            bool enqueue = false,
                            CancellationToken cancellation = default)
             where TCommand : Event<TId, TResponse>
-            where TResponse : class
+            where TResponse : struct
             where TId : struct;
 
         /// <summary>
@@ -73,7 +73,7 @@ namespace CQRS.Interfaces
             bool enqueue = false,
             CancellationToken cancellation = default)
             where TCommand : Command<TId, TResponse>
-            where TResponse : class
+            where TResponse : struct
             where TId : struct;
 
         /// <summary>

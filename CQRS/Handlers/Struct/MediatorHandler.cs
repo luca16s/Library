@@ -7,11 +7,11 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace CQRS.Handlers
+namespace CQRS.Handlers.Struct
 {
-    using CQRS.Commands;
-    using CQRS.Events;
-    using CQRS.Interfaces;
+    using CQRS.Events.Struct;
+    using CQRS.Commands.Struct;
+    using CQRS.Interfaces.Struct;
 
     using MediatR;
 
@@ -82,7 +82,7 @@ namespace CQRS.Handlers
                                    bool shouldEnqueue = false,
                                    CancellationToken cancellation = default)
             where TCommand : Command<TId, TResponse>
-            where TResponse : class
+            where TResponse : struct
             where TId : struct
         {
             return shouldEnqueue ?
@@ -115,7 +115,7 @@ namespace CQRS.Handlers
             TCommand evento,
             bool enqueue = false,
             CancellationToken cancellation = default)
-            where TResponse : class
+            where TResponse : struct
             where TCommand : Event<TId, TResponse>
             where TId : struct
             => _mediator.Publish(evento, cancellation);

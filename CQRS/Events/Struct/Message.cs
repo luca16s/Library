@@ -7,11 +7,10 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace CQRS.Events
+namespace CQRS.Events.Struct
 {
     using MediatR;
 
-    using System;
     using System.Text.Json.Serialization;
 
     /// <summary>
@@ -25,7 +24,7 @@ namespace CQRS.Events
     /// </typeparam>
     public abstract class Message<TId, TResponse> : IRequest<TResponse>
         where TId : struct
-        where TResponse : class
+        where TResponse : struct
     {
         /// <summary>
         /// Identificador.
