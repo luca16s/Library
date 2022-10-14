@@ -7,9 +7,9 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace CQRS.Notifications.Struct
+namespace CQRS.Notifications
 {
-    using CQRS.Events.Struct;
+    using CQRS.Events;
 
     /// <summary>
     /// Notificação de domínio.
@@ -22,7 +22,7 @@ namespace CQRS.Notifications.Struct
     /// </typeparam>
     public class DomainNotification<TId, TResponse> : Event<TId, TResponse>
         where TId : struct
-        where TResponse : struct
+        where TResponse : notnull
     {
         /// <summary>
         /// Identificador da notigicação.
@@ -56,8 +56,10 @@ namespace CQRS.Notifications.Struct
         /// <param name="value">
         /// Valor da notificação.
         /// </param>
-        public DomainNotification(string key,
-                                  string value)
+        public DomainNotification(
+            string key,
+            string value
+        )
         {
             Key = key;
             Value = value;

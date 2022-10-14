@@ -7,14 +7,13 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Web.Controller.Struct
+namespace Web.Controller
 {
     using AutoMapper;
-
-    using CQRS.Commands.Struct;
-    using CQRS.Handlers.Struct;
-    using CQRS.Interfaces.Struct;
-    using CQRS.Notifications.Struct;
+    using CQRS.Commands;
+    using CQRS.Handlers;
+    using CQRS.Interfaces;
+    using CQRS.Notifications;
 
     using CrossCutting.ViewModels;
 
@@ -36,7 +35,7 @@ namespace Web.Controller.Struct
     [Produces("application/json")]
     public class ApiController<TId, TResponse> : ControllerBase
         where TId : struct
-        where TResponse : struct
+        where TResponse : notnull
     {
         protected readonly IMapper _mapper;
         protected readonly IMediatorHandler _mediator;
@@ -67,28 +66,15 @@ namespace Web.Controller.Struct
         }
 
         [NonAction]
-        protected new async Task<IActionResult> Response<TCommand, TViewModel>(TCommand command)
-            where TCommand : Command<TId, TResponse>
-            where TViewModel : ViewModel<TId>
-        {
-            if (!ModelState.IsValid)
-            {
-                await NotifyInvalidErrorModelAsync(command?.GetType()?.Name ?? string.Empty);
-            }
-
-            return OperacaoValida() ?
-                Ok(
-                    _mapper.Map<TViewModel>(command?.Result)
-                ) :
-                BadRequest(
-                    new { errors = _notifications.GetNotifications().Select(p => p.Value) }
-                );
-        }
-
-        [NonAction]
         protected bool OperacaoValida()
         {
             return !_notifications.HasNotifications();
+        }
+
+        [NonAction]
+        protected async Task NotifyError(string codigo, string mensagem)
+        {
+            await _mediator.RaiseEvent<DomainNotification<TId, TResponse>, TId, TResponse>(new DomainNotification<TId, TResponse>(codigo, mensagem));
         }
 
         [NonAction]
@@ -107,9 +93,22 @@ namespace Web.Controller.Struct
         }
 
         [NonAction]
-        protected async Task NotifyError(string codigo, string mensagem)
+        protected new async Task<IActionResult> Response<TCommand, TViewModel>(TCommand command)
+            where TCommand : Command<TId, TResponse>
+            where TViewModel : ViewModel<TId>
         {
-            await _mediator.RaiseEvent<DomainNotification<TId, TResponse>, TId, TResponse>(new DomainNotification<TId, TResponse>(codigo, mensagem));
+            if (!ModelState.IsValid)
+            {
+                await NotifyInvalidErrorModelAsync(command?.GetType()?.Name ?? string.Empty);
+            }
+
+            return OperacaoValida() ?
+                Ok(
+                    _mapper.Map<TViewModel>(command?.Result)
+                ) :
+                BadRequest(
+                    new { errors = _notifications.GetNotifications().Select(p => p.Value) }
+                );
         }
     }
 }

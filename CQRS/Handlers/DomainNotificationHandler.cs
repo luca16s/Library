@@ -7,9 +7,9 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace CQRS.Handlers.Class
+namespace CQRS.Handlers
 {
-    using CQRS.Notifications.Class;
+    using CQRS.Notifications;
 
     using MediatR;
 
@@ -28,7 +28,7 @@ namespace CQRS.Handlers.Class
     /// </typeparam>
     public class DomainNotificationHandler<TId, TResponse> : INotificationHandler<DomainNotification<TId, TResponse>>
         where TId : struct
-        where TResponse : class
+        where TResponse : notnull
     {
         private List<DomainNotification<TId, TResponse>> _notifications;
 
@@ -38,6 +38,26 @@ namespace CQRS.Handlers.Class
         public DomainNotificationHandler()
         {
             _notifications = new List<DomainNotification<TId, TResponse>>();
+        }
+
+        /// <summary>
+        /// Verifica se tem notificações.
+        /// </summary>
+        /// <returns>
+        /// True: Contém notificações.
+        /// False: Não contém notificações.
+        /// </returns>
+        public virtual bool HasNotifications()
+        {
+            return _notifications.Any();
+        }
+
+        /// <summary>
+        /// Limpa notificações.
+        /// </summary>
+        public virtual void ClearNotifications()
+        {
+            _notifications.Clear();
         }
 
         /// <summary>
@@ -76,26 +96,6 @@ namespace CQRS.Handlers.Class
         {
             _notifications.Add(message);
             return Task.CompletedTask;
-        }
-
-        /// <summary>
-        /// Verifica se tem notificações.
-        /// </summary>
-        /// <returns>
-        /// True: Contém notificações.
-        /// False: Não contém notificações.
-        /// </returns>
-        public virtual bool HasNotifications()
-        {
-            return _notifications.Any();
-        }
-
-        /// <summary>
-        /// Limpa notificações.
-        /// </summary>
-        public virtual void ClearNotifications()
-        {
-            _notifications.Clear();
         }
 
         /// <summary>

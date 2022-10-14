@@ -7,7 +7,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace CQRS.Events.Struct
+namespace CQRS.Events
 {
     using MediatR;
 
@@ -24,7 +24,7 @@ namespace CQRS.Events.Struct
     /// </typeparam>
     public abstract class Event<TId, TResponse> : Message<TId, TResponse>, INotification
         where TId : struct
-        where TResponse : struct
+        where TResponse : notnull
     {
         /// <summary>
         /// Timestamp de execução do evento.

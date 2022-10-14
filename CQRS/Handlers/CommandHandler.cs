@@ -7,12 +7,11 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace CQRS.Handlers.Class
+namespace CQRS.Handlers
 {
     using Core.Models;
-
-    using CQRS.Interfaces.Class;
-    using CQRS.Notifications.Class;
+    using CQRS.Interfaces;
+    using CQRS.Notifications;
 
     using FluentValidation.Results;
 
@@ -31,7 +30,7 @@ namespace CQRS.Handlers.Class
     /// </typeparam>
     public abstract class CommandHandler<TId, TResponse>
         where TId : struct
-        where TResponse : class
+        where TResponse : notnull
     {
         protected readonly IMediatorHandler _mediator;
         protected readonly DomainNotificationHandler<TId, TResponse> _notifications;
@@ -54,19 +53,6 @@ namespace CQRS.Handlers.Class
             return false;
         }
 
-        protected void NotifyErrorValidations(ValidationResult validationResult)
-        {
-            foreach (ValidationFailure? error in validationResult.Errors)
-            {
-                if (error == null)
-                {
-                    continue;
-                }
-
-                NotifyError(error.PropertyName, error.ErrorMessage);
-            }
-        }
-
         protected void NotifyError(string nome, string mensagem)
         {
             if (string.IsNullOrWhiteSpace(nome) ||
@@ -80,8 +66,21 @@ namespace CQRS.Handlers.Class
 
         protected bool HasNotifications() => _notifications.HasNotifications();
 
-        protected static Task<bool> Sucess() => Task.FromResult(true);
+        protected void NotifyErrorValidations(ValidationResult validationResult)
+        {
+            foreach (ValidationFailure? error in validationResult.Errors)
+            {
+                if (error == null)
+                {
+                    continue;
+                }
 
-        protected static Task<bool> Failed() => Task.FromResult(false);
+                NotifyError(error.PropertyName, error.ErrorMessage);
+            }
+        }
+
+        protected static Task<TResponse> Sucess(TResponse retorno) => Task.FromResult(retorno);
+
+        protected static Task<TResponse> Failed(TResponse retorno) => Task.FromResult(retorno);
     }
 }

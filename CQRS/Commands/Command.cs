@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="Event.cs" company="Îakaré Software'Oka">
+// <copyright file="Command.cs" company="Îakaré Software'Oka">
 //     Copyright (c) Îakaré Software'Oka.
 //     All rights reserved.
 //     Licensed under the MIT license.
@@ -7,14 +7,15 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace CQRS.Events.Class
+namespace CQRS.Commands
 {
-    using MediatR;
+    using CQRS.Events;
 
     using System;
+    using System.Text.Json.Serialization;
 
     /// <summary>
-    /// Classe base de Evento.
+    /// Classe base de Comando.
     /// </summary>
     /// <typeparam name="TId">
     /// Tipo do identificador.
@@ -22,13 +23,20 @@ namespace CQRS.Events.Class
     /// <typeparam name="TResponse">
     /// Tipo do retorno.
     /// </typeparam>
-    public abstract class Event<TId, TResponse> : Message<TId, TResponse>, INotification
+    public abstract class Command<TId, TResponse> : Message<TId, TResponse>
         where TId : struct
-        where TResponse : class
+        where TResponse : notnull
     {
         /// <summary>
-        /// Timestamp de execução do evento.
+        /// Resultado do comando.
         /// </summary>
+        [JsonIgnore]
+        public object? Result { get; set; }
+
+        /// <summary>
+        /// Timestamp de execução do comando.
+        /// </summary>
+        [JsonIgnore]
         protected DateTime Timestamp { get; private set; } = DateTime.UtcNow;
     }
 }

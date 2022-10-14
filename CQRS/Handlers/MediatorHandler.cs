@@ -7,11 +7,9 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace CQRS.Handlers.Struct
+namespace CQRS.Handlers
 {
-    using CQRS.Events.Struct;
-    using CQRS.Commands.Struct;
-    using CQRS.Interfaces.Struct;
+    using CQRS.Events;
 
     using MediatR;
 
@@ -24,6 +22,8 @@ namespace CQRS.Handlers.Struct
     using System;
     using System.Text;
     using System.Threading.Tasks;
+    using CQRS.Commands;
+    using CQRS.Interfaces;
 
     /// <summary>
     /// Classe de manipulação da mediação.
@@ -78,11 +78,13 @@ namespace CQRS.Handlers.Struct
         /// <param name="cancellation">
         /// Token de cancelamento.
         /// </param>
-        public Task SendCommand<TCommand, TId, TResponse>(TCommand comando,
-                                   bool shouldEnqueue = false,
-                                   CancellationToken cancellation = default)
+        public Task SendCommand<TCommand, TId, TResponse>(
+            TCommand comando,
+            bool shouldEnqueue = false,
+            CancellationToken cancellation = default
+        )
             where TCommand : Command<TId, TResponse>
-            where TResponse : struct
+            where TResponse : notnull
             where TId : struct
         {
             return shouldEnqueue ?
@@ -114,8 +116,9 @@ namespace CQRS.Handlers.Struct
         public Task RaiseEvent<TCommand, TId, TResponse>(
             TCommand evento,
             bool enqueue = false,
-            CancellationToken cancellation = default)
-            where TResponse : struct
+            CancellationToken cancellation = default
+        )
+            where TResponse : notnull
             where TCommand : Event<TId, TResponse>
             where TId : struct
             => _mediator.Publish(evento, cancellation);
@@ -132,8 +135,10 @@ namespace CQRS.Handlers.Struct
         /// <param name="cancellation">
         /// Token de cancelamento.
         /// </param>
-        public Task PublishQueue<TCommand>(TCommand comando,
-                                    CancellationToken cancellation = default)
+        public Task PublishQueue<TCommand>(
+            TCommand comando,
+            CancellationToken cancellation = default
+        )
         {
             using (IConnection? connection = _connectionFactory.CreateConnection())
             {

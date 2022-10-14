@@ -7,12 +7,12 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace CQRS.Interfaces.Struct
+namespace CQRS.Interfaces
 {
-    using CQRS.Events.Struct;
-    using CQRS.Commands.Struct;
+    using CQRS.Events;
 
     using System.Threading.Tasks;
+    using CQRS.Commands;
 
     /// <summary>
     /// Interface do manipulador de mediação.
@@ -40,11 +40,13 @@ namespace CQRS.Interfaces.Struct
         /// <param name="cancellation">
         /// Token de cancelamento.
         /// </param>
-        Task RaiseEvent<TCommand, TId, TResponse>(TCommand evento,
-                           bool enqueue = false,
-                           CancellationToken cancellation = default)
+        Task RaiseEvent<TCommand, TId, TResponse>(
+            TCommand evento,
+            bool enqueue = false,
+            CancellationToken cancellation = default
+        )
             where TCommand : Event<TId, TResponse>
-            where TResponse : struct
+            where TResponse : notnull
             where TId : struct;
 
         /// <summary>
@@ -71,9 +73,10 @@ namespace CQRS.Interfaces.Struct
         Task SendCommand<TCommand, TId, TResponse>(
             TCommand comando,
             bool enqueue = false,
-            CancellationToken cancellation = default)
+            CancellationToken cancellation = default
+        )
             where TCommand : Command<TId, TResponse>
-            where TResponse : struct
+            where TResponse : notnull
             where TId : struct;
 
         /// <summary>
@@ -88,6 +91,9 @@ namespace CQRS.Interfaces.Struct
         /// <param name="cancellation">
         /// Token de cancelamento.
         /// </param>
-        Task PublishQueue<TCommand>(TCommand comando, CancellationToken cancellation = default);
+        Task PublishQueue<TCommand>(
+            TCommand comando,
+            CancellationToken cancellation = default
+        );
     }
 }

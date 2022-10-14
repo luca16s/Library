@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="Command.cs" company="Îakaré Software'Oka">
+// <copyright file="Message.cs" company="Îakaré Software'Oka">
 //     Copyright (c) Îakaré Software'Oka.
 //     All rights reserved.
 //     Licensed under the MIT license.
@@ -7,15 +7,14 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace CQRS.Commands.Struct
+namespace CQRS.Events
 {
-    using CQRS.Events.Struct;
+    using MediatR;
 
-    using System;
     using System.Text.Json.Serialization;
 
     /// <summary>
-    /// Classe base de Comando.
+    /// Classe base da mensagem.
     /// </summary>
     /// <typeparam name="TId">
     /// Tipo do identificador.
@@ -23,20 +22,28 @@ namespace CQRS.Commands.Struct
     /// <typeparam name="TResponse">
     /// Tipo do retorno.
     /// </typeparam>
-    public abstract class Command<TId, TResponse> : Message<TId, TResponse>
+    public abstract class Message<TId, TResponse> : IRequest<TResponse>
         where TId : struct
-        where TResponse : struct
+        where TResponse : notnull
     {
         /// <summary>
-        /// Resultado do comando.
+        /// Identificador.
         /// </summary>
         [JsonIgnore]
-        public object? Result { get; set; }
+        public TId Id { get; protected set; }
 
         /// <summary>
-        /// Timestamp de execução do comando.
+        /// Tipo da mensagem.
         /// </summary>
         [JsonIgnore]
-        protected DateTime Timestamp { get; private set; } = DateTime.UtcNow;
+        public string MessageType { get; protected set; }
+
+        /// <summary>
+        /// Inicializa uma nova instância da classe Message.
+        /// </summary>
+        protected Message()
+        {
+            MessageType = GetType().Name;
+        }
     }
 }
