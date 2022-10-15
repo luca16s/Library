@@ -93,9 +93,11 @@ namespace Web.Controller
         }
 
         [NonAction]
-        protected new async Task<IActionResult> Response<TCommand, TViewModel>(TCommand command)
-            where TCommand : Command<TId, TResponse>
-            where TViewModel : ViewModel<TId>
+        protected new async Task<IActionResult> Response<Command, CId, CResponse, ViewModel>(Command command)
+            where CId : struct
+            where CResponse : notnull
+            where ViewModel : ViewModel<CId>
+            where Command : Command<CId, CResponse>
         {
             if (!ModelState.IsValid)
             {
@@ -104,7 +106,7 @@ namespace Web.Controller
 
             return OperacaoValida() ?
                 Ok(
-                    _mapper.Map<TViewModel>(command?.Result)
+                    _mapper.Map<ViewModel>(command?.Result)
                 ) :
                 BadRequest(
                     new { errors = _notifications.GetNotifications().Select(p => p.Value) }
