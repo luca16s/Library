@@ -97,13 +97,11 @@ namespace Web.Controller
             where Response : notnull
             where ViewModel : notnull
         {
-            return OperacaoValida() ?
-                Ok(
-                    _mapper.Map<ViewModel>(response)
-                ) :
-                BadRequest(
-                    new { errors = _notifications.GetNotifications().Select(p => p.Value) }
-                );
+            return response is null ?
+                NoContent() :
+                OperacaoValida() ?
+                Ok(_mapper.Map<ViewModel>(response)) :
+                BadRequest(new { errors = _notifications.GetNotifications().Select(p => p.Value) });
         }
     }
 }
