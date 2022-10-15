@@ -79,8 +79,8 @@ namespace CQRS.Handlers
             }
         }
 
-        protected static Task<TResponse> Sucess(TResponse retorno) => Task.FromResult(retorno);
+        protected static Task<TReturn> Sucess<TReturn>(TReturn retorno) => Task.FromResult(retorno);
 
-        protected static Task<TResponse> Failed(TResponse retorno) => Task.FromResult(retorno);
+        protected static Task<TReturn> Failed<TReturn>(TReturn retorno) => Task.FromResult(retorno);
     }
 }
