@@ -70,9 +70,8 @@ namespace CQRS.Interfaces
         /// <param name="cancellation">
         /// Token de cancelamento.
         /// </param>
-        Task SendCommand<TCommand, TId, TResponse>(
+        Task<TResponse> SendCommand<TCommand, TId, TResponse>(
             TCommand comando,
-            bool enqueue = false,
             CancellationToken cancellation = default
         )
             where TCommand : Command<TId, TResponse>

@@ -9,7 +9,9 @@
 
 namespace CQRS.Handlers
 {
+    using CQRS.Commands;
     using CQRS.Events;
+    using CQRS.Interfaces;
 
     using MediatR;
 
@@ -22,8 +24,6 @@ namespace CQRS.Handlers
     using System;
     using System.Text;
     using System.Threading.Tasks;
-    using CQRS.Commands;
-    using CQRS.Interfaces;
 
     /// <summary>
     /// Classe de manipulação da mediação.
@@ -78,18 +78,15 @@ namespace CQRS.Handlers
         /// <param name="cancellation">
         /// Token de cancelamento.
         /// </param>
-        public Task SendCommand<TCommand, TId, TResponse>(
+        public Task<TResponse> SendCommand<TCommand, TId, TResponse>(
             TCommand comando,
-            bool shouldEnqueue = false,
             CancellationToken cancellation = default
         )
             where TCommand : Command<TId, TResponse>
             where TResponse : notnull
             where TId : struct
         {
-            return shouldEnqueue ?
-                PublishQueue(comando, cancellation) :
-                _mediator.Send(comando, cancellation);
+            return _mediator.Send(comando, cancellation);
         }
 
         /// <summary>
