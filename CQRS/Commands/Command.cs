@@ -31,7 +31,7 @@ namespace CQRS.Commands
         /// Quantidade de itens a serem trabalhados.
         /// </summary>
         [JsonIgnore]
-        public long? ItemAmount { get; set; }
+        public int? ItemAmount { get; set; }
 
         /// <summary>
         /// Timestamp de execução do comando.
