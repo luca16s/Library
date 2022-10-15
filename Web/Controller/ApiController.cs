@@ -96,7 +96,7 @@ namespace Web.Controller
         protected new async Task<IActionResult> Response<Command, CId, CResponse, ViewModel>(Command command)
             where CId : struct
             where CResponse : notnull
-            where ViewModel : ViewModel<CId>
+            where ViewModel : notnull
             where Command : Command<CId, CResponse>
         {
             if (!ModelState.IsValid)
