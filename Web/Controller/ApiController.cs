@@ -93,20 +93,13 @@ namespace Web.Controller
         }
 
         [NonAction]
-        protected new async Task<IActionResult> Response<Command, CId, CResponse, ViewModel>(Command command)
-            where CId : struct
-            where CResponse : notnull
+        protected new IActionResult Response<Response, ViewModel>(Response response)
+            where Response : notnull
             where ViewModel : notnull
-            where Command : Command<CId, CResponse>
         {
-            if (!ModelState.IsValid)
-            {
-                await NotifyInvalidErrorModelAsync(command?.GetType()?.Name ?? string.Empty);
-            }
-
             return OperacaoValida() ?
                 Ok(
-                    _mapper.Map<ViewModel>(command?.Result)
+                    _mapper.Map<ViewModel>(response)
                 ) :
                 BadRequest(
                     new { errors = _notifications.GetNotifications().Select(p => p.Value) }
