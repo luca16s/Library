@@ -28,12 +28,6 @@ namespace CQRS.Commands
         where TResponse : notnull
     {
         /// <summary>
-        /// Quantidade de itens a serem trabalhados.
-        /// </summary>
-        [JsonIgnore]
-        public int? ItemAmount { get; set; }
-
-        /// <summary>
         /// Timestamp de execução do comando.
         /// </summary>
         [JsonIgnore]
