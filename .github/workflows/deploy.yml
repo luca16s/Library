@@ -26,7 +26,7 @@ jobs:
       run: dotnet build -c Release --no-restore
     - name: Buscando versão e publicando pacote
       run: |
-        set arrTag = ${GITHUB_REF//\//}
+        set arrTag = ${GITHUB_REF}
         set VERSION = "${arrTag[2]}"
         set VERSION = "${VERSION//v}"
         dotnet pack --configuration Release p:PackageVersion=$VERSION --output out
