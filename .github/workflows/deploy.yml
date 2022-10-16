@@ -26,11 +26,9 @@ jobs:
       run: dotnet build -c Release --no-restore
     - name: Buscando versão e publicando pacote
       run: |
-        $tagName=${{ github.ref }}
+        $tagName="${{github.ref}}"
         $array=$tagName.Split("/")
         $VERSION=$array[2]
-        echo $array[2]
-        echo $VERSION
         dotnet pack --configuration Release p:PackageVersion=$VERSION --output out
         dotnet nuget push "out\*.nupkg" --api-key $GITHUB_TOKEN --source "$GITHUB_FEED" --skip-duplicate
 
