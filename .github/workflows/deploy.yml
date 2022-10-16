@@ -16,8 +16,6 @@ jobs:
       uses: actions/checkout@v3
       with:
         fetch-depth: 0
-    - name: Preparando versionador
-      uses: dotnet/nbgv@v0.4.0
     - name: Preparando .NET
       uses: actions/setup-dotnet@v3
       with:
@@ -26,13 +24,11 @@ jobs:
       run: dotnet restore
     - name: Construindo projetos
       run: dotnet build -c Release --no-restore
-    - name: Buscar versão
+    - name: Buscando versão e publicando pacote
       run: |
-        arrTag=(${GITHUB_REF//\// })
-        VERSION="${arrTag[2]}"
-        VERSION="${VERSION//v}"
-    - name: Publicando pacote
-      run: |
+        arrTag = (${GITHUB_REF//\//})
+        VERSION = "${arrTag[2]}"
+        VERSION = "${VERSION//v}"
         dotnet pack --configuration Release p:PackageVersion=$VERSION --output out
         dotnet nuget push "out\*.nupkg" --api-key $GITHUB_TOKEN --source "$GITHUB_FEED" --skip-duplicate
 
