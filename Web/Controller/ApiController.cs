@@ -10,12 +10,13 @@
 namespace Web.Controller
 {
     using AutoMapper;
-    using CQRS.Commands;
+
+    using Core.Interfaces.Services;
+    using Core.Models;
+
     using CQRS.Handlers;
     using CQRS.Interfaces;
     using CQRS.Notifications;
-
-    using CrossCutting.ViewModels;
 
     using MediatR;
 
@@ -25,6 +26,12 @@ namespace Web.Controller
     /// <summary>
     /// Controller base para API.
     /// </summary>
+    /// <typeparam name="TService">
+    /// Tipo do serviço a ser utilizado.
+    /// </typeparam>
+    /// <typeparam name="TEntity">
+    /// Tipo da entidade usada no serviço.
+    /// </typeparam>
     /// <typeparam name="TId">
     /// Tipo do identificador.
     /// </typeparam>
@@ -33,13 +40,17 @@ namespace Web.Controller
     /// </typeparam>
     [ApiController]
     [Produces("application/json")]
-    public class ApiController<TId, TResponse> : ControllerBase
+    public class ApiController<TService, TEntity, TId, TResponse> : ControllerBase
         where TId : struct
         where TResponse : notnull
+        where TEntity : Entity<TId>
+        where TService : IService<TEntity, TId>
     {
-        protected readonly IMapper _mapper;
-        protected readonly IMediatorHandler _mediator;
-        protected readonly DomainNotificationHandler<TId, TResponse> _notifications;
+        private readonly IMapper _mapper;
+        private readonly DomainNotificationHandler<TId, TResponse> _notifications;
+
+        public readonly IMediatorHandler Mediator;
+        public readonly IService<TEntity, TId> Service;
 
         /// <summary>
         /// Constrói uma nova instância da classe de api de controller.
@@ -50,6 +61,9 @@ namespace Web.Controller
         /// <param name="mediator">
         /// Injeção do mediator.
         /// </param>
+        /// <param name="service">
+        /// Injeção do serviço padrão da controller.
+        /// </param>
         /// <param name="notifications">
         /// Injeção do manipulador de Notificações.
         /// </param>
@@ -57,11 +71,13 @@ namespace Web.Controller
         (
             IMapper mapper,
             IMediatorHandler mediator,
+            IService<TEntity, TId> service,
             INotificationHandler<DomainNotification<TId, TResponse>> notifications
         )
         {
             _mapper = mapper;
-            _mediator = mediator;
+            Service = service;
+            Mediator = mediator;
             _notifications = (DomainNotificationHandler<TId, TResponse>)notifications;
         }
 
@@ -74,7 +90,7 @@ namespace Web.Controller
         [NonAction]
         protected async Task NotifyError(string codigo, string mensagem)
         {
-            await _mediator.RaiseEvent<DomainNotification<TId, TResponse>, TId, TResponse>(new DomainNotification<TId, TResponse>(codigo, mensagem));
+            await Mediator.RaiseEvent<DomainNotification<TId, TResponse>, TId, TResponse>(new DomainNotification<TId, TResponse>(codigo, mensagem));
         }
 
         [NonAction]
