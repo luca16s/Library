@@ -3,11 +3,6 @@ on:
   push:
     tags:
       - 'v*.*.*'
-env:
-  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
-  DOTNET_CLI_TELEMETRY_OPTOUT: true
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  GITHUB_FEED: https://nuget.pkg.github.com/luca16s/index.json
 jobs:
   build:
     runs-on: windows-latest
@@ -26,9 +21,8 @@ jobs:
       run: dotnet build -c Release --no-restore
     - name: Buscando versão e publicando pacote
       run: |
-        arrTag = (${GITHUB_REF//\//})
-        VERSION = "${arrTag[2]}"
-        VERSION = "${VERSION//v}"
-        dotnet pack --configuration Release p:PackageVersion=$VERSION --output out
-        dotnet nuget push "out\*.nupkg" --api-key $GITHUB_TOKEN --source "$GITHUB_FEED" --skip-duplicate
-
+        $tagArray="${{github.ref}}".Split("/")
+        $tag=$tagArray[2].Split("v")
+        $VERSION=$tag[1]
+        dotnet pack -p:PackageVersion=$VERSION --configuration Release --output out
+        dotnet nuget push "out\*.nupkg" --api-key ${{ secrets.GITHUB_TOKEN }} --source "https://nuget.pkg.github.com/luca16s/index.json" --skip-duplicate

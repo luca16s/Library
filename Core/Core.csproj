@@ -4,7 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
     <Authors>Îakaré Software'Oka</Authors>
     <NeutralLanguage>pt-BR</NeutralLanguage>
     <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
@@ -14,8 +14,9 @@
     <RepositoryUrl>https://github.com/luca16s/IakareLibraries</RepositoryUrl>
     <RepositoryType></RepositoryType>
     <Title>Îakaré Software'Oka - Core Library</Title>
-    <AssemblyVersion>$(VersionPrefix)</AssemblyVersion>
-    <FileVersion>$(VersionPrefix)</FileVersion>
+	<AssemblyVersion>$(VersionPrefix)</AssemblyVersion>
+	<FileVersion>$(VersionPrefix)</FileVersion>
+	<Version>$(VersionPrefix)</Version>
   </PropertyGroup>
 
   <ItemGroup>
@@ -26,10 +27,6 @@
 
   <ItemGroup>
     <PackageReference Include="FluentValidation" Version="11.2.2" />
-    <PackageReference Include="Nerdbank.GitVersioning" Version="3.5.113">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
   </ItemGroup>
 
   <ItemGroup>
