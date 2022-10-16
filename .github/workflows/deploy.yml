@@ -26,8 +26,8 @@ jobs:
       run: dotnet build -c Release --no-restore
     - name: Buscando versão e publicando pacote
       run: |
-        for /f "tokens=1 delims=/" %%a in (${{ github.ref }}) do (
-          set VERSION = %%a
+        for /f "tokens=3 delims=/" %%a in ("${{ github.ref }}") do (
+          set VERSION=%%a
         )
         endlocal
         dotnet pack --configuration Release p:PackageVersion=$VERSION --output out
