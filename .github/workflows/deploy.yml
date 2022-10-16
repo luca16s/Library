@@ -29,5 +29,3 @@ jobs:
         $VERSION=$array[2]
         dotnet pack --configuration Release p:PackageVersion=$VERSION --output out
         dotnet nuget push "out\*.nupkg" --api-key $GITHUB_TOKEN --source "$GITHUB_FEED" --skip-duplicate
-
-
