@@ -1,8 +1,8 @@
-﻿namespace Core.Tests.Extensions
+﻿namespace Library.Tests.Core.Extensions
 {
-    using Core.Extensions;
-
     using FluentAssertions;
+
+    using global::Core.Extensions;
 
     using System;
 

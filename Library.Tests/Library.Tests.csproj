@@ -2,13 +2,16 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
 
     <IsPackable>false</IsPackable>
+
+    <RepositoryUrl>https://github.com/luca16s/IakareLibraries</RepositoryUrl>
+
+    <PackageProjectUrl>https://github.com/luca16s/IakareLibraries</PackageProjectUrl>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoFixture" Version="4.17.0" />
     <PackageReference Include="AutoFixture.Xunit2" Version="4.17.0" />
     <PackageReference Include="Bogus" Version="34.0.2" />
     <PackageReference Include="coverlet.msbuild" Version="3.1.2">
@@ -32,6 +35,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Core\Core.csproj" />
+    <ProjectReference Include="..\CQRS\CQRS.csproj" />
+    <ProjectReference Include="..\CrossCutting\CrossCutting.csproj" />
+    <ProjectReference Include="..\Data\Data.csproj" />
     <ProjectReference Include="..\Web\Web.csproj" />
   </ItemGroup>
 

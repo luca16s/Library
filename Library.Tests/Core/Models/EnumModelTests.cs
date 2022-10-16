@@ -1,10 +1,12 @@
-﻿namespace Core.Tests.Models
+﻿namespace Library.Tests.Core.Models
 {
     using Bogus;
 
-    using Core.Models;
-
     using FluentAssertions;
+
+    using global::Core.Models;
+
+    using Library.Tests.Core;
 
     using Xunit;
 

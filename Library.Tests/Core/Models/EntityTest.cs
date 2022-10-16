@@ -1,10 +1,10 @@
-﻿namespace Core.Tests.Models
+﻿namespace Library.Tests.Core.Models
 {
-    using Core.Models;
-
     using FluentAssertions;
 
     using FluentValidation.Results;
+
+    using global::Core.Models;
 
     using Shouldly;
 

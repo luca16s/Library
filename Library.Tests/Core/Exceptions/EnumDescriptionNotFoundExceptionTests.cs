@@ -1,8 +1,8 @@
-﻿namespace Core.Tests.Exceptions
+﻿namespace Library.Tests.Core.Exceptions
 {
-    using Core.Exceptions;
-
     using FluentAssertions;
+
+    using global::Core.Exceptions;
 
     using System;
 

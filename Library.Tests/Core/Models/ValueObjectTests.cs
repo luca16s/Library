@@ -1,8 +1,8 @@
-﻿namespace Core.Tests.Models
+﻿namespace Library.Tests.Core.Models
 {
-    using Core.Models;
-
     using FluentAssertions;
+
+    using global::Core.Models;
 
     using System.Collections.Generic;
 

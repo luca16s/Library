@@ -1,24 +1,26 @@
-namespace Web.Tests
+namespace Library.Tests.Web
 {
     using AutoMapper;
-
-    using Core.Interfaces.Services;
-    using Core.Models;
 
     using CQRS.Interfaces;
     using CQRS.Notifications;
 
     using FluentAssertions;
 
+    using global::Core.Interfaces.Services;
+    using global::Core.Models;
+    using global::Web.Controller;
+
     using MediatR;
 
     using Moq;
 
+    using System;
     using System.Linq;
     using System.Linq.Expressions;
     using System.Threading.Tasks;
 
-    using Web.Controller;
+    using Xunit;
 
     public class ApiControllerTests
     {
@@ -41,17 +43,17 @@ namespace Web.Tests
                 throw new NotImplementedException();
             }
 
-            public Task<Modelo?> Get(long id)
+            public Task<Modelo> Get(long id)
             {
                 throw new NotImplementedException();
             }
 
-            public IQueryable<Modelo?> GetAll(int amount)
+            public IQueryable<Modelo> GetAll(int amount)
             {
                 throw new NotImplementedException();
             }
 
-            public IQueryable<Modelo?> Search(Expression<Func<Modelo, bool>> predicate)
+            public IQueryable<Modelo> Search(Expression<Func<Modelo, bool>> predicate)
             {
                 throw new NotImplementedException();
             }
