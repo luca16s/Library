@@ -26,7 +26,7 @@ jobs:
       run: dotnet build -c Release --no-restore
     - name: Buscando versão e publicando pacote
       run: |
-        set array="${{ github.ref }}".Split("-")
+        set array="${{ github.ref }}".Split("/")
         set VERSION=$array[2]
         echo $array[2]
         echo $VERSION
