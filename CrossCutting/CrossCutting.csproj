@@ -6,13 +6,14 @@
     <Nullable>enable</Nullable>
     <Title>Îakaré Software'Oka - CrossCutting Library</Title>
     <PackageId>ISO.$(AssemblyName)</PackageId>
-    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
     <Authors>Îakaré Software'Oka</Authors>
     <Copyright>$(Authors)</Copyright>
     <PackageProjectUrl>https://github.com/luca16s/IakareLibraries</PackageProjectUrl>
     <RepositoryUrl>https://github.com/luca16s/IakareLibraries</RepositoryUrl>
     <AssemblyVersion>$(VersionPrefix)</AssemblyVersion>
     <FileVersion>$(VersionPrefix)</FileVersion>
+    <Version>$(VersionPrefix)</Version>
   </PropertyGroup>
 
   <ItemGroup>
