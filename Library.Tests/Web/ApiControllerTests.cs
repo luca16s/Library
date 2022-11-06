@@ -75,7 +75,7 @@ namespace Library.Tests.Web
 
             public bool IsOperacaoValida()
             {
-                return this.IsOperationValid();
+                return IsOperationValid();
             }
         }
 
@@ -85,13 +85,13 @@ namespace Library.Tests.Web
             var servico = new Servico();
             var mapper = new Mock<IMapper>().Object;
             var mediator = new Mock<IMediatorHandler>().Object;
-            var notification = new DomainNotification<long, Modelo>("", "") as IDomainNotificationHandler<long, Modelo>;
+            var notificationHandler = new DomainNotificationHandler<long, Modelo>();
 
             var controller = new Controller(
                 mapper,
                 mediator,
                 servico,
-                notification
+                notificationHandler
             );
 
             _ = controller.Service.Should().NotBeNull();
@@ -106,7 +106,7 @@ namespace Library.Tests.Web
             var notificationHandler = new DomainNotificationHandler<long, Modelo>();
             var notification = new DomainNotification<long, Modelo>("", "");
 
-            notificationHandler.Handle(notification, CancellationToken.None);
+            _ = notificationHandler.Handle(notification, CancellationToken.None);
 
             var controller = new Controller(
                 mapper,
@@ -155,6 +155,26 @@ namespace Library.Tests.Web
             );
 
             _ = controller.IsOperacaoValida().Should().BeTrue();
+        }
+
+        [Fact]
+        public void DeveRetornarTrueQuandoExistemNotificacoes()
+        {
+            var servico = new Servico();
+            var mapper = new Mock<IMapper>().Object;
+            var mediator = new Mock<IMediatorHandler>().Object;
+            var notificationHandler = new DomainNotificationHandler<long, Modelo>();
+            var notificacao = new DomainNotification<long, Modelo>("", "");
+            _ = notificationHandler.Handle(notificacao, CancellationToken.None);
+
+            var controller = new Controller(
+                mapper,
+                mediator,
+                servico,
+                notificationHandler
+            );
+
+            _ = controller.IsOperacaoValida().Should().BeFalse();
         }
     }
 }
