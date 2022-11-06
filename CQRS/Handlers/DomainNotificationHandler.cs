@@ -9,9 +9,8 @@
 
 namespace CQRS.Handlers
 {
+    using CQRS.Interfaces;
     using CQRS.Notifications;
-
-    using MediatR;
 
     using System.Collections.Generic;
     using System.Linq;
@@ -26,7 +25,7 @@ namespace CQRS.Handlers
     /// <typeparam name="TResponse">
     /// Tipo do retorno.
     /// </typeparam>
-    public class DomainNotificationHandler<TId, TResponse> : INotificationHandler<DomainNotification<TId, TResponse>>
+    public class DomainNotificationHandler<TId, TResponse> : IDomainNotificationHandler<TId, TResponse>
         where TId : struct
         where TResponse : notnull
     {

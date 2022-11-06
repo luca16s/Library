@@ -10,12 +10,11 @@
 namespace CQRS.Handlers
 {
     using Core.Models;
+
     using CQRS.Interfaces;
     using CQRS.Notifications;
 
     using FluentValidation.Results;
-
-    using MediatR;
 
     using System.Threading.Tasks;
 
@@ -33,15 +32,15 @@ namespace CQRS.Handlers
         where TResponse : notnull
     {
         protected readonly IMediatorHandler _mediator;
-        protected readonly DomainNotificationHandler<TId, TResponse> _notifications;
+        protected readonly IDomainNotificationHandler<TId, TResponse> _notifications;
 
         protected CommandHandler(
             IMediatorHandler mediator,
-            INotificationHandler<DomainNotification<TId, TResponse>> notifications
+            IDomainNotificationHandler<TId, TResponse> notifications
         )
         {
             _mediator = mediator;
-            _notifications = (DomainNotificationHandler<TId, TResponse>)notifications;
+            _notifications = notifications;
         }
 
         protected bool ValidateEntity(Entity<TId> entity)

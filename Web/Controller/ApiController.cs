@@ -14,11 +14,8 @@ namespace Web.Controller
     using Core.Interfaces.Services;
     using Core.Models;
 
-    using CQRS.Handlers;
     using CQRS.Interfaces;
     using CQRS.Notifications;
-
-    using MediatR;
 
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -47,7 +44,7 @@ namespace Web.Controller
         where TService : IService<TEntity, TId>
     {
         private readonly IMapper _mapper;
-        private readonly DomainNotificationHandler<TId, TResponse> _notifications;
+        private readonly IDomainNotificationHandler<TId, TResponse> _notificationHandler;
 
         public readonly IMediatorHandler Mediator;
         public readonly IService<TEntity, TId> Service;
@@ -64,7 +61,7 @@ namespace Web.Controller
         /// <param name="service">
         /// Injeção do serviço padrão da controller.
         /// </param>
-        /// <param name="notifications">
+        /// <param name="notificationHandler">
         /// Injeção do manipulador de Notificações.
         /// </param>
         public ApiController
@@ -72,19 +69,19 @@ namespace Web.Controller
             IMapper mapper,
             IMediatorHandler mediator,
             IService<TEntity, TId> service,
-            INotificationHandler<DomainNotification<TId, TResponse>> notifications
+            IDomainNotificationHandler<TId, TResponse> notificationHandler
         )
         {
             _mapper = mapper;
             Service = service;
             Mediator = mediator;
-            _notifications = (DomainNotificationHandler<TId, TResponse>)notifications;
+            _notificationHandler = notificationHandler;
         }
 
         [NonAction]
-        protected bool OperacaoValida()
+        protected bool IsOperationValid()
         {
-            return !_notifications.HasNotifications();
+            return _notificationHandler != null && !_notificationHandler.HasNotifications();
         }
 
         [NonAction]
@@ -109,15 +106,15 @@ namespace Web.Controller
         }
 
         [NonAction]
-        protected new IActionResult Response<Response, ViewModel>(Response response)
+        protected IActionResult GetResponse<Response, ViewModel>(Response response)
             where Response : notnull
             where ViewModel : notnull
         {
             return response is null ?
                 NoContent() :
-                OperacaoValida() ?
+                IsOperationValid() ?
                 Ok(_mapper.Map<ViewModel>(response)) :
-                BadRequest(new { errors = _notifications.GetNotifications().Select(p => p.Value) });
+                BadRequest(new { errors = _notificationHandler.GetNotifications().Select(p => p.Value) });
         }
     }
 }

@@ -2,6 +2,7 @@ namespace Library.Tests.Web
 {
     using AutoMapper;
 
+    using CQRS.Handlers;
     using CQRS.Interfaces;
     using CQRS.Notifications;
 
@@ -11,13 +12,12 @@ namespace Library.Tests.Web
     using global::Core.Models;
     using global::Web.Controller;
 
-    using MediatR;
-
     using Moq;
 
     using System;
     using System.Linq;
     using System.Linq.Expressions;
+    using System.Threading;
     using System.Threading.Tasks;
 
     using Xunit;
@@ -70,8 +70,13 @@ namespace Library.Tests.Web
                 IMapper mapper,
                 IMediatorHandler mediator,
                 IService<Modelo, long> service,
-                INotificationHandler<DomainNotification<long, Modelo>> notifications)
-                : base(mapper, mediator, service, notifications) { }
+                IDomainNotificationHandler<long, Modelo> notifications
+            ) : base(mapper, mediator, service, notifications) { }
+
+            public bool IsOperacaoValida()
+            {
+                return this.IsOperationValid();
+            }
         }
 
         [Fact]
@@ -80,7 +85,7 @@ namespace Library.Tests.Web
             var servico = new Servico();
             var mapper = new Mock<IMapper>().Object;
             var mediator = new Mock<IMediatorHandler>().Object;
-            var notification = new DomainNotification<long, Modelo>("", "") as INotificationHandler<DomainNotification<long, Modelo>>;
+            var notification = new DomainNotification<long, Modelo>("", "") as IDomainNotificationHandler<long, Modelo>;
 
             var controller = new Controller(
                 mapper,
@@ -90,6 +95,66 @@ namespace Library.Tests.Web
             );
 
             _ = controller.Service.Should().NotBeNull();
+        }
+
+        [Fact]
+        public void DeveRetornarFalseQuandoNotificacoesNaoInstanciadas()
+        {
+            var servico = new Servico();
+            var mapper = new Mock<IMapper>().Object;
+            var mediator = new Mock<IMediatorHandler>().Object;
+            var notificationHandler = new DomainNotificationHandler<long, Modelo>();
+            var notification = new DomainNotification<long, Modelo>("", "");
+
+            notificationHandler.Handle(notification, CancellationToken.None);
+
+            var controller = new Controller(
+                mapper,
+                mediator,
+                servico,
+                notificationHandler
+            );
+
+            _ = controller.IsOperacaoValida().Should().BeFalse();
+        }
+
+        [Fact]
+        public void DeveRetornarFalseQuandoExistemNotificacoes()
+        {
+            var servico = new Servico();
+            var mapper = new Mock<IMapper>().Object;
+            var mediator = new Mock<IMediatorHandler>().Object;
+            var notificationHandler = new DomainNotificationHandler<long, Modelo>();
+            var notification = new DomainNotification<long, Modelo>("", "");
+
+            notificationHandler.Handle(notification, CancellationToken.None);
+
+            var controller = new Controller(
+                mapper,
+                mediator,
+                servico,
+                notificationHandler
+            );
+
+            _ = controller.IsOperacaoValida().Should().BeFalse();
+        }
+
+        [Fact]
+        public void DeveRetornarTrueQuandoNaoExistemNotificacoes()
+        {
+            var servico = new Servico();
+            var mapper = new Mock<IMapper>().Object;
+            var mediator = new Mock<IMediatorHandler>().Object;
+            var notificationHandler = new DomainNotificationHandler<long, Modelo>();
+
+            var controller = new Controller(
+                mapper,
+                mediator,
+                servico,
+                notificationHandler
+            );
+
+            _ = controller.IsOperacaoValida().Should().BeTrue();
         }
     }
 }
