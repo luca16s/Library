@@ -1,9 +1,11 @@
-﻿namespace Core.Tests.Extensions
+﻿namespace Library.Tests.Core.Extensions
 {
-    using Core.Exceptions;
-    using Core.Extensions;
-
     using FluentAssertions;
+
+    using global::Core.Exceptions;
+    using global::Core.Extensions;
+
+    using Library.Tests.Core;
 
     using Xunit;
 

@@ -1,10 +1,12 @@
-﻿namespace Core.Tests.Extensions
+﻿namespace Library.Tests.Core.Extensions
 {
-    using Core.Exceptions;
-    using Core.Extensions;
-    using Core.Models;
-
     using FluentAssertions;
+
+    using global::Core.Exceptions;
+    using global::Core.Extensions;
+    using global::Core.Models;
+
+    using Library.Tests.Core;
 
     using System;
     using System.Collections.Generic;

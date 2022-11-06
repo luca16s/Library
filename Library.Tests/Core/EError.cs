@@ -1,4 +1,4 @@
-﻿namespace Core.Tests
+﻿namespace Library.Tests.Core
 {
     public enum EError
     {
