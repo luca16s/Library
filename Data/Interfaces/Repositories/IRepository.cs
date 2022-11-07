@@ -50,7 +50,7 @@ namespace Data.Interfaces.Repositories
         /// <returns>
         /// Todas as entidades.
         /// </returns>
-        IQueryable<TEntity?> GetAll(int amount);
+        IQueryable<TEntity> GetAll(int amount);
 
         /// <summary>
         /// Retorna uma entidade com base em um identificador de forma assíncrona.
@@ -61,7 +61,7 @@ namespace Data.Interfaces.Repositories
         /// <returns>
         /// Entidade encontrada.
         /// </returns>
-        Task<TEntity?> Get(TId id);
+        Task<TEntity> Get(TId id);
 
         /// <summary>
         /// Atualiza uma entidade com base em um identificador passado.
@@ -83,6 +83,6 @@ namespace Data.Interfaces.Repositories
         /// <returns>
         /// Lista de itens encontrados.
         /// </returns>
-        IQueryable<TEntity?> Search(Expression<Func<TEntity, bool>> predicate);
+        IQueryable<TEntity> Search(Expression<Func<TEntity, bool>> predicate);
     }
 }

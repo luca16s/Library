@@ -19,6 +19,6 @@
         /// Quantidade de itens a serem trabalhados.
         /// </summary>
         [JsonIgnore]
-        public int? ItemAmount { get; set; }
+        public int ItemAmount { get; set; }
     }
 }
