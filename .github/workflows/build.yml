@@ -25,12 +25,12 @@ jobs:
     - name: Construindo projetos
       run: dotnet build -c Release --no-restore
     - name: Rodando testes
-      run: dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput='../cobertura.xml'
+      run: dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput='Library.Tests/coverage.json'
     - name: Enviando dados de cobertura
       uses: codecov/codecov-action@v3
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
-        file: ./cobertura.xml
+        file: Library.Tests/coverage.json
         flags: unittests
         name: codecov-umbrella
         fail_ci_if_error: true
