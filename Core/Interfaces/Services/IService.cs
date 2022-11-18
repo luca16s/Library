@@ -35,6 +35,15 @@ namespace Core.Interfaces.Services
         Task Create(TEntity item);
 
         /// <summary>
+        /// Adiciona de forma assíncrona diversos items ao banco de dados.
+        /// </summary>
+        /// <param name="items">
+        /// Entidades para serem salvas.
+        /// </param>
+        /// <returns></returns>
+        Task Create(IEnumerable<TEntity> items);
+
+        /// <summary>
         /// Deleta uma entidade no banco de dados de forma assíncrona.
         /// </summary>
         /// <param name="item">
