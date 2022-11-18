@@ -15,6 +15,7 @@ namespace Library.Tests.Web
     using Moq;
 
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
     using System.Threading;
@@ -34,6 +35,11 @@ namespace Library.Tests.Web
         public class Servico : IService<Modelo, long>
         {
             public Task Create(Modelo item)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Task Create(IEnumerable<Modelo> items)
             {
                 throw new NotImplementedException();
             }
