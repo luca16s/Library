@@ -37,6 +37,15 @@ namespace Data.Interfaces.Repositories
         Task Create(TEntity item);
 
         /// <summary>
+        /// Adiciona de forma assíncrona diversos items ao banco de dados.
+        /// </summary>
+        /// <param name="items">
+        /// Entidades para serem salvas.
+        /// </param>
+        /// <returns></returns>
+        Task Create(IEnumerable<TEntity> items);
+
+        /// <summary>
         /// Deleta uma entidade no banco de dados.
         /// </summary>
         /// <param name="item">
