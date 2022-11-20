@@ -7,7 +7,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Data.Interfaces.Repositories
+namespace Core.Interfaces.Repositories
 {
     using Microsoft.EntityFrameworkCore.Storage;
 

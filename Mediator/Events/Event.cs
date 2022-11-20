@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="Message.cs" company="Îakaré Software'Oka">
+// <copyright file="Event.cs" company="Îakaré Software'Oka">
 //     Copyright (c) Îakaré Software'Oka.
 //     All rights reserved.
 //     Licensed under the MIT license.
@@ -7,14 +7,14 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace CQRS.Events
+namespace Mediator.Events
 {
     using MediatR;
 
-    using System.Text.Json.Serialization;
+    using System;
 
     /// <summary>
-    /// Classe base da mensagem.
+    /// Classe base de Evento.
     /// </summary>
     /// <typeparam name="TId">
     /// Tipo do identificador.
@@ -22,28 +22,13 @@ namespace CQRS.Events
     /// <typeparam name="TResponse">
     /// Tipo do retorno.
     /// </typeparam>
-    public abstract class Message<TId, TResponse> : IRequest<TResponse>
+    public abstract class Event<TId, TResponse> : Message<TId, TResponse>, INotification
         where TId : struct
         where TResponse : notnull
     {
         /// <summary>
-        /// Identificador.
+        /// Timestamp de execução do evento.
         /// </summary>
-        [JsonIgnore]
-        public TId Id { get; protected set; }
-
-        /// <summary>
-        /// Tipo da mensagem.
-        /// </summary>
-        [JsonIgnore]
-        public string MessageType { get; protected set; }
-
-        /// <summary>
-        /// Inicializa uma nova instância da classe Message.
-        /// </summary>
-        protected Message()
-        {
-            MessageType = GetType().Name;
-        }
+        protected DateTime Timestamp { get; private set; } = DateTime.UtcNow;
     }
 }

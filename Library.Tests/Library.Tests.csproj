@@ -36,9 +36,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.csproj" />
-    <ProjectReference Include="..\CQRS\CQRS.csproj" />
     <ProjectReference Include="..\CrossCutting\CrossCutting.csproj" />
     <ProjectReference Include="..\Data\Data.csproj" />
+    <ProjectReference Include="..\Mediator\Mediator.csproj" />
     <ProjectReference Include="..\Web\Web.csproj" />
   </ItemGroup>
 

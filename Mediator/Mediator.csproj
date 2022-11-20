@@ -6,7 +6,7 @@
     <Nullable>enable</Nullable>
     <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
     <PackageId>ISO.$(AssemblyName)</PackageId>
-    <Title>Îakaré Software'Oka - CQRS Library</Title>
+    <Title>Îakaré Software'Oka - Mediator Library</Title>
     <Authors>Îakaré Software'Oka</Authors>
     <Copyright>$(Authors)</Copyright>
     <PackageProjectUrl>https://github.com/luca16s/IakareLibraries</PackageProjectUrl>
@@ -14,6 +14,7 @@
     <AssemblyVersion>$(VersionPrefix)</AssemblyVersion>
     <FileVersion>$(VersionPrefix)</FileVersion>
     <Version>$(VersionPrefix)</Version>
+    <Description>Biblioteca para implementação do pattern de Mediator.</Description>
   </PropertyGroup>
 
   <ItemGroup>

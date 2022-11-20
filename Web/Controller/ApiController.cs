@@ -14,8 +14,8 @@ namespace Web.Controller
     using Core.Interfaces.Services;
     using Core.Models;
 
-    using CQRS.Interfaces;
-    using CQRS.Notifications;
+    using Mediator.Interfaces;
+    using Mediator.Notifications;
 
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.ModelBinding;

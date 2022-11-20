@@ -7,7 +7,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Data.Interfaces.Repositories
+namespace Core.Interfaces.Repositories
 {
     using Core.Models;
 
@@ -70,7 +70,7 @@ namespace Data.Interfaces.Repositories
         /// <returns>
         /// Entidade encontrada.
         /// </returns>
-        Task<TEntity> Get(TId id);
+        Task<TEntity?> Get(TId id);
 
         /// <summary>
         /// Atualiza uma entidade com base em um identificador passado.
