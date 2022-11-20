@@ -40,25 +40,34 @@ namespace Core.Services
 
         public async Task Create(TEntity item)
         {
-            using (IDbContextTransaction transaction = await _unitOfWork.BeginTransaction())
+            using IDbContextTransaction transaction = await _unitOfWork.BeginTransaction();
+            try
             {
-                try
-                {
-                    await _repository.Create(item);
-                }
-                catch (Exception)
-                {
-                    await _unitOfWork.RollbackTransaction();
-                    throw new InvalidOperationException("");
-                }
-
-                await _unitOfWork.CommitTransaction(transaction);
+                await _repository.Create(item);
             }
+            catch (Exception)
+            {
+                await _unitOfWork.RollbackTransaction();
+                throw new InvalidOperationException("");
+            }
+
+            await _unitOfWork.CommitTransaction(transaction);
         }
 
-        public Task Create(IEnumerable<TEntity> items)
+        public async Task Create(IEnumerable<TEntity> items)
         {
-            throw new NotImplementedException();
+            using IDbContextTransaction transaction = await _unitOfWork.BeginTransaction();
+            try
+            {
+                await _repository.Create(items);
+            }
+            catch (Exception)
+            {
+                await _unitOfWork.RollbackTransaction();
+                throw new InvalidOperationException("");
+            }
+
+            await _unitOfWork.CommitTransaction(transaction);
         }
 
         public async Task Delete(TEntity item)
