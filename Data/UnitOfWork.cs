@@ -1,7 +1,5 @@
 ﻿namespace Data
 {
-    using Core.Interfaces.Repositories;
-
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.ChangeTracking;
     using Microsoft.EntityFrameworkCore.Metadata;
