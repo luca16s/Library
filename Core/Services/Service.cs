@@ -72,12 +72,10 @@ namespace Core.Services
 
         public async Task Delete(TEntity item)
         {
-            using (IDbContextTransaction transaction = await _unitOfWork.BeginTransaction())
-            {
-                await _repository.Delete(item);
+            using IDbContextTransaction transaction = await _unitOfWork.BeginTransaction();
+            await _repository.Delete(item);
 
-                await _unitOfWork.CommitTransaction(transaction);
-            }
+            await _unitOfWork.CommitTransaction(transaction);
         }
 
         public async Task<TEntity?> Get(TType id)
@@ -97,20 +95,18 @@ namespace Core.Services
 
         public async Task Update(TType id, TEntity item)
         {
-            using (IDbContextTransaction transaction = await _unitOfWork.BeginTransaction())
+            using IDbContextTransaction transaction = await _unitOfWork.BeginTransaction();
+            try
             {
-                try
-                {
-                    await _repository.Update(id, item);
-                }
-                catch (Exception)
-                {
-                    await _unitOfWork.RollbackTransaction();
-                    throw new InvalidOperationException("");
-                }
-
-                await _unitOfWork.CommitTransaction(transaction);
+                await _repository.Update(id, item);
             }
+            catch (Exception)
+            {
+                await _unitOfWork.RollbackTransaction();
+                throw new InvalidOperationException("");
+            }
+
+            await _unitOfWork.CommitTransaction(transaction);
         }
     }
 }
