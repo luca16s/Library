@@ -16,7 +16,7 @@
     /// <typeparam name="TContext">
     /// Contexto do banco de dados a ser utilizado.
     /// </typeparam>
-    public class UnitOfWork<TContext> : IUnitOfWork
+    public class UnitOfWork<TContext>
         where TContext : DbContext
     {
         private readonly TContext _baseContext;
