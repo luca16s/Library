@@ -1,5 +1,7 @@
 ﻿namespace Data
 {
+    using Core.Interfaces.Repositories;
+
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.ChangeTracking;
     using Microsoft.EntityFrameworkCore.Metadata;
@@ -14,7 +16,7 @@
     /// <typeparam name="TContext">
     /// Contexto do banco de dados a ser utilizado.
     /// </typeparam>
-    public class UnitOfWork<TContext>
+    public class UnitOfWork<TContext> : IUnitOfWork
         where TContext : DbContext
     {
         private readonly TContext _baseContext;
