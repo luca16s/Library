@@ -7,10 +7,10 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace CQRS.Handlers
+namespace Mediator.Handlers
 {
-    using CQRS.Interfaces;
-    using CQRS.Notifications;
+    using Mediator.Interfaces;
+    using Mediator.Notifications;
 
     using System.Collections.Generic;
     using System.Linq;

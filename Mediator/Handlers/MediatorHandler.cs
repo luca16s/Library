@@ -7,11 +7,11 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace CQRS.Handlers
+namespace Mediator.Handlers
 {
-    using CQRS.Commands;
-    using CQRS.Events;
-    using CQRS.Interfaces;
+    using Mediator.Commands;
+    using Mediator.Events;
+    using Mediator.Interfaces;
 
     using MediatR;
 
@@ -53,7 +53,7 @@ namespace CQRS.Handlers
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
             _connectionFactory = new ConnectionFactory
             {
-                Uri = new Uri(configuration["rabbitmq:uri"])
+                Uri = new Uri(configuration["rabbitmq:uri"] ?? string.Empty)
             };
         }
 

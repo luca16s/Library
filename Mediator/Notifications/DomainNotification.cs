@@ -7,9 +7,9 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace CQRS.Notifications
+namespace Mediator.Notifications
 {
-    using CQRS.Events;
+    using Mediator.Events;
 
     /// <summary>
     /// Notificação de domínio.

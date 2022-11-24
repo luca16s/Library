@@ -7,16 +7,14 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace CQRS.Handlers
+namespace Mediator.Handlers
 {
     using Core.Models;
 
-    using CQRS.Interfaces;
-    using CQRS.Notifications;
-
     using FluentValidation.Results;
 
-    using System.Threading.Tasks;
+    using Mediator.Interfaces;
+    using Mediator.Notifications;
 
     /// <summary>
     /// Classe de manipuladora de comandos.
@@ -34,6 +32,15 @@ namespace CQRS.Handlers
         protected readonly IMediatorHandler _mediator;
         protected readonly IDomainNotificationHandler<TId, TResponse> _notifications;
 
+        /// <summary>
+        /// Construtor da classe de manipulação de comandos.
+        /// </summary>
+        /// <param name="mediator">
+        /// Interface do mediator.
+        /// </param>
+        /// <param name="notifications">
+        /// Inteface do notificador de domínio.
+        /// </param>
         protected CommandHandler(
             IMediatorHandler mediator,
             IDomainNotificationHandler<TId, TResponse> notifications
@@ -43,6 +50,16 @@ namespace CQRS.Handlers
             _notifications = notifications;
         }
 
+        /// <summary>
+        /// Valida entidade de domínio passada.
+        /// </summary>
+        /// <param name="entity">
+        /// Entidade a ser validada.
+        /// </param>
+        /// <returns>
+        /// Retorna se entidade está válida.
+        /// True: Caso válida.
+        /// </returns>
         protected bool ValidateEntity(Entity<TId> entity)
         {
             if (entity.IsConsistent())
@@ -52,6 +69,15 @@ namespace CQRS.Handlers
             return false;
         }
 
+        /// <summary>
+        /// Notifica eventos do comando.
+        /// </summary>
+        /// <param name="nome">
+        /// Nome do evento a ser notificado.
+        /// </param>
+        /// <param name="mensagem">
+        /// Mensagem da notificação.
+        /// </param>
         protected void NotifyError(string nome, string mensagem)
         {
             if (string.IsNullOrWhiteSpace(nome) ||
@@ -63,8 +89,21 @@ namespace CQRS.Handlers
             _ = _mediator.RaiseEvent<DomainNotification<TId, TResponse>, TId, TResponse>(new DomainNotification<TId, TResponse>(nome, mensagem));
         }
 
+        /// <summary>
+        /// Indica se há notificações.
+        /// </summary>
+        /// <returns>
+        /// Retorna se há notificações.
+        /// True: caso existam notificações.
+        /// </returns>
         protected bool HasNotifications() => _notifications.HasNotifications();
 
+        /// <summary>
+        /// Notifica validações de erro.
+        /// </summary>
+        /// <param name="validationResult">
+        /// Validação a ser notificada.
+        /// </param>
         protected void NotifyErrorValidations(ValidationResult validationResult)
         {
             foreach (ValidationFailure? error in validationResult.Errors)
@@ -77,9 +116,5 @@ namespace CQRS.Handlers
                 NotifyError(error.PropertyName, error.ErrorMessage);
             }
         }
-
-        protected static Task<TReturn> Sucess<TReturn>(TReturn retorno) => Task.FromResult(retorno);
-
-        protected static Task<TReturn> Failed<TReturn>(TReturn retorno) => Task.FromResult(retorno);
     }
 }

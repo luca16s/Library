@@ -7,9 +7,9 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace CQRS.Commands
+namespace Mediator.Commands
 {
-    using CQRS.Events;
+    using Mediator.Events;
 
     using System;
     using System.Text.Json.Serialization;

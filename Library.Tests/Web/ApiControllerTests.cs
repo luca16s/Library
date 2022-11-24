@@ -2,15 +2,15 @@ namespace Library.Tests.Web
 {
     using AutoMapper;
 
-    using CQRS.Handlers;
-    using CQRS.Interfaces;
-    using CQRS.Notifications;
-
     using FluentAssertions;
 
     using global::Core.Interfaces.Services;
     using global::Core.Models;
     using global::Web.Controller;
+
+    using Mediator.Handlers;
+    using Mediator.Interfaces;
+    using Mediator.Notifications;
 
     using Moq;
 

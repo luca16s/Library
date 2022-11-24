@@ -7,12 +7,12 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace CQRS.Interfaces
+namespace Mediator.Interfaces
 {
-    using CQRS.Events;
+    using Mediator.Commands;
+    using Mediator.Events;
 
     using System.Threading.Tasks;
-    using CQRS.Commands;
 
     /// <summary>
     /// Interface do manipulador de mediação.
