@@ -46,8 +46,8 @@ namespace Web.Controller
         private readonly IMapper _mapper;
         private readonly IDomainNotificationHandler<TId, TResponse> _notificationHandler;
 
+        public readonly TService Service;
         public readonly IMediatorHandler Mediator;
-        public readonly IService<TEntity, TId> Service;
 
         /// <summary>
         /// Constrói uma nova instância da classe de api de controller.
@@ -67,8 +67,8 @@ namespace Web.Controller
         public ApiController
         (
             IMapper mapper,
+            TService service,
             IMediatorHandler mediator,
-            IService<TEntity, TId> service,
             IDomainNotificationHandler<TId, TResponse> notificationHandler
         )
         {
