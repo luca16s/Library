@@ -12,6 +12,8 @@ namespace Library.Tests.Web
     using Mediator.Interfaces;
     using Mediator.Notifications;
 
+    using Microsoft.AspNetCore.Mvc;
+
     using Moq;
 
     using System;
@@ -32,7 +34,12 @@ namespace Library.Tests.Web
             public override bool IsConsistent() { throw new NotImplementedException(); }
         }
 
-        public class Servico : IService<Modelo, long>
+        public interface IServicoDerivado : IService<Modelo, long>
+        {
+            string GetStringValue(string parametro);
+        }
+
+        public class Servico : IServicoDerivado
         {
             public Task Create(Modelo item)
             {
@@ -59,6 +66,11 @@ namespace Library.Tests.Web
                 throw new NotImplementedException();
             }
 
+            public string GetStringValue(string parametro)
+            {
+                return parametro;
+            }
+
             public IQueryable<Modelo> Search(Expression<Func<Modelo, bool>> predicate)
             {
                 throw new NotImplementedException();
@@ -70,14 +82,19 @@ namespace Library.Tests.Web
             }
         }
 
-        public class Controller : ApiController<Servico, Modelo, long, Modelo>
+        public class Controller : ApiController<IServicoDerivado, Modelo, long, Modelo>
         {
             public Controller(
                 IMapper mapper,
                 IMediatorHandler mediator,
-                IService<Modelo, long> service,
+                IServicoDerivado service,
                 IDomainNotificationHandler<long, Modelo> notifications
-            ) : base(mapper, mediator, service, notifications) { }
+            ) : base(mapper, service, mediator, notifications) { }
+
+            public IActionResult GetValue()
+            {
+                return Ok(Service.GetStringValue(string.Empty));
+            }
 
             public bool IsOperacaoValida()
             {
@@ -133,7 +150,7 @@ namespace Library.Tests.Web
             var notificationHandler = new DomainNotificationHandler<long, Modelo>();
             var notification = new DomainNotification<long, Modelo>("", "");
 
-            notificationHandler.Handle(notification, CancellationToken.None);
+            _ = notificationHandler.Handle(notification, CancellationToken.None);
 
             var controller = new Controller(
                 mapper,
@@ -181,6 +198,28 @@ namespace Library.Tests.Web
             );
 
             _ = controller.IsOperacaoValida().Should().BeFalse();
+        }
+
+        [Fact]
+        public void DeveVerificarSeMetodoDerivadoDoServicoFoiChamado()
+        {
+            var servico = new Mock<IServicoDerivado>();
+            var mapper = new Mock<IMapper>().Object;
+            var mediator = new Mock<IMediatorHandler>().Object;
+            var notificationHandler = new DomainNotificationHandler<long, Modelo>();
+            var notificacao = new DomainNotification<long, Modelo>("", "");
+            _ = notificationHandler.Handle(notificacao, CancellationToken.None);
+
+            var controller = new Controller(
+                mapper,
+                mediator,
+                servico.Object,
+                notificationHandler
+            );
+
+            _ = controller.GetValue();
+
+            servico.Verify(x => x.GetStringValue(It.IsAny<string>()), Times.Once);
         }
     }
 }
