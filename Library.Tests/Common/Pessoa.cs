@@ -1,0 +1,17 @@
+﻿namespace Library.Tests.Common
+{
+    using global::Core.Models;
+
+    using System;
+
+    public class Pessoa : Entity<long>
+    {
+        public Pessoa() : base(default) { }
+
+        public Pessoa(long id) : base(id) { }
+
+        public string Nome { get; set; } = string.Empty;
+
+        public override bool IsConsistent() { throw new NotImplementedException(); }
+    }
+}

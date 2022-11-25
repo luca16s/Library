@@ -4,113 +4,31 @@ namespace Library.Tests.Web
 
     using FluentAssertions;
 
-    using global::Core.Interfaces.Services;
-    using global::Core.Models;
-    using global::Web.Controller;
+    using Library.Tests.Common;
+    using Library.Tests.Common.Interfaces;
 
     using Mediator.Handlers;
     using Mediator.Interfaces;
     using Mediator.Notifications;
 
-    using Microsoft.AspNetCore.Mvc;
-
     using Moq;
 
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Linq.Expressions;
     using System.Threading;
-    using System.Threading.Tasks;
 
     using Xunit;
 
     public class ApiControllerTests
     {
-        public class Modelo : Entity<long>
-        {
-            public Modelo(long id) : base(id) { }
-
-            public override bool IsConsistent() { throw new NotImplementedException(); }
-        }
-
-        public interface IServicoDerivado : IService<Modelo, long>
-        {
-            string GetStringValue(string parametro);
-        }
-
-        public class Servico : IServicoDerivado
-        {
-            public Task Create(Modelo item)
-            {
-                throw new NotImplementedException();
-            }
-
-            public Task Create(IEnumerable<Modelo> items)
-            {
-                throw new NotImplementedException();
-            }
-
-            public Task Delete(Modelo item)
-            {
-                throw new NotImplementedException();
-            }
-
-            public Task<Modelo> Get(long id)
-            {
-                throw new NotImplementedException();
-            }
-
-            public IQueryable<Modelo> GetAll(int amount)
-            {
-                throw new NotImplementedException();
-            }
-
-            public string GetStringValue(string parametro)
-            {
-                return parametro;
-            }
-
-            public IQueryable<Modelo> Search(Expression<Func<Modelo, bool>> predicate)
-            {
-                throw new NotImplementedException();
-            }
-
-            public Task Update(long id, Modelo item)
-            {
-                throw new NotImplementedException();
-            }
-        }
-
-        public class Controller : ApiController<IServicoDerivado, Modelo, long, Modelo>
-        {
-            public Controller(
-                IMapper mapper,
-                IMediatorHandler mediator,
-                IServicoDerivado service,
-                IDomainNotificationHandler<long, Modelo> notifications
-            ) : base(mapper, service, mediator, notifications) { }
-
-            public IActionResult GetValue()
-            {
-                return Ok(Service.GetStringValue(string.Empty));
-            }
-
-            public bool IsOperacaoValida()
-            {
-                return IsOperationValid();
-            }
-        }
-
         [Fact]
         public void DeveInstanciarServicoBase()
         {
-            var servico = new Servico();
+            var repositorio = new Mock<IPessoaRepository>().Object;
+            var servico = new PessoaService(repositorio);
             var mapper = new Mock<IMapper>().Object;
             var mediator = new Mock<IMediatorHandler>().Object;
-            var notificationHandler = new DomainNotificationHandler<long, Modelo>();
+            var notificationHandler = new DomainNotificationHandler<long, Pessoa>();
 
-            var controller = new Controller(
+            var controller = new PessoaController(
                 mapper,
                 mediator,
                 servico,
@@ -123,15 +41,16 @@ namespace Library.Tests.Web
         [Fact]
         public void DeveRetornarFalseQuandoNotificacoesNaoInstanciadas()
         {
-            var servico = new Servico();
+            var repositorio = new Mock<IPessoaRepository>().Object;
+            var servico = new PessoaService(repositorio);
             var mapper = new Mock<IMapper>().Object;
             var mediator = new Mock<IMediatorHandler>().Object;
-            var notificationHandler = new DomainNotificationHandler<long, Modelo>();
-            var notification = new DomainNotification<long, Modelo>("", "");
+            var notificationHandler = new DomainNotificationHandler<long, Pessoa>();
+            var notification = new DomainNotification<long, Pessoa>("", "");
 
             _ = notificationHandler.Handle(notification, CancellationToken.None);
 
-            var controller = new Controller(
+            var controller = new PessoaController(
                 mapper,
                 mediator,
                 servico,
@@ -144,15 +63,16 @@ namespace Library.Tests.Web
         [Fact]
         public void DeveRetornarFalseQuandoExistemNotificacoes()
         {
-            var servico = new Servico();
+            var repositorio = new Mock<IPessoaRepository>().Object;
+            var servico = new PessoaService(repositorio);
             var mapper = new Mock<IMapper>().Object;
             var mediator = new Mock<IMediatorHandler>().Object;
-            var notificationHandler = new DomainNotificationHandler<long, Modelo>();
-            var notification = new DomainNotification<long, Modelo>("", "");
+            var notificationHandler = new DomainNotificationHandler<long, Pessoa>();
+            var notification = new DomainNotification<long, Pessoa>("", "");
 
             _ = notificationHandler.Handle(notification, CancellationToken.None);
 
-            var controller = new Controller(
+            var controller = new PessoaController(
                 mapper,
                 mediator,
                 servico,
@@ -165,12 +85,13 @@ namespace Library.Tests.Web
         [Fact]
         public void DeveRetornarTrueQuandoNaoExistemNotificacoes()
         {
-            var servico = new Servico();
+            var repositorio = new Mock<IPessoaRepository>().Object;
+            var servico = new PessoaService(repositorio);
             var mapper = new Mock<IMapper>().Object;
             var mediator = new Mock<IMediatorHandler>().Object;
-            var notificationHandler = new DomainNotificationHandler<long, Modelo>();
+            var notificationHandler = new DomainNotificationHandler<long, Pessoa>();
 
-            var controller = new Controller(
+            var controller = new PessoaController(
                 mapper,
                 mediator,
                 servico,
@@ -183,14 +104,15 @@ namespace Library.Tests.Web
         [Fact]
         public void DeveRetornarTrueQuandoExistemNotificacoes()
         {
-            var servico = new Servico();
+            var repositorio = new Mock<IPessoaRepository>().Object;
+            var servico = new PessoaService(repositorio);
             var mapper = new Mock<IMapper>().Object;
             var mediator = new Mock<IMediatorHandler>().Object;
-            var notificationHandler = new DomainNotificationHandler<long, Modelo>();
-            var notificacao = new DomainNotification<long, Modelo>("", "");
+            var notificationHandler = new DomainNotificationHandler<long, Pessoa>();
+            var notificacao = new DomainNotification<long, Pessoa>("", "");
             _ = notificationHandler.Handle(notificacao, CancellationToken.None);
 
-            var controller = new Controller(
+            var controller = new PessoaController(
                 mapper,
                 mediator,
                 servico,
@@ -203,14 +125,14 @@ namespace Library.Tests.Web
         [Fact]
         public void DeveVerificarSeMetodoDerivadoDoServicoFoiChamado()
         {
-            var servico = new Mock<IServicoDerivado>();
+            var servico = new Mock<IPessoaService>();
             var mapper = new Mock<IMapper>().Object;
             var mediator = new Mock<IMediatorHandler>().Object;
-            var notificationHandler = new DomainNotificationHandler<long, Modelo>();
-            var notificacao = new DomainNotification<long, Modelo>("", "");
+            var notificationHandler = new DomainNotificationHandler<long, Pessoa>();
+            var notificacao = new DomainNotification<long, Pessoa>("", "");
             _ = notificationHandler.Handle(notificacao, CancellationToken.None);
 
-            var controller = new Controller(
+            var controller = new PessoaController(
                 mapper,
                 mediator,
                 servico.Object,
