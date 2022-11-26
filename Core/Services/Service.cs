@@ -21,17 +21,18 @@ namespace Core.Services
     using System.Linq.Expressions;
     using System.Threading.Tasks;
 
-    public class Service<TEntity, TType> : IService<TEntity, TType>
-        where TEntity : Entity<TType>
+    public class Service<TRepository, TEntity, TType> : IService<TEntity, TType>
         where TType : struct
+        where TEntity : Entity<TType>
+        where TRepository : IRepository<TEntity, TType>
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IRepository<TEntity, TType> _repository;
+        private readonly TRepository _repository;
 
         public Service
         (
             IUnitOfWork unitOfWork,
-            IRepository<TEntity, TType> repository
+            TRepository repository
         )
         {
             _unitOfWork = unitOfWork;
@@ -78,21 +79,6 @@ namespace Core.Services
             await _unitOfWork.CommitTransaction(transaction);
         }
 
-        public async Task<TEntity?> Get(TType id)
-        {
-            return await _repository.Get(id);
-        }
-
-        public IQueryable<TEntity> GetAll(int amount)
-        {
-            return _repository.GetAll(amount);
-        }
-
-        public IQueryable<TEntity> Search(Expression<Func<TEntity, bool>> predicate)
-        {
-            return _repository.Search(predicate);
-        }
-
         public async Task Update(TType id, TEntity item)
         {
             using IDbContextTransaction transaction = await _unitOfWork.BeginTransaction();
@@ -107,6 +93,21 @@ namespace Core.Services
             }
 
             await _unitOfWork.CommitTransaction(transaction);
+        }
+
+        public async Task<TEntity?> Get(TType id)
+        {
+            return await _repository.Get(id);
+        }
+
+        public IQueryable<TEntity> GetAll(int amountToSkip = 0, int amountToTake = 25)
+        {
+            return _repository.GetAll(amountToSkip, amountToTake);
+        }
+
+        public IQueryable<TEntity> Search(Expression<Func<TEntity, bool>> predicate)
+        {
+            return _repository.Search(predicate);
         }
     }
 }

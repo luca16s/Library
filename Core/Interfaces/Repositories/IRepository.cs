@@ -54,12 +54,15 @@ namespace Core.Interfaces.Repositories
         Task Delete(TEntity item);
 
         /// <summary>
-        /// Retorna todas as entidades do banco de dados de forma assíncrona.
+        /// Atualiza uma entidade com base em um identificador passado.
         /// </summary>
-        /// <returns>
-        /// Todas as entidades.
-        /// </returns>
-        IQueryable<TEntity> GetAll(int amount);
+        /// <param name="id">
+        /// Identificador da entidade.
+        /// </param>
+        /// <param name="item">
+        /// Entidade a ser atualizada.
+        /// </param>
+        Task Update(TId id, TEntity item);
 
         /// <summary>
         /// Retorna uma entidade com base em um identificador de forma assíncrona.
@@ -73,15 +76,18 @@ namespace Core.Interfaces.Repositories
         Task<TEntity?> Get(TId id);
 
         /// <summary>
-        /// Atualiza uma entidade com base em um identificador passado.
+        /// Retorna todas as entidades do banco de dados de forma assíncrona.
         /// </summary>
-        /// <param name="id">
-        /// Identificador da entidade.
+        /// <param name="amountToSkip">
+        /// Quantidade de itens a serem ignorados.
         /// </param>
-        /// <param name="item">
-        /// Entidade a ser atualizada.
+        /// <param name="amountToTake">
+        /// Quantidade de itens a ser buscadas.
         /// </param>
-        Task Update(TId id, TEntity item);
+        /// <returns>
+        /// Todas as entidades.
+        /// </returns>
+        IQueryable<TEntity> GetAll(int amountToSkip = 0, int amountToTake = 25);
 
         /// <summary>
         /// Busca determinados itens na base de dados.

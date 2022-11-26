@@ -67,28 +67,28 @@ namespace Data.Repositories
 
         public Task Delete(TEntity item)
         {
+            if (item is null)
+            {
+                throw new ArgumentNullException(nameof(item));
+            }
+
             EntityEntry<TEntity> entity = DbSet.Remove(item);
             entity.State = EntityState.Deleted;
             return Task.CompletedTask;
         }
 
-        public IQueryable<TEntity> GetAll(int amount)
-        {
-            return DbSet.AsQueryable().Take(amount);
-        }
-
-        public async Task<TEntity?> Get(TId id)
-        {
-            return await DbSet.FindAsync(id);
-        }
-
         public Task Update(TId id, TEntity item)
         {
+            if (item is null)
+            {
+                throw new ArgumentNullException(nameof(item));
+            }
+
             TEntity? entity = DbSet.Find(id);
 
             if (entity is null)
             {
-                throw new NullReferenceException();
+                throw new NullReferenceException("Item pesquisado não existente no banco de dados.");
             }
 
             Context.Entry(entity).State = EntityState.Detached;
@@ -97,6 +97,21 @@ namespace Data.Repositories
             entry.CurrentValues.SetValues(item);
             entry.State = EntityState.Modified;
             return Task.CompletedTask;
+        }
+
+        public async Task<TEntity?> Get(TId id)
+        {
+            return await DbSet.FindAsync(id);
+        }
+
+        public IQueryable<TEntity> GetAll(
+            int amountToSkip = 0,
+            int amountToTake = 25
+        )
+        {
+            return DbSet.AsQueryable()
+                .Skip(amountToSkip)
+                .Take(amountToTake);
         }
 
         public IQueryable<TEntity> Search(Expression<Func<TEntity, bool>> predicate)
