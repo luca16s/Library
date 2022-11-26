@@ -16,9 +16,15 @@
         where TResponse : notnull
     {
         /// <summary>
-        /// Quantidade de itens a serem trabalhados.
+        /// Quantidade de itens a serem ignorados.
         /// </summary>
         [JsonIgnore]
-        public int ItemAmount { get; set; } = 25;
+        public int AmountToSkip { get; set; } = 0;
+
+        /// <summary>
+        /// Quantidade de itens a serem retornados.
+        /// </summary>
+        [JsonIgnore]
+        public int AmountToTake { get; set; } = 25;
     }
 }
