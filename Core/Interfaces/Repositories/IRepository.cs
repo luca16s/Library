@@ -11,6 +11,8 @@ namespace Core.Interfaces.Repositories
 {
     using Core.Models;
 
+    using Microsoft.EntityFrameworkCore;
+
     using System;
     using System.Linq.Expressions;
     using System.Threading.Tasks;
@@ -107,5 +109,19 @@ namespace Core.Interfaces.Repositories
         /// Retorna total de items salvos no banco de dados.
         /// </returns>
         Task<long> Count();
+
+        /// <summary>
+        /// Realiza a busca do maior item salvo no banco de dados.
+        /// </summary>
+        /// <typeparam name="TResult">
+        /// Tipo do resultado da operação
+        /// </typeparam>
+        /// <param name="predicate">
+        /// Termo de busca.
+        /// </param>
+        /// <returns>
+        /// Retorna maior item encontrado.
+        /// </returns>
+        Task<TResult> Max<TResult>(Expression<Func<TEntity, TResult>> predicate);
     }
 }

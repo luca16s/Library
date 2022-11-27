@@ -9,6 +9,8 @@
 
     using Microsoft.EntityFrameworkCore;
 
+    using Shouldly;
+
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -32,9 +34,13 @@
             for (int i = 0; i < 30; i++)
             {
                 var faker = new Faker<Pessoa>()
-                    .RuleFor(u => u.Nome, (f, u) => f.Name.FirstName());
+                    .RuleFor(u => u.Nome, (f, u) => f.Name.FirstName())
+                    .RuleFor(u => u.Idade, (f, u) => f.Random.Number(0, 100));
 
-                _ = Context.Pessoas.Add(new Pessoa(i + 1) { Nome = faker.Generate().Nome });
+                _ = Context.Pessoas.Add(new Pessoa(i + 1) {
+                    Nome = faker.Generate().Nome,
+                    Idade = faker.Generate().Idade,
+                });
                 _ = Context.SaveChanges();
             }
 
@@ -272,6 +278,36 @@
             var result = await Repository.Count();
 
             _ = result.Should().Be(expectedCount);
+        }
+
+        [Fact]
+        [Trait("Method", "Max")]
+        public async Task MaxDeveRetornarMensagemErroCasoTabelaVazia()
+        {
+            _ = Context.Database.EnsureDeleted();
+
+            var acao = async () => await Repository.Max(x => x.Idade);
+
+            _ = await acao.Should().ThrowAsync<InvalidOperationException>()
+                .WithMessage("Tabela não contém items ou foi passada uma entidade ao invés de uma propriedade.");
+        }
+
+        [Fact]
+        [Trait("Method", "Max")]
+        public async Task MaxDeveRetornarMaiorItemEncontrado()
+        {
+            var expectedAge = Context.Pessoas.Max(x => x.Idade);
+            var result = await Repository.Max(x => x.Idade);
+            _ = result.Should().Be(expectedAge);
+        }
+
+        [Fact]
+        [Trait("Method", "Max")]
+        public async Task MaxDeveRetornarMensagemErroCasoItemPassadoNaoSejaPropriedade()
+        {
+            var acao = async () => await Repository.Max(x => x);
+            _ = await acao.Should().ThrowAsync<InvalidOperationException>()
+                .WithMessage("Tabela não contém items ou foi passada uma entidade ao invés de uma propriedade.");
         }
     }
 }

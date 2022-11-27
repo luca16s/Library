@@ -123,5 +123,20 @@ namespace Data.Repositories
         {
             return await DbSet.CountAsync();
         }
+
+        public async Task<TResult> Max<TResult>(Expression<Func<TEntity, TResult>> predicate)
+        {
+            try
+            {
+                return await DbSet.MaxAsync(predicate);
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException(
+                    "Tabela não contém items ou foi passada uma entidade ao invés de uma propriedade.",
+                    ex
+                 );
+            }
+        }
     }
 }
