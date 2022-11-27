@@ -9,6 +9,8 @@
 
     using Microsoft.EntityFrameworkCore;
 
+    using Shouldly;
+
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -32,9 +34,13 @@
             for (int i = 0; i < 30; i++)
             {
                 var faker = new Faker<Pessoa>()
-                    .RuleFor(u => u.Nome, (f, u) => f.Name.FirstName());
+                    .RuleFor(u => u.Nome, (f, u) => f.Name.FirstName())
+                    .RuleFor(u => u.Idade, (f, u) => f.Random.Number(0, 100));
 
-                _ = Context.Pessoas.Add(new Pessoa(i + 1) { Nome = faker.Generate().Nome });
+                _ = Context.Pessoas.Add(new Pessoa(i + 1) {
+                    Nome = faker.Generate().Nome,
+                    Idade = faker.Generate().Idade,
+                });
                 _ = Context.SaveChanges();
             }
 
@@ -252,6 +258,86 @@
             var result = Repository.Search(x => x.Id == id).ToList();
 
             _ = result.Should().BeEmpty();
+        }
+
+        [Fact]
+        [Trait("Method", "Count")]
+        public async Task CountDeveRetornarZeroCasoTabelaVazia()
+        {
+            _ = Context.Database.EnsureDeleted();
+            var result = await Repository.Count();
+
+            _ = result.Should().Be(0);
+        }
+
+        [Fact]
+        [Trait("Method", "Count")]
+        public async Task CountDeveRetornarTotalDeItemsCasoTabelaPreenchida()
+        {
+            var expectedCount = Context.Pessoas.Count();
+            var result = await Repository.Count();
+
+            _ = result.Should().Be(expectedCount);
+        }
+
+        [Fact]
+        [Trait("Method", "Max")]
+        public async Task MaxDeveRetornarMensagemErroCasoTabelaVazia()
+        {
+            _ = Context.Database.EnsureDeleted();
+
+            var acao = async () => await Repository.Max(x => x.Idade);
+
+            _ = await acao.Should().ThrowAsync<InvalidOperationException>()
+                .WithMessage("Tabela não contém items ou foi passada uma entidade ao invés de uma propriedade.");
+        }
+
+        [Fact]
+        [Trait("Method", "Max")]
+        public async Task MaxDeveRetornarMaiorItemEncontrado()
+        {
+            var expectedAge = Context.Pessoas.Max(x => x.Idade);
+            var result = await Repository.Max(x => x.Idade);
+            _ = result.Should().Be(expectedAge);
+        }
+
+        [Fact]
+        [Trait("Method", "Max")]
+        public async Task MaxDeveRetornarMensagemErroCasoItemPassadoNaoSejaPropriedade()
+        {
+            var acao = async () => await Repository.Max(x => x);
+            _ = await acao.Should().ThrowAsync<InvalidOperationException>()
+                .WithMessage("Tabela não contém items ou foi passada uma entidade ao invés de uma propriedade.");
+        }
+
+        [Fact]
+        [Trait("Method", "Min")]
+        public async Task MinDeveRetornarMensagemErroCasoTabelaVazia()
+        {
+            _ = Context.Database.EnsureDeleted();
+
+            var acao = async () => await Repository.Min(x => x.Idade);
+
+            _ = await acao.Should().ThrowAsync<InvalidOperationException>()
+                .WithMessage("Tabela não contém items ou foi passada uma entidade ao invés de uma propriedade.");
+        }
+
+        [Fact]
+        [Trait("Method", "Min")]
+        public async Task MinDeveRetornarMenorItemEncontrado()
+        {
+            var expectedAge = Context.Pessoas.Min(x => x.Idade);
+            var result = await Repository.Min(x => x.Idade);
+            _ = result.Should().Be(expectedAge);
+        }
+
+        [Fact]
+        [Trait("Method", "Min")]
+        public async Task MinDeveRetornarMensagemErroCasoItemPassadoNaoSejaPropriedade()
+        {
+            var acao = async () => await Repository.Min(x => x);
+            _ = await acao.Should().ThrowAsync<InvalidOperationException>()
+                .WithMessage("Tabela não contém items ou foi passada uma entidade ao invés de uma propriedade.");
         }
     }
 }

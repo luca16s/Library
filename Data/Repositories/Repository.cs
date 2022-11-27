@@ -118,5 +118,40 @@ namespace Data.Repositories
         {
             return DbSet.Where(predicate);
         }
+
+        public async Task<long> Count()
+        {
+            return await DbSet.CountAsync();
+        }
+
+        public async Task<TResult> Max<TResult>(Expression<Func<TEntity, TResult>> predicate)
+        {
+            try
+            {
+                return await DbSet.MaxAsync(predicate);
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException(
+                    "Tabela não contém items ou foi passada uma entidade ao invés de uma propriedade.",
+                    ex
+                 );
+            }
+        }
+
+        public async Task<TResult> Min<TResult>(Expression<Func<TEntity, TResult>> predicate)
+        {
+            try
+            {
+                return await DbSet.MinAsync(predicate);
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException(
+                    "Tabela não contém items ou foi passada uma entidade ao invés de uma propriedade.",
+                    ex
+                 );
+            }
+        }
     }
 }
