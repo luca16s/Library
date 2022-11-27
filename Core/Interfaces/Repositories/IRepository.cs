@@ -99,5 +99,13 @@ namespace Core.Interfaces.Repositories
         /// Lista de itens encontrados.
         /// </returns>
         IQueryable<TEntity> Search(Expression<Func<TEntity, bool>> predicate);
+
+        /// <summary>
+        /// Realiza a contagem de items salvos para determinada tabela.
+        /// </summary>
+        /// <returns>
+        /// Retorna total de items salvos no banco de dados.
+        /// </returns>
+        Task<long> Count();
     }
 }

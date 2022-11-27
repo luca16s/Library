@@ -118,5 +118,10 @@ namespace Data.Repositories
         {
             return DbSet.Where(predicate);
         }
+
+        public async Task<long> Count()
+        {
+            return await DbSet.CountAsync();
+        }
     }
 }

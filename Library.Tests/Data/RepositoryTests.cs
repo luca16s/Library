@@ -253,5 +253,25 @@
 
             _ = result.Should().BeEmpty();
         }
+
+        [Fact]
+        [Trait("Method", "Count")]
+        public async Task CountDeveRetornarZeroCasoTabelaVazia()
+        {
+            _ = Context.Database.EnsureDeleted();
+            var result = await Repository.Count();
+
+            _ = result.Should().Be(0);
+        }
+
+        [Fact]
+        [Trait("Method", "Count")]
+        public async Task CountDeveRetornarTotalDeItemsCasoTabelaPreenchida()
+        {
+            var expectedCount = Context.Pessoas.Count();
+            var result = await Repository.Count();
+
+            _ = result.Should().Be(expectedCount);
+        }
     }
 }
