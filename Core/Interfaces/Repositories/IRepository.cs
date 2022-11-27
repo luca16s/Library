@@ -123,5 +123,19 @@ namespace Core.Interfaces.Repositories
         /// Retorna maior item encontrado.
         /// </returns>
         Task<TResult> Max<TResult>(Expression<Func<TEntity, TResult>> predicate);
+
+        /// <summary>
+        /// Realiza a busca do menor item salvo no banco de dados.
+        /// </summary>
+        /// <typeparam name="TResult">
+        /// Tipo do resultado da operação
+        /// </typeparam>
+        /// <param name="predicate">
+        /// Termo de busca.
+        /// </param>
+        /// <returns>
+        /// Retorna menor item encontrado.
+        /// </returns>
+        Task<TResult> Min<TResult>(Expression<Func<TEntity, TResult>> predicate);
     }
 }

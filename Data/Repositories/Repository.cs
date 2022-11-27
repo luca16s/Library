@@ -138,5 +138,20 @@ namespace Data.Repositories
                  );
             }
         }
+
+        public async Task<TResult> Min<TResult>(Expression<Func<TEntity, TResult>> predicate)
+        {
+            try
+            {
+                return await DbSet.MinAsync(predicate);
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException(
+                    "Tabela não contém items ou foi passada uma entidade ao invés de uma propriedade.",
+                    ex
+                 );
+            }
+        }
     }
 }

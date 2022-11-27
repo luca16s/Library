@@ -309,5 +309,35 @@
             _ = await acao.Should().ThrowAsync<InvalidOperationException>()
                 .WithMessage("Tabela não contém items ou foi passada uma entidade ao invés de uma propriedade.");
         }
+
+        [Fact]
+        [Trait("Method", "Min")]
+        public async Task MinDeveRetornarMensagemErroCasoTabelaVazia()
+        {
+            _ = Context.Database.EnsureDeleted();
+
+            var acao = async () => await Repository.Min(x => x.Idade);
+
+            _ = await acao.Should().ThrowAsync<InvalidOperationException>()
+                .WithMessage("Tabela não contém items ou foi passada uma entidade ao invés de uma propriedade.");
+        }
+
+        [Fact]
+        [Trait("Method", "Min")]
+        public async Task MinDeveRetornarMenorItemEncontrado()
+        {
+            var expectedAge = Context.Pessoas.Min(x => x.Idade);
+            var result = await Repository.Min(x => x.Idade);
+            _ = result.Should().Be(expectedAge);
+        }
+
+        [Fact]
+        [Trait("Method", "Min")]
+        public async Task MinDeveRetornarMensagemErroCasoItemPassadoNaoSejaPropriedade()
+        {
+            var acao = async () => await Repository.Min(x => x);
+            _ = await acao.Should().ThrowAsync<InvalidOperationException>()
+                .WithMessage("Tabela não contém items ou foi passada uma entidade ao invés de uma propriedade.");
+        }
     }
 }
