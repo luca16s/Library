@@ -11,8 +11,6 @@ namespace Core.Interfaces.Repositories
 {
     using Core.Models;
 
-    using Microsoft.EntityFrameworkCore;
-
     using System;
     using System.Linq.Expressions;
     using System.Threading.Tasks;

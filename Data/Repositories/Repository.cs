@@ -114,14 +114,14 @@ namespace Data.Repositories
                 .Take(amountToTake);
         }
 
-        public IQueryable<TEntity> Search(Expression<Func<TEntity, bool>> predicate)
-        {
-            return DbSet.Where(predicate);
-        }
-
         public async Task<long> Count()
         {
             return await DbSet.CountAsync();
+        }
+
+        public IQueryable<TEntity> Search(Expression<Func<TEntity, bool>> predicate)
+        {
+            return DbSet.Where(predicate);
         }
 
         public async Task<TResult> Max<TResult>(Expression<Func<TEntity, TResult>> predicate)
