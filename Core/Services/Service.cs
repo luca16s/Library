@@ -27,7 +27,7 @@ namespace Core.Services
         where TRepository : IRepository<TEntity, TType>
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly TRepository _repository;
+        public readonly TRepository _repository;
 
         public Service
         (
