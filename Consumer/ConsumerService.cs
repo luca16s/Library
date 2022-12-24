@@ -7,7 +7,7 @@
 
     using System.Net.Http.Headers;
 
-    public class ConsumerService<TResponse> : IConsumer<TResponse>
+    public class ConsumerService<TResponse> : IConsumerService<TResponse>
         where TResponse : notnull
     {
         private HttpClient Client { get; set; } = new();

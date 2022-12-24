@@ -1,6 +1,6 @@
 ﻿namespace Core.Interfaces.Services
 {
-    public interface IConsumer<TResponse>
+    public interface IConsumerService<TResponse>
         where TResponse : notnull
     {
         Task<TResponse> GetItemAsync();
