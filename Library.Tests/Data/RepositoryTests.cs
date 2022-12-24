@@ -9,8 +9,6 @@
 
     using Microsoft.EntityFrameworkCore;
 
-    using Shouldly;
-
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -37,7 +35,8 @@
                     .RuleFor(u => u.Nome, (f, u) => f.Name.FirstName())
                     .RuleFor(u => u.Idade, (f, u) => f.Random.Number(0, 100));
 
-                _ = Context.Pessoas.Add(new Pessoa(i + 1) {
+                _ = Context.Pessoas.Add(new Pessoa(i + 1)
+                {
                     Nome = faker.Generate().Nome,
                     Idade = faker.Generate().Idade,
                 });
