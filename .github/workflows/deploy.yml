@@ -24,5 +24,5 @@ jobs:
         $tagArray="${{github.ref}}".Split("/")
         $tag=$tagArray[2].Split("v")
         $VERSION=$tag[1]
-        dotnet pack -p:PackageVersion=$VERSION --configuration Release --output out
+        dotnet pack -p:PackageVersion=$VERSION --configuration Release --property:PublishDir=out
         dotnet nuget push "out\*.nupkg" --api-key ${{ secrets.GITHUB_TOKEN }} --source "https://nuget.pkg.github.com/luca16s/index.json" --skip-duplicate
