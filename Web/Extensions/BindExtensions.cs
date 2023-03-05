@@ -3,7 +3,6 @@
     using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.Extensions.Options;
     using Microsoft.IdentityModel.Tokens;
 
     using System;
@@ -28,7 +27,7 @@
         /// <param name="nomes">
         /// Nomes das configurações a serem adicionadas.
         /// </param>
-        public static void AddSettings<T>
+        public static void AddSettings
         (
             this IServiceCollection services,
             IConfiguration configuration,

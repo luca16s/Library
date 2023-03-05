@@ -8,6 +8,7 @@
     using System.Collections.Generic;
     using System.Linq;
 
+    using Web.Extensions.Models;
     using Web.Properties;
 
     public static class SwaggerExtensions
@@ -18,52 +19,33 @@
         /// <param name="services">
         /// <see cref="IServiceCollection"/>
         /// </param>
-        /// <param name="site">
-        /// Site da empresa.
-        /// </param>
-        /// <param name="email">
-        /// E-Mail da Empresa.
-        /// </param>
-        /// <param name="appName">
-        /// Nome do aplicativo.
-        /// </param>
-        /// <param name="version">
-        /// Versão do aplicativo.</param>
-        /// <param name="empresa">
-        /// Nome da Empresa.
-        /// </param>
-        /// <param name="description">
-        /// Descrição da aplicação.
+        /// <param name="swaggerModel">
+        /// Arquivo de modelo com informações de swagger.
         /// </param>
         /// <exception cref="ArgumentNullException">
         /// Exceção caso propriedade de site não esteja preenchida.
         /// </exception>
         public static void AddSwaggerConfiguration(
             this IServiceCollection services,
-            string? site = "",
-            string? email = "",
-            string? appName = "",
-            string? version = "",
-            string? empresa = "",
-            string? description = ""
+            SwaggerModel swaggerModel
         )
         {
-            if (string.IsNullOrWhiteSpace(site)) throw new ArgumentNullException(nameof(site));
+            if (swaggerModel is null) throw new ArgumentNullException(nameof(swaggerModel));
 
             _ = services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc(
-                    version,
+                    swaggerModel.Version,
                     new OpenApiInfo
                     {
-                        Title = appName,
-                        Version = version,
-                        Description = description,
+                        Title = swaggerModel.AppName,
+                        Version = swaggerModel.Version,
+                        Description = swaggerModel.Description,
                         Contact = new OpenApiContact
                         {
-                            Url = new(site),
-                            Name = empresa,
-                            Email = email,
+                            Url = new(swaggerModel.Site),
+                            Name = swaggerModel.Empresa,
+                            Email = swaggerModel.Email,
                         }
                     }
                 );
@@ -85,8 +67,8 @@
                         {
                             Reference = new OpenApiReference
                             {
-                                Id = JwtBearerDefaults.AuthenticationScheme,
                                 Type = ReferenceType.SecurityScheme,
+                                Id = JwtBearerDefaults.AuthenticationScheme,
                             },
                             In = ParameterLocation.Header,
                             Scheme = Resources.OAUTH_SCHEME,
