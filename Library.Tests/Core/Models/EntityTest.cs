@@ -19,22 +19,12 @@
         {
             public ClasseGuid(Guid id)
                 : base(id) { }
-
-            public override bool IsConsistent()
-            {
-                throw new NotImplementedException();
-            }
         }
 
         public class ClasseInt : Entity<int>
         {
             public ClasseInt(int id)
                 : base(id) { }
-
-            public override bool IsConsistent()
-            {
-                throw new NotImplementedException();
-            }
         }
 
         [Fact]

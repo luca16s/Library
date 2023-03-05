@@ -62,9 +62,6 @@ namespace Mediator.Handlers
         /// </returns>
         protected bool ValidateEntity(Entity<TId> entity)
         {
-            if (entity.IsConsistent())
-                return true;
-
             NotifyErrorValidations(entity.ValidationResult);
             return false;
         }
