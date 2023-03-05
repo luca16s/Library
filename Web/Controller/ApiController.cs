@@ -72,6 +72,18 @@ namespace Web.Controller
             IDomainNotificationHandler<TId, TResponse> notificationHandler
         )
         {
+            if (mapper is null)
+                throw new ArgumentNullException(nameof(mapper));
+
+            if (service is null)
+                throw new ArgumentNullException(nameof(service));
+
+            if (mediator is null)
+                throw new ArgumentNullException(nameof(mediator));
+
+            if (notificationHandler is null)
+                throw new ArgumentNullException(nameof(notificationHandler));
+
             _mapper = mapper;
             Service = service;
             Mediator = mediator;
