@@ -8,8 +8,17 @@
 
     using Newtonsoft.Json;
 
+    /// <summary>
+    /// Classe de extensão de Controller.
+    /// </summary>
     public static class ControllerExtensions
     {
+        /// <summary>
+        /// Adiciona configurações de controller.
+        /// </summary>
+        /// <param name="services">
+        /// <see cref="IServiceCollection"/>
+        /// </param>
         public static void AddControllerConfiguration
         (
             this IServiceCollection services

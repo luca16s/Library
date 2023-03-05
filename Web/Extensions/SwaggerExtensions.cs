@@ -12,7 +12,33 @@
 
     public static class SwaggerExtensions
     {
-        public static IServiceCollection AddSwaggerConfiguration(
+        /// <summary>
+        /// Método de extensão para incluir configurações de swagger.
+        /// </summary>
+        /// <param name="services">
+        /// <see cref="IServiceCollection"/>
+        /// </param>
+        /// <param name="site">
+        /// Site da empresa.
+        /// </param>
+        /// <param name="email">
+        /// E-Mail da Empresa.
+        /// </param>
+        /// <param name="appName">
+        /// Nome do aplicativo.
+        /// </param>
+        /// <param name="version">
+        /// Versão do aplicativo.</param>
+        /// <param name="empresa">
+        /// Nome da Empresa.
+        /// </param>
+        /// <param name="description">
+        /// Descrição da aplicação.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// Exceção caso propriedade de site não esteja preenchida.
+        /// </exception>
+        public static void AddSwaggerConfiguration(
             this IServiceCollection services,
             string? site = "",
             string? email = "",
@@ -22,13 +48,13 @@
             string? description = ""
         )
         {
-            return string.IsNullOrWhiteSpace(site) ?
-                throw new ArgumentNullException(nameof(site)) :
-                services.AddSwaggerGen(c =>
-                {
-                    c.SwaggerDoc(
-                        version,
-                        new OpenApiInfo
+            if (string.IsNullOrWhiteSpace(site)) throw new ArgumentNullException(nameof(site));
+
+            _ = services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc(
+                    version,
+                    new OpenApiInfo
                     {
                         Title = appName,
                         Version = version,
@@ -40,10 +66,10 @@
                             Email = email,
                         }
                     }
-                    );
-                    c.AddSecurityDefinition(
-                        JwtBearerDefaults.AuthenticationScheme,
-                        new OpenApiSecurityScheme
+                );
+                c.AddSecurityDefinition(
+                    JwtBearerDefaults.AuthenticationScheme,
+                    new OpenApiSecurityScheme
                     {
                         In = ParameterLocation.Header,
                         Name = Resources.SECURITY_SCHEME_HEADER_NAME,
@@ -51,9 +77,9 @@
                         Scheme = JwtBearerDefaults.AuthenticationScheme,
                         Description = Resources.SECURITY_SCHEME_DESCRIPTION,
                     }
-                    );
-                    c.AddSecurityRequirement(new OpenApiSecurityRequirement()
-                 {
+                );
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement()
+             {
                     {
                         new OpenApiSecurityScheme
                         {
@@ -68,14 +94,14 @@
                         },
                         new List<string>()
                     }
-                 });
-                    c.ResolveConflictingActions(apiDescription => apiDescription.First());
-                    c.EnableAnnotations();
-                    c.OrderActionsBy(
-                        (apiDesc) => $"{apiDesc.ActionDescriptor.RouteValues["controller"]}_{apiDesc.HttpMethod}"
-                    );
-                    c.DescribeAllParametersInCamelCase();
-                });
+             });
+                c.ResolveConflictingActions(apiDescription => apiDescription.First());
+                c.EnableAnnotations();
+                c.OrderActionsBy(
+                    (apiDesc) => $"{apiDesc.ActionDescriptor.RouteValues["controller"]}_{apiDesc.HttpMethod}"
+                );
+                c.DescribeAllParametersInCamelCase();
+            });
         }
     }
 }

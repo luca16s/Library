@@ -11,69 +11,114 @@
 
     using Web.Models;
 
+    /// <summary>
+    /// Classe de extensão de Bind.
+    /// </summary>
     public static class BindExtensions
     {
-        public static IServiceCollection AddSettingsConfiguration
+        /// <summary>
+        /// Adiciona configuração do arquivo de Settings.
+        /// </summary>
+        /// <param name="services">
+        /// <see cref="IServiceCollection"/>
+        /// </param>
+        /// <param name="configuration">
+        /// <see cref="IConfiguration"/>
+        /// </param>
+        public static void AddSettings
         (
             this IServiceCollection services,
             IConfiguration configuration
         )
         {
-            return services.Configure<Settings>(
-                configuration.GetSection(nameof(Settings))
-            );
+            _ = services.Configure<Settings>(configuration.GetSection(nameof(Settings)));
+            _ = services.AddSingleton<Settings>();
         }
 
-        public static IServiceCollection AddMediatRConfiguration
+        /// <summary>
+        /// Adiciona configuração do MediatR.
+        /// </summary>
+        /// <param name="services">
+        /// <see cref="IServiceCollection"/>
+        /// </param>
+        /// <param name="assembly">
+        /// Assembly contendo as configurações de MediatR
+        /// <see cref="Assembly"/>
+        /// </param>
+        public static void AddMediatR
         (
            this IServiceCollection services,
-           Assembly type
-        )
-        {
-            return services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(type));
-        }
+           Assembly assembly
+        ) => _ = services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(assembly));
 
-        public static IServiceCollection AddAutomapper
+        /// <summary>
+        /// Adiciona configuração do AutoMapper.
+        /// </summary>
+        /// <param name="services">
+        /// <see cref="IServiceCollection"/>
+        /// <param name="assembly">
+        /// Assembly contendo as configurações de MediatR
+        /// <see cref="Assembly"/>
+        /// </param>
+        public static void AddAutomapper
         (
             this IServiceCollection services,
-            Type type
-        )
-        {
-            return services.AddAutoMapper(
-                cfg => cfg.AddMaps(type),
-                type.GetTypeInfo().Assembly
-            );
-        }
+           Assembly assembly
+        ) => _ = services.AddAutoMapper(cfg => cfg.AddMaps(assembly), assembly);
 
-        public static IServiceCollection AddCorsConfiguration
+        /// <summary>
+        /// Adiciona configuração de CORS.
+        /// </summary>
+        /// <param name="services">
+        /// <see cref="IServiceCollection"/>
+        /// </param>
+        /// <param name="settings">
+        /// <see cref="Settings"/> Arquivo de configurações.
+        /// </param>
+        /// <param name="corsPolicyName">
+        /// Nome da política de CORS.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// Exceção caso argumento Settings seja nulo.
+        /// </exception>
+        public static void AddCors
         (
             this IServiceCollection services,
+            Settings settings,
             string corsPolicyName
         )
         {
-            ServiceProvider? provider = services.BuildServiceProvider();
-            var settings = provider.GetService<IOptions<Settings>>()?.Value;
+            if (settings is null)
+                throw new ArgumentNullException(nameof(settings));
 
-            return settings is null
-                   ? throw new NullReferenceException(nameof(settings))
-                   : services.AddCors(options => {
-                       options.AddPolicy(corsPolicyName, builder => {
-                           foreach (string domain in settings.AllowedDomains) {
-                               _ = builder.WithOrigins(domain)
-                               .AllowAnyHeader()
-                               .AllowAnyMethod();
-                           }
-                       });
-                   });
+            _ = services.AddCors(options =>
+            {
+                options.AddPolicy(corsPolicyName, builder =>
+                {
+                    foreach (string domain in settings.AllowedDomains)
+                    {
+                        _ = builder.WithOrigins(domain)
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                    }
+                });
+            });
         }
 
-        public static IServiceCollection AddJwtConfiguration
+        /// <summary>
+        /// Adiciona configuração de JWT.
+        /// </summary>
+        /// <param name="services">
+        /// <see cref="IServiceCollection"/>
+        /// </param>
+        /// <exception cref="NullReferenceException">
+        /// Exceção caso classe Settings não esteja preenchida.
+        /// </exception>
+        public static void AddJwt
         (
            this IServiceCollection services
         )
         {
-            _ = services.AddSingleton<Settings>();
-
             var provider = services.BuildServiceProvider();
             var tokenSettings = provider.GetService<JwtSettings>();
             var signingSettings = provider.GetService<SigningSettings>();
@@ -106,8 +151,6 @@
                     IssuerSigningKey = signingSettings.SigningCredentials.Key,
                 };
             });
-
-            return services;
         }
     }
 }

@@ -6,6 +6,9 @@
     using System;
     using System.Threading.Tasks;
 
+    /// <summary>
+    /// Middleware de autenticação.
+    /// </summary>
     public class AuthenticateSchemeMiddleware
     {
         private readonly RequestDelegate _next;
