@@ -44,33 +44,6 @@ namespace Core.Models
         public ValidationResult ValidationResult { get; private set; } = new ValidationResult();
 
         /// <summary>
-        /// Valida se a entidade está consistente com as regras definidas.
-        /// </summary>
-        /// <returns>
-        /// True: Entidade consistente.
-        /// False: Entidade inconsistente.
-        /// </returns>
-        public abstract bool IsConsistent();
-
-        /// <summary>
-        /// Adiciona erros de validação ao validationResult da entidade.
-        /// </summary>
-        /// <param name="validationResult">
-        /// Validação a ser adicionada.
-        /// </param>
-        public void AddValidationError(ValidationResult validationResult)
-        {
-            if (validationResult == null) return;
-
-            foreach (ValidationFailure? error in validationResult.Errors)
-            {
-                if (error == null) continue;
-
-                ValidationResult.Errors.Add(new ValidationFailure(error.PropertyName, error.ErrorMessage));
-            }
-        }
-
-        /// <summary>
         /// Gera o hash para a entidade.
         /// </summary>
         /// <returns>
@@ -107,6 +80,24 @@ namespace Core.Models
             Entity<TId> item = (Entity<TId>)obj;
 
             return item.Id.Equals(Id);
+        }
+
+        /// <summary>
+        /// Adiciona erros de validação ao validationResult da entidade.
+        /// </summary>
+        /// <param name="validationResult">
+        /// Validação a ser adicionada.
+        /// </param>
+        public void AddValidationError(ValidationResult validationResult)
+        {
+            if (validationResult is null) return;
+
+            foreach (ValidationFailure? error in validationResult.Errors)
+            {
+                if (error is null) continue;
+
+                ValidationResult.Errors.Add(new ValidationFailure(error.PropertyName, error.ErrorMessage));
+            }
         }
 
         /// <summary>
