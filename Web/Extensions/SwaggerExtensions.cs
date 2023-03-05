@@ -44,7 +44,7 @@
                         Contact = new OpenApiContact
                         {
                             Url = new(swaggerModel.Site),
-                            Name = swaggerModel.Empresa,
+                            Name = swaggerModel.Company,
                             Email = swaggerModel.Email,
                         }
                     }
