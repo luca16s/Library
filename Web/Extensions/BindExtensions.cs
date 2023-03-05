@@ -25,14 +25,20 @@
         /// <param name="configuration">
         /// <see cref="IConfiguration"/>
         /// </param>
-        public static void AddSettings
+        /// <param name="nomes">
+        /// Nomes das configurações a serem adicionadas.
+        /// </param>
+        public static void AddSettings<T>
         (
             this IServiceCollection services,
-            IConfiguration configuration
+            IConfiguration configuration,
+            params string[] nomes
         )
         {
-            _ = services.Configure<Settings>(configuration.GetSection(nameof(Settings)));
-            _ = services.AddSingleton<Settings>();
+            foreach (var nome in nomes)
+            {
+                _ = services.Configure<Settings>(configuration.GetSection(nome));
+            }
         }
 
         /// <summary>
@@ -116,13 +122,11 @@
         /// </exception>
         public static void AddJwt
         (
-           this IServiceCollection services
+           this IServiceCollection services,
+           JwtSettings tokenSettings,
+           SigningSettings signingSettings
         )
         {
-            var provider = services.BuildServiceProvider();
-            var tokenSettings = provider.GetService<JwtSettings>();
-            var signingSettings = provider.GetService<SigningSettings>();
-
             if (tokenSettings is null)
                 throw new NullReferenceException(nameof(tokenSettings));
 
