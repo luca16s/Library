@@ -27,7 +27,7 @@
         /// <param name="nomes">
         /// Nomes das configurações a serem adicionadas.
         /// </param>
-        public static void AddSettings
+        public static void AddSettingsConfiguration
         (
             this IServiceCollection services,
             IConfiguration configuration,
@@ -50,7 +50,7 @@
         /// Assembly contendo as configurações de MediatR
         /// <see cref="Assembly"/>
         /// </param>
-        public static void AddMediatR
+        public static void AddMediatRConfiguration
         (
            this IServiceCollection services,
            Assembly assembly
@@ -65,7 +65,7 @@
         /// Assembly contendo as configurações de MediatR
         /// <see cref="Assembly"/>
         /// </param>
-        public static void AddAutomapper
+        public static void AddAutoMapperConfiguration
         (
             this IServiceCollection services,
            Assembly assembly
@@ -86,7 +86,7 @@
         /// <exception cref="ArgumentNullException">
         /// Exceção caso argumento Settings seja nulo.
         /// </exception>
-        public static void AddCors
+        public static void AddCorsConfiguration
         (
             this IServiceCollection services,
             Settings settings,
@@ -119,7 +119,7 @@
         /// <exception cref="NullReferenceException">
         /// Exceção caso classe Settings não esteja preenchida.
         /// </exception>
-        public static void AddJwt
+        public static void AddJwtConfiguration
         (
            this IServiceCollection services,
            JwtSettings tokenSettings,
