@@ -8,7 +8,7 @@
     using System.Collections.Generic;
     using System.Linq;
 
-    using Web.Extensions.Models;
+    using Web.Models;
     using Web.Properties;
 
     public static class SwaggerExtensions
@@ -27,7 +27,7 @@
         /// </exception>
         public static void AddSwaggerConfiguration(
             this IServiceCollection services,
-            SwaggerModel swaggerModel
+            SwaggerInformation swaggerModel
         )
         {
             if (swaggerModel is null) throw new ArgumentNullException(nameof(swaggerModel));
