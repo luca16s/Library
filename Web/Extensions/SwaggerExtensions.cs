@@ -12,7 +12,7 @@
 
     public static class SwaggerExtensions
     {
-        public static void AddSwaggerConfiguration(
+        public static IServiceCollection AddSwaggerConfiguration(
             this IServiceCollection services,
             string? site = "",
             string? email = "",
@@ -22,16 +22,13 @@
             string? description = ""
         )
         {
-            if (string.IsNullOrWhiteSpace(site))
-            {
-                throw new ArgumentNullException(nameof(site));
-            }
-
-            _ = services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc(
-                    version,
-                    new OpenApiInfo
+            return string.IsNullOrWhiteSpace(site) ?
+                throw new ArgumentNullException(nameof(site)) :
+                services.AddSwaggerGen(c =>
+                {
+                    c.SwaggerDoc(
+                        version,
+                        new OpenApiInfo
                     {
                         Title = appName,
                         Version = version,
@@ -42,18 +39,20 @@
                             Name = empresa,
                             Email = email,
                         }
-                    });
-                c.AddSecurityDefinition(
-                    JwtBearerDefaults.AuthenticationScheme,
-                    new OpenApiSecurityScheme
+                    }
+                    );
+                    c.AddSecurityDefinition(
+                        JwtBearerDefaults.AuthenticationScheme,
+                        new OpenApiSecurityScheme
                     {
                         In = ParameterLocation.Header,
                         Name = Resources.SECURITY_SCHEME_HEADER_NAME,
                         Type = SecuritySchemeType.ApiKey,
                         Scheme = JwtBearerDefaults.AuthenticationScheme,
                         Description = Resources.SECURITY_SCHEME_DESCRIPTION,
-                    });
-                c.AddSecurityRequirement(new OpenApiSecurityRequirement()
+                    }
+                    );
+                    c.AddSecurityRequirement(new OpenApiSecurityRequirement()
                  {
                     {
                         new OpenApiSecurityScheme
@@ -70,13 +69,13 @@
                         new List<string>()
                     }
                  });
-                c.ResolveConflictingActions(apiDescription => apiDescription.First());
-                c.EnableAnnotations();
-                c.OrderActionsBy(
-                    (apiDesc) => $"{apiDesc.ActionDescriptor.RouteValues["controller"]}_{apiDesc.HttpMethod}"
-                );
-                c.DescribeAllParametersInCamelCase();
-            });
+                    c.ResolveConflictingActions(apiDescription => apiDescription.First());
+                    c.EnableAnnotations();
+                    c.OrderActionsBy(
+                        (apiDesc) => $"{apiDesc.ActionDescriptor.RouteValues["controller"]}_{apiDesc.HttpMethod}"
+                    );
+                    c.DescribeAllParametersInCamelCase();
+                });
         }
     }
 }
