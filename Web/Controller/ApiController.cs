@@ -13,6 +13,7 @@ namespace Web.Controller
 
     using Core.Interfaces.Services;
     using Core.Models;
+    using CrossCutting.ViewModels;
 
     using Mediator.Interfaces;
     using Mediator.Notifications;
@@ -130,15 +131,27 @@ namespace Web.Controller
         }
 
         [NonAction]
+        protected IActionResult GetResponse()
+        {
+            List<string> errors = new();
+            errors.AddRange(_handlerWithResponse.GetNotifications().Select(p => p.Value));
+            errors.AddRange(_handlerWithOutResponse.GetNotifications().Select(p => p.Value));
+
+            return IsOperationValid() ? Ok() : BadRequest(new { errors });
+        }
+
+        [NonAction]
         protected IActionResult GetResponse<Response, ViewModel>(Response response)
             where Response : notnull
             where ViewModel : notnull
         {
-            return response is null ?
-                NoContent() :
-                IsOperationValid() ?
+            List<string> errors = new();
+            errors.AddRange(_handlerWithResponse.GetNotifications().Select(p => p.Value));
+            errors.AddRange(_handlerWithOutResponse.GetNotifications().Select(p => p.Value));
+
+            return response is null ? NoContent() : IsOperationValid() ?
                 Ok(_mapper.Map<ViewModel>(response)) :
-                BadRequest(new { errors = _handlerWithResponse.GetNotifications().Select(p => p.Value) });
+                BadRequest(new { errors });
         }
     }
 }
