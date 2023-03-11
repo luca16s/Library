@@ -164,5 +164,19 @@ namespace Web.Extensions
                 };
             });
         }
+
+        /// <summary>
+        /// Adiciona injeção de dependência de validadores de entidades.
+        /// <param name="services">
+        /// <see cref="IServiceCollection"/>
+        /// <param name="assembly">
+        /// Assembly contendo as configurações de MediatR
+        /// <see cref="Assembly"/>
+        /// </param>
+        public static void AddFluentValidation
+        (
+            this IServiceCollection services,
+           Assembly assembly
+        ) => _ = services.AddValidatorsFromAssembly(assembly);
     }
 }
