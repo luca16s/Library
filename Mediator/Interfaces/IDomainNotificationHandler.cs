@@ -14,7 +14,38 @@ namespace Mediator.Interfaces
     using MediatR;
 
     /// <summary>
-    /// Interface para gerenciamento da notificação de domínio.
+    /// Interface para gerenciamento da notificação de domínio sem retorno.
+    /// </summary>
+    /// <typeparam name="TId">
+    /// Identificador da entidade.
+    /// </typeparam>
+    public interface IDomainNotificationHandler<TId> : INotificationHandler<DomainNotification<TId>>
+        where TId : struct
+    {
+        /// <summary>
+        /// Verifica se existem notificações.
+        /// </summary>
+        /// <returns>
+        /// Retorna True caso existam notificações.
+        /// </returns>
+        bool HasNotifications();
+
+        /// <summary>
+        /// Limpar notificações.
+        /// </summary>
+        void ClearNotifications();
+
+        /// <summary>
+        /// Pega as notificações.
+        /// </summary>
+        /// <returns>
+        /// Retorna a lista de notificações.
+        /// </returns>
+        List<DomainNotification<TId>> GetNotifications();
+    }
+
+    /// <summary>
+    /// Interface para gerenciamento da notificação de domínio com retorno.
     /// </summary>
     /// <typeparam name="TId">
     /// Identificador da entidade.
