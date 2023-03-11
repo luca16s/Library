@@ -11,26 +11,8 @@ namespace Mediator.Commands
 {
     using Mediator.Events;
 
-    using System;
-    using System.Text.Json.Serialization;
-
     /// <summary>
-    /// Classe base de Comando.
+    /// Classe base de comando sem retorno.
     /// </summary>
-    /// <typeparam name="TId">
-    /// Tipo do identificador.
-    /// </typeparam>
-    /// <typeparam name="TResponse">
-    /// Tipo do retorno.
-    /// </typeparam>
-    public abstract class Command<TId, TResponse> : Message<TId, TResponse>
-        where TId : struct
-        where TResponse : notnull
-    {
-        /// <summary>
-        /// Timestamp de execução do comando.
-        /// </summary>
-        [JsonIgnore]
-        protected DateTime Timestamp { get; private set; } = DateTime.UtcNow;
-    }
+    public abstract class Command : Message { }
 }

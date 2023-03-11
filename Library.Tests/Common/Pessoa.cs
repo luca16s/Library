@@ -2,8 +2,6 @@
 {
     using global::Core.Models;
 
-    using System;
-
     public class Pessoa : Entity<long>
     {
         public Pessoa() : base(default) { }

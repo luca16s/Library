@@ -58,7 +58,7 @@ namespace Mediator.Handlers
         }
 
         /// <summary>
-        /// Enviar comandos.
+        /// Enviar comando com retorno.
         /// </summary>
         /// <typeparam name="TCommand">
         /// Tipo do comando a ser enviado.
@@ -72,9 +72,6 @@ namespace Mediator.Handlers
         /// <param name="comando">
         /// Comando a ser enviado.
         /// </param>
-        /// <param name="shouldEnqueue">
-        /// Deve enfileirar?
-        /// </param>
         /// <param name="cancellation">
         /// Token de cancelamento.
         /// </param>
@@ -82,7 +79,7 @@ namespace Mediator.Handlers
             TCommand comando,
             CancellationToken cancellation = default
         )
-            where TCommand : Command<TId, TResponse>
+            where TCommand : QueryCommand<TId, TResponse>
             where TResponse : notnull
             where TId : struct
         {
@@ -90,7 +87,28 @@ namespace Mediator.Handlers
         }
 
         /// <summary>
-        /// Lançar evento.
+        /// Enviar comando sem retorno.
+        /// </summary>
+        /// <typeparam name="TCommand">
+        /// Tipo do comando a ser enviado.
+        /// </typeparam>
+        /// <param name="comando">
+        /// Comando a ser enviado.
+        /// </param>
+        /// <param name="cancellation">
+        /// Token de cancelamento.
+        /// </param>
+        public Task SendCommand<TCommand>(
+            TCommand comando,
+            CancellationToken cancellation = default
+        )
+            where TCommand : Command
+        {
+            return _mediator.Send(comando, cancellation);
+        }
+
+        /// <summary>
+        /// Lançar evento com retorno.
         /// </summary>
         /// <typeparam name="TCommand">
         /// Tipo do evento.
@@ -112,16 +130,41 @@ namespace Mediator.Handlers
         /// </param>
         public Task RaiseEvent<TCommand, TId, TResponse>(
             TCommand evento,
-            bool enqueue = false,
             CancellationToken cancellation = default
         )
             where TResponse : notnull
             where TCommand : Event<TId, TResponse>
             where TId : struct
-            => _mediator.Publish(evento, cancellation);
+        {
+            return _mediator.Publish(evento, cancellation);
+        }
 
         /// <summary>
-        /// Publicar Fila
+        /// Lançar evento sem retorno.
+        /// </summary>
+        /// <typeparam name="TCommand">
+        /// Tipo do evento.
+        /// </typeparam>
+        /// <param name="evento">
+        /// Evento a ser lançado.
+        /// </param>
+        /// <param name="enqueue">
+        /// Deve enfileirar?
+        /// </param>
+        /// <param name="cancellation">
+        /// Token de cancelamento.
+        /// </param>
+        public Task RaiseEvent<TCommand>(
+            TCommand evento,
+            CancellationToken cancellation = default
+        )
+            where TCommand : Event
+        {
+            return _mediator.Publish(evento, cancellation);
+        }
+
+        /// <summary>
+        /// Publicar comando em uma fila.
         /// </summary>
         /// <typeparam name="TCommand">
         /// Tipo do comando.

@@ -20,7 +20,7 @@ namespace Mediator.Interfaces
     public interface IMediatorHandler
     {
         /// <summary>
-        /// Lança o evento.
+        /// Lançar evento com retorno.
         /// </summary>
         /// <typeparam name="TCommand">
         /// Tipo do Evento.
@@ -42,15 +42,61 @@ namespace Mediator.Interfaces
         /// </param>
         Task RaiseEvent<TCommand, TId, TResponse>(
             TCommand evento,
-            bool enqueue = false,
             CancellationToken cancellation = default
-        )
-            where TCommand : Event<TId, TResponse>
+        ) where TCommand : Event<TId, TResponse>
             where TResponse : notnull
             where TId : struct;
 
         /// <summary>
-        /// Envia o comando.
+        /// Lançar evento sem retorno.
+        /// </summary>
+        /// <typeparam name="TCommand">
+        /// Tipo do Evento.
+        /// </typeparam>
+        /// <typeparam name="TId">
+        /// Tipo do identificador.
+        /// </typeparam>
+        /// <typeparam name="TResponse">
+        /// Tipo do retorno.
+        /// </typeparam>
+        /// <param name="enqueue">
+        /// Deve enfileirar?
+        /// </param>
+        /// <param name="cancellation">
+        /// Token de cancelamento.
+        /// </param>
+        Task RaiseEvent<TCommand>(
+            TCommand evento,
+            CancellationToken cancellation = default
+        ) where TCommand : Event;
+
+        /// <summary>
+        /// Enviar comando com retorno.
+        /// </summary>
+        /// <typeparam name="TCommand">
+        /// Tipo do Evento.
+        /// </typeparam>
+        /// <typeparam name="TId">
+        /// Tipo do identificador.
+        /// </typeparam>
+        /// <typeparam name="TResponse">
+        /// Tipo do retorno.
+        /// </typeparam>
+        /// <param name="comando">
+        /// Comando a ser enviado.
+        /// </param>
+        /// <param name="cancellation">
+        /// Token de cancelamento.
+        /// </param>
+        Task<TResponse> SendCommand<TCommand, TId, TResponse>(
+            TCommand comando,
+            CancellationToken cancellation = default
+        ) where TCommand : QueryCommand<TId, TResponse>
+            where TResponse : notnull
+            where TId : struct;
+
+        /// <summary>
+        /// Enviar comando sem retorno.
         /// </summary>
         /// <typeparam name="TCommand">
         /// Tipo do Evento.
@@ -70,16 +116,13 @@ namespace Mediator.Interfaces
         /// <param name="cancellation">
         /// Token de cancelamento.
         /// </param>
-        Task<TResponse> SendCommand<TCommand, TId, TResponse>(
+        Task SendCommand<TCommand>(
             TCommand comando,
             CancellationToken cancellation = default
-        )
-            where TCommand : Command<TId, TResponse>
-            where TResponse : notnull
-            where TId : struct;
+        ) where TCommand : Command;
 
         /// <summary>
-        /// Publicar fila.
+        /// Publicar comando em uma fila.
         /// </summary>
         /// <typeparam name="TCommand">
         /// Tipo do comando.

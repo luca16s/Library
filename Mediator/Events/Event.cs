@@ -11,10 +11,13 @@ namespace Mediator.Events
 {
     using MediatR;
 
-    using System;
+    /// <summary>
+    /// Classe base de evento sem retorno.
+    /// </summary>
+    public abstract class Event : Message, INotification { }
 
     /// <summary>
-    /// Classe base de Evento.
+    /// Classe base de evento com retorno.
     /// </summary>
     /// <typeparam name="TId">
     /// Tipo do identificador.
@@ -25,10 +28,5 @@ namespace Mediator.Events
     public abstract class Event<TId, TResponse> : Message<TId, TResponse>, INotification
         where TId : struct
         where TResponse : notnull
-    {
-        /// <summary>
-        /// Timestamp de execução do evento.
-        /// </summary>
-        protected DateTime Timestamp { get; private set; } = DateTime.UtcNow;
-    }
+    { }
 }
