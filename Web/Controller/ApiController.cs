@@ -44,7 +44,8 @@ namespace Web.Controller
         where TService : IService<TEntity, TId>
     {
         private readonly IMapper _mapper;
-        private readonly IDomainNotificationHandler<TId, TResponse> _notificationHandler;
+        private readonly IDomainNotificationHandler<TId> _handlerWithOutResponse;
+        private readonly IDomainNotificationHandler<TId, TResponse> _handlerWithResponse;
 
         public readonly TService Service;
         public readonly IMediatorHandler Mediator;
@@ -61,15 +62,19 @@ namespace Web.Controller
         /// <param name="service">
         /// Injeção do serviço padrão da controller.
         /// </param>
-        /// <param name="notificationHandler">
-        /// Injeção do manipulador de Notificações.
+        /// <param name="handlerWithResponse">
+        /// Injeção do manipulador de Notificações com resposta.
+        /// </param>
+        /// <param name="handlerWithOutResponse">
+        /// Injeção do manipulador de Notificações sem resposta.
         /// </param>
         public ApiController
         (
             IMapper mapper,
             TService service,
             IMediatorHandler mediator,
-            IDomainNotificationHandler<TId, TResponse> notificationHandler
+            IDomainNotificationHandler<TId> handlerWithOutResponse,
+            IDomainNotificationHandler<TId, TResponse> handlerWithResponse
         )
         {
             if (mapper is null)
@@ -81,19 +86,26 @@ namespace Web.Controller
             if (mediator is null)
                 throw new ArgumentNullException(nameof(mediator));
 
-            if (notificationHandler is null)
-                throw new ArgumentNullException(nameof(notificationHandler));
+            if (handlerWithResponse is null)
+                throw new ArgumentNullException(nameof(handlerWithResponse));
+
+            if (handlerWithOutResponse is null)
+                throw new ArgumentNullException(nameof(handlerWithOutResponse));
 
             _mapper = mapper;
             Service = service;
             Mediator = mediator;
-            _notificationHandler = notificationHandler;
+            _handlerWithResponse = handlerWithResponse;
+            _handlerWithOutResponse = handlerWithOutResponse;
         }
 
         [NonAction]
         protected bool IsOperationValid()
         {
-            return _notificationHandler != null && !_notificationHandler.HasNotifications();
+            var withResponse = _handlerWithResponse != null && !_handlerWithResponse.HasNotifications();
+            var withOutResponse = _handlerWithOutResponse != null && !_handlerWithOutResponse.HasNotifications();
+
+            return withResponse && withOutResponse;
         }
 
         [NonAction]
@@ -126,7 +138,7 @@ namespace Web.Controller
                 NoContent() :
                 IsOperationValid() ?
                 Ok(_mapper.Map<ViewModel>(response)) :
-                BadRequest(new { errors = _notificationHandler.GetNotifications().Select(p => p.Value) });
+                BadRequest(new { errors = _handlerWithResponse.GetNotifications().Select(p => p.Value) });
         }
     }
 }

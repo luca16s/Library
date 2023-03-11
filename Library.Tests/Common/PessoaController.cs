@@ -16,8 +16,16 @@
             IMapper mapper,
             IMediatorHandler mediator,
             IPessoaService service,
-            IDomainNotificationHandler<long, Pessoa> notifications
-        ) : base(mapper, service, mediator, notifications) { }
+            IDomainNotificationHandler<long> handlerWithOutNotification,
+            IDomainNotificationHandler<long, Pessoa> handlerWithNotification
+        ) : base(
+            mapper,
+            service,
+            mediator,
+            handlerWithOutNotification,
+            handlerWithNotification
+        )
+        { }
 
         public IActionResult GetValue()
         {
