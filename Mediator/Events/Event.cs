@@ -14,7 +14,10 @@ namespace Mediator.Events
     /// <summary>
     /// Classe base de evento sem retorno.
     /// </summary>
-    public abstract class Event : Message, INotification { }
+    /// <typeparam name="TId">
+    /// Tipo do identificador.
+    /// </typeparam>
+    public abstract class Event<TId> : Message<TId>, INotification where TId : struct { }
 
     /// <summary>
     /// Classe base de evento com retorno.

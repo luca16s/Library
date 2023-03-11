@@ -11,19 +11,15 @@ namespace Mediator.Events
 {
     using MediatR;
 
-    using System.Text.Json.Serialization;
-
     /// <summary>
     /// Classe base da mensagem sem retorno.
     /// </summary>
-    public abstract class Message : IRequest
+    /// <typeparam name="TId">
+    /// Tipo do identificador.
+    /// </typeparam>
+    public abstract class Message<TId> : BaseMessage<TId>, IRequest
+        where TId : struct
     {
-        /// <summary>
-        /// Timestamp de execução do comando.
-        /// </summary>
-        [JsonIgnore]
-        protected DateTime Timestamp { get; private set; } = DateTime.UtcNow;
-
         /// <summary>
         /// Inicializa uma nova instância da classe Message.
         /// </summary>
@@ -31,12 +27,6 @@ namespace Mediator.Events
         {
             MessageType = GetType().Name;
         }
-
-        /// <summary>
-        /// Tipo da mensagem.
-        /// </summary>
-        [JsonIgnore]
-        public string MessageType { get; protected set; }
     }
 
     /// <summary>
@@ -48,7 +38,7 @@ namespace Mediator.Events
     /// <typeparam name="TResponse">
     /// Tipo do retorno.
     /// </typeparam>
-    public abstract class Message<TId, TResponse> : IRequest<TResponse>
+    public abstract class Message<TId, TResponse> : BaseMessage<TId>, IRequest<TResponse>
         where TId : struct
         where TResponse : notnull
     {
@@ -59,17 +49,5 @@ namespace Mediator.Events
         {
             MessageType = GetType().Name;
         }
-
-        /// <summary>
-        /// Tipo da mensagem.
-        /// </summary>
-        [JsonIgnore]
-        public string MessageType { get; protected set; }
-
-        /// <summary>
-        /// Identificador.
-        /// </summary>
-        [JsonIgnore]
-        public TId Id { get; protected set; }
     }
 }

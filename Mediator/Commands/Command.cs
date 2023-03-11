@@ -14,5 +14,8 @@ namespace Mediator.Commands
     /// <summary>
     /// Classe base de comando sem retorno.
     /// </summary>
-    public abstract class Command : Message { }
+    /// <typeparam name="TId">
+    /// Tipo do identificador.
+    /// </typeparam>
+    public abstract class Command<TId> : Message<TId> where TId : struct { }
 }
