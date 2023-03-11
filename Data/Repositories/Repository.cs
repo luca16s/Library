@@ -84,12 +84,8 @@ namespace Data.Repositories
                 throw new ArgumentNullException(nameof(item));
             }
 
-            TEntity? entity = DbSet.Find(id);
-
-            if (entity is null)
-            {
+            TEntity? entity = DbSet.Find(id) ??
                 throw new NullReferenceException("Item pesquisado não existente no banco de dados.");
-            }
 
             Context.Entry(entity).State = EntityState.Detached;
 
