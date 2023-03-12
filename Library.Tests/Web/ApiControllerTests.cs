@@ -41,7 +41,7 @@ namespace Library.Tests.Web
         }
 
         [Fact]
-        public void DeveRetornarFalseQuandoNotificacoesNaoInstanciadas()
+        public void DeveRetornarTrueQuandoExistemNotificacoes()
         {
             var repositorio = new Mock<IPessoaRepository>().Object;
             var servico = new PessoaService(repositorio);
@@ -49,9 +49,8 @@ namespace Library.Tests.Web
             var mediator = new Mock<IMediatorHandler>().Object;
             var notificationHandlerA = new DomainNotificationHandler<long>();
             var notificationHandlerB = new DomainNotificationHandler<long, Pessoa>();
-            var notification = new DomainNotification<long, Pessoa>("", "");
-
-            _ = notificationHandlerB.Handle(notification, CancellationToken.None);
+            var notificacao = new DomainNotification<long, Pessoa>("", "");
+            _ = notificationHandlerB.Handle(notificacao, CancellationToken.None);
 
             var controller = new PessoaController(
                 mapper,
@@ -110,29 +109,6 @@ namespace Library.Tests.Web
         }
 
         [Fact]
-        public void DeveRetornarTrueQuandoExistemNotificacoes()
-        {
-            var repositorio = new Mock<IPessoaRepository>().Object;
-            var servico = new PessoaService(repositorio);
-            var mapper = new Mock<IMapper>().Object;
-            var mediator = new Mock<IMediatorHandler>().Object;
-            var notificationHandlerA = new DomainNotificationHandler<long>();
-            var notificationHandlerB = new DomainNotificationHandler<long, Pessoa>();
-            var notificacao = new DomainNotification<long, Pessoa>("", "");
-            _ = notificationHandlerB.Handle(notificacao, CancellationToken.None);
-
-            var controller = new PessoaController(
-                mapper,
-                mediator,
-                servico,
-                notificationHandlerA,
-                notificationHandlerB
-            );
-
-            _ = controller.IsOperacaoValida().Should().BeFalse();
-        }
-
-        [Fact]
         public void DeveVerificarSeMetodoDerivadoDoServicoFoiChamado()
         {
             var servico = new Mock<IPessoaService>();
@@ -154,6 +130,30 @@ namespace Library.Tests.Web
             _ = controller.GetValue();
 
             servico.Verify(x => x.GetStringValue(It.IsAny<string>()), Times.Once);
+        }
+
+        [Fact]
+        public void DeveRetornarFalseQuandoNotificacoesNaoInstanciadas()
+        {
+            var repositorio = new Mock<IPessoaRepository>().Object;
+            var servico = new PessoaService(repositorio);
+            var mapper = new Mock<IMapper>().Object;
+            var mediator = new Mock<IMediatorHandler>().Object;
+            var notificationHandlerA = new DomainNotificationHandler<long>();
+            var notificationHandlerB = new DomainNotificationHandler<long, Pessoa>();
+            var notification = new DomainNotification<long, Pessoa>("", "");
+
+            _ = notificationHandlerB.Handle(notification, CancellationToken.None);
+
+            var controller = new PessoaController(
+                mapper,
+                mediator,
+                servico,
+                notificationHandlerA,
+                notificationHandlerB
+            );
+
+            _ = controller.IsOperacaoValida().Should().BeFalse();
         }
     }
 }
