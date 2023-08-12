@@ -19,23 +19,16 @@ namespace Mediator.Handlers
     /// <summary>
     /// Classe manipuladora de notificação de domínio sem resposta.
     /// </summary>
-    /// <typeparam name="TId">
-    /// Tipo do identificador.
-    /// </typeparam>
-    /// <typeparam name="TResponse">
-    /// Tipo do retorno.
-    /// </typeparam>
-    public class DomainNotificationHandler<TId> : IDomainNotificationHandler<TId>
-        where TId : struct
+    public class DomainNotificationHandler : IDomainNotificationHandler
     {
-        private List<DomainNotification<TId>> _notifications;
+        private List<DomainNotification> _notifications;
 
         /// <summary>
         /// Constrói uma nova instância da classe manipuladora de notificação de domínio.
         /// </summary>
         public DomainNotificationHandler()
         {
-            _notifications = new List<DomainNotification<TId>>();
+            _notifications = new List<DomainNotification>();
         }
 
         /// <summary>
@@ -61,16 +54,10 @@ namespace Mediator.Handlers
         /// <summary>
         /// Busca todas as notificações.
         /// </summary>
-        /// <typeparam name="TId">
-        /// Tipo do identificador.
-        /// </typeparam>
-        /// <typeparam name="TResponse">
-        /// Tipo do retorno.
-        /// </typeparam>
         /// <returns>
         /// Lista das notificações adicionadas.
         /// </returns>
-        public virtual List<DomainNotification<TId>> GetNotifications()
+        public virtual List<DomainNotification> GetNotifications()
         {
             return _notifications;
         }
@@ -78,19 +65,13 @@ namespace Mediator.Handlers
         /// <summary>
         /// Manipulador de notificação de domínio.
         /// </summary>
-        /// <typeparam name="TId">
-        /// Tipo do identificador.
-        /// </typeparam>
-        /// <typeparam name="TResponse">
-        /// Tipo do retorno.
-        /// </typeparam>
         /// <param name="message">
         /// Mensagem a ser adicionada.
         /// </param>
         /// <param name="cancellationToken">
         /// Token de cancelamento.
         /// </param>
-        public Task Handle(DomainNotification<TId> message, CancellationToken cancellationToken)
+        public Task Handle(DomainNotification message, CancellationToken cancellationToken)
         {
             _notifications.Add(message);
             return Task.CompletedTask;
@@ -101,31 +82,27 @@ namespace Mediator.Handlers
         /// </summary>
         public void Dispose()
         {
-            _notifications = new List<DomainNotification<TId>>();
+            _notifications = new List<DomainNotification>();
         }
     }
 
     /// <summary>
     /// Classe manipuladora de notificação de domínio com resposta.
     /// </summary>
-    /// <typeparam name="TId">
-    /// Tipo do identificador.
-    /// </typeparam>
-    /// <typeparam name="TResponse">
+    /// <typeparam name="TReturn">
     /// Tipo do retorno.
     /// </typeparam>
-    public class DomainNotificationHandler<TId, TResponse> : IDomainNotificationHandler<TId, TResponse>
-        where TId : struct
-        where TResponse : notnull
+    public class DomainNotificationHandler<TReturn> : IDomainNotificationHandler<TReturn>
+        where TReturn : notnull
     {
-        private List<DomainNotification<TId, TResponse>> _notifications;
+        private List<DomainNotification<TReturn>> _notifications;
 
         /// <summary>
         /// Constrói uma nova instância da classe manipuladora de notificação de domínio.
         /// </summary>
         public DomainNotificationHandler()
         {
-            _notifications = new List<DomainNotification<TId, TResponse>>();
+            _notifications = new List<DomainNotification<TReturn>>();
         }
 
         /// <summary>
@@ -151,16 +128,10 @@ namespace Mediator.Handlers
         /// <summary>
         /// Busca todas as notificações.
         /// </summary>
-        /// <typeparam name="TId">
-        /// Tipo do identificador.
-        /// </typeparam>
-        /// <typeparam name="TResponse">
-        /// Tipo do retorno.
-        /// </typeparam>
         /// <returns>
         /// Lista das notificações adicionadas.
         /// </returns>
-        public virtual List<DomainNotification<TId, TResponse>> GetNotifications()
+        public virtual List<DomainNotification<TReturn>> GetNotifications()
         {
             return _notifications;
         }
@@ -168,19 +139,13 @@ namespace Mediator.Handlers
         /// <summary>
         /// Manipulador de notificação de domínio.
         /// </summary>
-        /// <typeparam name="TId">
-        /// Tipo do identificador.
-        /// </typeparam>
-        /// <typeparam name="TResponse">
-        /// Tipo do retorno.
-        /// </typeparam>
         /// <param name="message">
         /// Mensagem a ser adicionada.
         /// </param>
         /// <param name="cancellationToken">
         /// Token de cancelamento.
         /// </param>
-        public Task Handle(DomainNotification<TId, TResponse> message, CancellationToken cancellationToken)
+        public Task Handle(DomainNotification<TReturn> message, CancellationToken cancellationToken)
         {
             _notifications.Add(message);
             return Task.CompletedTask;
@@ -191,7 +156,7 @@ namespace Mediator.Handlers
         /// </summary>
         public void Dispose()
         {
-            _notifications = new List<DomainNotification<TId, TResponse>>();
+            _notifications = new List<DomainNotification<TReturn>>();
         }
     }
 }

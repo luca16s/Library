@@ -26,9 +26,15 @@ namespace Core.Models
         /// </returns>
         public override bool Equals(object? obj)
         {
-            if (obj is null || obj.GetType() != GetType()) return false;
+            if (obj is null || obj.GetType() != GetType())
+            {
+                return false;
+            }
 
-            if (ReferenceEquals(this, obj)) return true;
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
 
             ValueObject? other = (ValueObject)obj;
 

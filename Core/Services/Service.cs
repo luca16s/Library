@@ -21,10 +21,9 @@ namespace Core.Services
     using System.Linq.Expressions;
     using System.Threading.Tasks;
 
-    public class Service<TRepository, TEntity, TType> : IService<TEntity, TType>
-        where TType : struct
-        where TEntity : Entity<TType>
-        where TRepository : IRepository<TEntity, TType>
+    public class Service<TRepository, TEntity> : IService<TEntity>
+        where TEntity : Entity
+        where TRepository : IRepository<TEntity>
     {
         private readonly IUnitOfWork _unitOfWork;
         public readonly TRepository _repository;
@@ -79,7 +78,7 @@ namespace Core.Services
             await _unitOfWork.CommitTransaction(transaction);
         }
 
-        public async Task Update(TType id, TEntity item)
+        public async Task Update(long id, TEntity item)
         {
             using IDbContextTransaction transaction = await _unitOfWork.BeginTransaction();
             try
@@ -95,7 +94,7 @@ namespace Core.Services
             await _unitOfWork.CommitTransaction(transaction);
         }
 
-        public async Task<TEntity?> Get(TType id)
+        public async Task<TEntity?> Get(long id)
         {
             return await _repository.Get(id);
         }

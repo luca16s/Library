@@ -21,10 +21,9 @@ namespace Data.Repositories
     using System.Linq.Expressions;
     using System.Threading.Tasks;
 
-    public class Repository<TContext, TEntity, TId> : IRepository<TEntity, TId>
+    public class Repository<TContext, TEntity> : IRepository<TEntity>
         where TContext : DbContext
-        where TEntity : Entity<TId>
-        where TId : struct
+        where TEntity : Entity
     {
         private TContext Context { get; }
 
@@ -77,7 +76,7 @@ namespace Data.Repositories
             return Task.CompletedTask;
         }
 
-        public Task Update(TId id, TEntity item)
+        public Task Update(long id, TEntity item)
         {
             if (item is null)
             {
@@ -95,7 +94,7 @@ namespace Data.Repositories
             return Task.CompletedTask;
         }
 
-        public async Task<TEntity?> Get(TId id)
+        public async Task<TEntity?> Get(long id)
         {
             return await DbSet.FindAsync(id);
         }

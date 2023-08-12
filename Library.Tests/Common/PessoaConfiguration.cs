@@ -2,5 +2,5 @@
 {
     using global::Data;
 
-    public class PessoaConfiguration : ConfigurationBase<Pessoa, long> { }
+    public class PessoaConfiguration : ConfigurationBase<Pessoa> { }
 }

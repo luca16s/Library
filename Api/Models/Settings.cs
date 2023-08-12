@@ -7,7 +7,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Web.Models
+namespace Api.Models
 {
     using System.Collections.Generic;
 

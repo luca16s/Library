@@ -1,8 +1,6 @@
 ﻿namespace Library.Tests.Common
 {
-    using AutoMapper;
-
-    using global::Web.Controller;
+    using Api.Controller;
 
     using Library.Tests.Common.Interfaces;
 
@@ -10,31 +8,26 @@
 
     using Microsoft.AspNetCore.Mvc;
 
-    public class PessoaController : ApiController<IPessoaService, Pessoa, long, Pessoa>
+    public class PessoaController : ApiController<Pessoa, IPessoaService>
     {
         public PessoaController(
-            IMapper mapper,
-            IMediatorHandler mediator,
             IPessoaService service,
-            IDomainNotificationHandler<long> handlerWithOutNotification,
-            IDomainNotificationHandler<long, Pessoa> handlerWithNotification
+            IMediatorHandler mediator,
+            IDomainNotificationHandler<Pessoa> notificationHandler
         ) : base(
-            mapper,
             service,
             mediator,
-            handlerWithOutNotification,
-            handlerWithNotification
-        )
-        { }
-
-        public IActionResult GetValue()
-        {
-            return Ok(Service.GetStringValue(string.Empty));
-        }
+            notificationHandler
+        ) { }
 
         public bool IsOperacaoValida()
         {
             return IsOperationValid();
+        }
+
+        public IActionResult GetValue()
+        {
+            return Ok(service.GetStringValue(string.Empty));
         }
     }
 }

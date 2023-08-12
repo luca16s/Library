@@ -28,7 +28,7 @@ namespace Desktop.Interfaces.Services
         /// <summary>
         /// Ler arquivos.
         /// </summary>
-        /// <typeparam name="T">
+        /// <typeparam name="TFile">
         /// Tipo de arquivo.
         /// </typeparam>
         /// <param name="folderPath">
@@ -40,12 +40,12 @@ namespace Desktop.Interfaces.Services
         /// <returns>
         /// Arquivos lidos.
         /// </returns>
-        T Read<T>(string folderPath, string fileName);
+        TFile Read<TFile>(string folderPath, string fileName);
 
         /// <summary>
         /// Salvar arquivos.
         /// </summary>
-        /// <typeparam name="T">
+        /// <typeparam name="TFile">
         /// Tipo de arquivo.
         /// </typeparam>
         /// <param name="folderPath">
@@ -57,6 +57,6 @@ namespace Desktop.Interfaces.Services
         /// <param name="content">
         /// Conteudo a ser salvo.
         /// </param>
-        void Save<T>(string folderPath, string fileName, T content);
+        void Save<TFile>(string folderPath, string fileName, TFile content);
     }
 }

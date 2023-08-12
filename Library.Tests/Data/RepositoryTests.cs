@@ -252,7 +252,7 @@
         [Trait("Method", "Search")]
         public void SearchDeveRetornarVazioQuandoItemBuscadoNaoExistente()
         {
-            var id = 5340;
+            long id = 5340;
 
             var result = Repository.Search(x => x.Id == id).ToList();
 

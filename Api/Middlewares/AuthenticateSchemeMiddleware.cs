@@ -7,7 +7,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Web.Middlewares
+namespace Api.Middlewares
 {
     using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Http;

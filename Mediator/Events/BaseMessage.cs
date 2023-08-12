@@ -14,9 +14,7 @@ namespace Mediator.Events
     /// <summary>
     /// Classe base de mensagem.
     /// </summary>
-    /// <typeparam name="TId"></typeparam>
-    public abstract class BaseMessage<TId>
-        where TId : struct
+    public abstract class BaseMessage
     {
         /// <summary>
         /// Inicializa uma nova instância da classe Message.
@@ -30,7 +28,7 @@ namespace Mediator.Events
         /// Identificador da mensagem.
         /// </summary>
         [JsonIgnore]
-        public TId Id { get; protected set; }
+        public long Id { get; protected set; }
 
         /// <summary>
         /// Tipo da mensagem.

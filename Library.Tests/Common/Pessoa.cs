@@ -2,7 +2,7 @@
 {
     using global::Core.Models;
 
-    public class Pessoa : Entity<long>
+    public class Pessoa : Entity
     {
         public Pessoa() : base(default) { }
 

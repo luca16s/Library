@@ -63,10 +63,7 @@ namespace Mediator.Handlers
         /// <typeparam name="TCommand">
         /// Tipo do comando a ser enviado.
         /// </typeparam>
-        /// <typeparam name="TId">
-        /// Tipo do identificador.
-        /// </typeparam>
-        /// <typeparam name="TResponse">
+        /// <typeparam name="TReturn">
         /// Tipo do retorno.
         /// </typeparam>
         /// <param name="comando">
@@ -75,13 +72,11 @@ namespace Mediator.Handlers
         /// <param name="cancellation">
         /// Token de cancelamento.
         /// </param>
-        public Task<TResponse> SendCommand<TCommand, TId, TResponse>(
+        public Task<TReturn> Send<TCommand, TReturn>(
             TCommand comando,
             CancellationToken cancellation = default
-        )
-            where TId : struct
-            where TResponse : notnull
-            where TCommand : QueryCommand<TId, TResponse>
+        ) where TReturn : notnull
+          where TCommand : QueryCommand<TReturn>
         {
             return _mediator.Send(comando, cancellation);
         }
@@ -92,21 +87,16 @@ namespace Mediator.Handlers
         /// <typeparam name="TCommand">
         /// Tipo do comando a ser enviado.
         /// </typeparam>
-        /// <typeparam name="TId">
-        /// Tipo do identificador.
-        /// </typeparam>
         /// <param name="comando">
         /// Comando a ser enviado.
         /// </param>
         /// <param name="cancellation">
         /// Token de cancelamento.
         /// </param>
-        public Task SendCommand<TCommand, TId>(
+        public Task Send<TCommand>(
             TCommand comando,
             CancellationToken cancellation = default
-        )
-            where TId : struct
-            where TCommand : Command<TId>
+        ) where TCommand : Command
         {
             return _mediator.Send(comando, cancellation);
         }
@@ -117,10 +107,7 @@ namespace Mediator.Handlers
         /// <typeparam name="TCommand">
         /// Tipo do evento.
         /// </typeparam>
-        /// <typeparam name="TId">
-        /// Tipo do identificador.
-        /// </typeparam>
-        /// <typeparam name="TResponse">
+        /// <typeparam name="TReturn">
         /// Tipo do retorno.
         /// </typeparam>
         /// <param name="evento">
@@ -132,13 +119,11 @@ namespace Mediator.Handlers
         /// <param name="cancellation">
         /// Token de cancelamento.
         /// </param>
-        public Task RaiseEvent<TCommand, TId, TResponse>(
+        public Task Raise<TCommand, TReturn>(
             TCommand evento,
             CancellationToken cancellation = default
-        )
-            where TId : struct
-            where TResponse : notnull
-            where TCommand : Event<TId, TResponse>
+        ) where TReturn : notnull
+          where TCommand : Event<TReturn>
         {
             return _mediator.Publish(evento, cancellation);
         }
@@ -149,9 +134,6 @@ namespace Mediator.Handlers
         /// <typeparam name="TCommand">
         /// Tipo do evento.
         /// </typeparam>
-        /// <typeparam name="TId">
-        /// Tipo do identificador.
-        /// </typeparam>
         /// <param name="evento">
         /// Evento a ser lançado.
         /// </param>
@@ -161,12 +143,10 @@ namespace Mediator.Handlers
         /// <param name="cancellation">
         /// Token de cancelamento.
         /// </param>
-        public Task RaiseEvent<TCommand, TId>(
+        public Task Raise<TCommand>(
             TCommand evento,
             CancellationToken cancellation = default
-        )
-            where TId : struct
-            where TCommand : Event<TId>
+        ) where TCommand : Event
         {
             return _mediator.Publish(evento, cancellation);
         }

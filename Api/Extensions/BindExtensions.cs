@@ -7,8 +7,10 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Web.Extensions
+namespace Api.Extensions
 {
+    using Api.Models;
+
     using FluentValidation;
 
     using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -18,8 +20,6 @@ namespace Web.Extensions
 
     using System;
     using System.Reflection;
-
-    using Web.Models;
 
     /// <summary>
     /// Classe de extensão de Bind.
@@ -105,7 +105,9 @@ namespace Web.Extensions
         )
         {
             if (settings is null)
+            {
                 throw new ArgumentNullException(nameof(settings));
+            }
 
             _ = services.AddCors(options =>
             {
@@ -138,10 +140,14 @@ namespace Web.Extensions
         )
         {
             if (tokenSettings is null)
+            {
                 throw new NullReferenceException(nameof(tokenSettings));
+            }
 
             if (signingSettings is null)
+            {
                 throw new NullReferenceException(nameof(signingSettings));
+            }
 
             _ = services.AddAuthentication(authOptions =>
             {

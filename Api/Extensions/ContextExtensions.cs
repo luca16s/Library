@@ -1,0 +1,38 @@
+﻿namespace Api.Extensions
+{
+    using Api.Models;
+
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.DependencyInjection;
+
+    public static class ContextExtensions
+    {
+        public static IServiceCollection AddContextConfiguration<TContext>
+        (
+            this IServiceCollection services,
+            string schema,
+            Settings settings
+        ) where TContext : DbContext
+        {
+            string? connectionString =
+                settings
+                .ConnectionString
+                .FirstOrDefault(c => c.Nome.Equals(schema, StringComparison.Ordinal))
+               ?.Url;
+
+            return string.IsNullOrWhiteSpace(connectionString)
+                ? throw new ArgumentNullException(
+                    nameof(connectionString),
+                    "String de conexão com o banco de dados não pode ser nula."
+                )
+                : services
+                .AddEntityFrameworkProxies()
+                .AddDbContext<TContext>(options =>
+                {
+                    _ = options
+                    .UseLazyLoadingProxies()
+                    .UseSqlServer(connectionString);
+                });
+        }
+    }
+}

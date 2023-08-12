@@ -7,15 +7,11 @@
     /// <summary>
     /// Classe base de comando de query com retorno.
     /// </summary>
-    /// <typeparam name="TId">
-    /// Tipo do identificador.
-    /// </typeparam>
-    /// <typeparam name="TResponse">
+    /// <typeparam name="TReturn">
     /// Tipo do retorno.
     /// </typeparam>
-    public abstract class QueryCommand<TId, TResponse> : Message<TId, TResponse>
-        where TId : struct
-        where TResponse : notnull
+    public abstract class QueryCommand<TReturn> : Message<TReturn>
+        where TReturn : notnull
     {
         /// <summary>
         /// Quantidade de itens a serem ignorados.

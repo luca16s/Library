@@ -14,21 +14,18 @@ namespace Core.Models
     /// <summary>
     /// Entidade base.
     /// </summary>
-    /// <typeparam name="TId">
-    /// Tipo do identificador da entidade.
-    /// </typeparam>
-    public abstract class Entity<TId> where TId : struct
+    public abstract class Entity
     {
         private int? _requestedHashCode;
 
         /// <summary>
-        /// Inicia uma nova instância da classe <see cref="Entity" />.
+        /// Inicia uma nova instância da classe <see cref="Entity"/>.
         /// Construtor com identificador passado via parametro.
         /// </summary>
         /// <param name="id">
         /// Identificador.
         /// </param>
-        public Entity(TId id)
+        public Entity(long id)
         {
             Id = id;
         }
@@ -36,7 +33,7 @@ namespace Core.Models
         /// <summary>
         /// Obtém identificador da entidade.
         /// </summary>
-        public TId Id { get; private set; }
+        public long Id { get; private set; }
 
         /// <summary>
         /// Lista com as validações executadas para entidade.
@@ -71,13 +68,22 @@ namespace Core.Models
         /// </returns>
         public override bool Equals(object? obj)
         {
-            if (obj is null) return false;
+            if (obj is null)
+            {
+                return false;
+            }
 
-            if (obj is not Entity<TId> || GetType() != obj.GetType()) return false;
+            if (obj is not Entity || GetType() != obj.GetType())
+            {
+                return false;
+            }
 
-            if (ReferenceEquals(this, obj)) return true;
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
 
-            Entity<TId> item = (Entity<TId>)obj;
+            Entity item = (Entity)obj;
 
             return item.Id.Equals(Id);
         }
@@ -90,11 +96,17 @@ namespace Core.Models
         /// </param>
         public void AddValidationError(ValidationResult validationResult)
         {
-            if (validationResult is null) return;
+            if (validationResult is null)
+            {
+                return;
+            }
 
             foreach (ValidationFailure? error in validationResult.Errors)
             {
-                if (error is null) continue;
+                if (error is null)
+                {
+                    continue;
+                }
 
                 ValidationResult.Errors.Add(new ValidationFailure(error.PropertyName, error.ErrorMessage));
             }
@@ -113,7 +125,7 @@ namespace Core.Models
         /// True: Entidade igual.
         /// False: Entidade diferente.
         /// </returns>
-        public static bool operator ==(Entity<TId> left, Entity<TId> right)
+        public static bool operator ==(Entity left, Entity right)
         {
             return Equals(left, null) ?
                 Equals(right, null) :
@@ -133,7 +145,7 @@ namespace Core.Models
         /// True: Entidade diferente.
         /// False: Entidade igual.
         /// </returns>
-        public static bool operator !=(Entity<TId> left, Entity<TId> right)
+        public static bool operator !=(Entity left, Entity right)
         {
             return !(left == right);
         }

@@ -3,8 +3,6 @@
     using Library.Tests.Common;
     using Library.Tests.Common.Interfaces;
 
-    using Moq;
-
     using System;
     using System.Collections.Generic;
     using System.Linq.Expressions;

@@ -4,7 +4,7 @@
 
     using Library.Tests.Common.Interfaces;
 
-    internal class PessoaRepository : Repository<PessoaContext, Pessoa, long>, IPessoaRepository
+    internal class PessoaRepository : Repository<PessoaContext, Pessoa>, IPessoaRepository
     {
         public PessoaRepository(PessoaContext context) : base(context) { }
 

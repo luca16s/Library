@@ -1,7 +1,5 @@
 namespace Library.Tests.Web
 {
-    using AutoMapper;
-
     using FluentAssertions;
 
     using Library.Tests.Common;
@@ -11,8 +9,6 @@ namespace Library.Tests.Web
     using Mediator.Interfaces;
     using Mediator.Notifications;
 
-    using Moq;
-
     using System.Threading;
 
     using Xunit;
@@ -20,44 +16,19 @@ namespace Library.Tests.Web
     public class ApiControllerTests
     {
         [Fact]
-        public void DeveInstanciarServicoBase()
-        {
-            var repositorio = new Mock<IPessoaRepository>().Object;
-            var servico = new PessoaService(repositorio);
-            var mapper = new Mock<IMapper>().Object;
-            var mediator = new Mock<IMediatorHandler>().Object;
-            var notificationHandlerA = new DomainNotificationHandler<long>();
-            var notificationHandlerB = new DomainNotificationHandler<long, Pessoa>();
-
-            var controller = new PessoaController(
-                mapper,
-                mediator,
-                servico,
-                notificationHandlerA,
-                notificationHandlerB
-            );
-
-            _ = controller.Service.Should().NotBeNull();
-        }
-
-        [Fact]
         public void DeveRetornarTrueQuandoExistemNotificacoes()
         {
             var repositorio = new Mock<IPessoaRepository>().Object;
             var servico = new PessoaService(repositorio);
-            var mapper = new Mock<IMapper>().Object;
             var mediator = new Mock<IMediatorHandler>().Object;
-            var notificationHandlerA = new DomainNotificationHandler<long>();
-            var notificationHandlerB = new DomainNotificationHandler<long, Pessoa>();
-            var notificacao = new DomainNotification<long, Pessoa>("", "");
-            _ = notificationHandlerB.Handle(notificacao, CancellationToken.None);
+            var notificationHandler = new DomainNotificationHandler<Pessoa>();
+            var notificacao = new DomainNotification<Pessoa>("", "");
+            _ = notificationHandler.Handle(notificacao, CancellationToken.None);
 
             var controller = new PessoaController(
-                mapper,
-                mediator,
                 servico,
-                notificationHandlerA,
-                notificationHandlerB
+                mediator,
+                notificationHandler
             );
 
             _ = controller.IsOperacaoValida().Should().BeFalse();
@@ -68,20 +39,16 @@ namespace Library.Tests.Web
         {
             var repositorio = new Mock<IPessoaRepository>().Object;
             var servico = new PessoaService(repositorio);
-            var mapper = new Mock<IMapper>().Object;
             var mediator = new Mock<IMediatorHandler>().Object;
-            var notificationHandlerA = new DomainNotificationHandler<long>();
-            var notificationHandlerB = new DomainNotificationHandler<long, Pessoa>();
-            var notification = new DomainNotification<long, Pessoa>("", "");
+            var notificationHandler = new DomainNotificationHandler<Pessoa>();
+            var notification = new DomainNotification<Pessoa>("", "");
 
-            _ = notificationHandlerB.Handle(notification, CancellationToken.None);
+            _ = notificationHandler.Handle(notification, CancellationToken.None);
 
             var controller = new PessoaController(
-                mapper,
-                mediator,
                 servico,
-                notificationHandlerA,
-                notificationHandlerB
+                mediator,
+                notificationHandler
             );
 
             _ = controller.IsOperacaoValida().Should().BeFalse();
@@ -92,17 +59,13 @@ namespace Library.Tests.Web
         {
             var repositorio = new Mock<IPessoaRepository>().Object;
             var servico = new PessoaService(repositorio);
-            var mapper = new Mock<IMapper>().Object;
             var mediator = new Mock<IMediatorHandler>().Object;
-            var notificationHandlerA = new DomainNotificationHandler<long>();
-            var notificationHandlerB = new DomainNotificationHandler<long, Pessoa>();
+            var notificationHandler = new DomainNotificationHandler<Pessoa>();
 
             var controller = new PessoaController(
-                mapper,
-                mediator,
                 servico,
-                notificationHandlerA,
-                notificationHandlerB
+                mediator,
+                notificationHandler
             );
 
             _ = controller.IsOperacaoValida().Should().BeTrue();
@@ -112,19 +75,15 @@ namespace Library.Tests.Web
         public void DeveVerificarSeMetodoDerivadoDoServicoFoiChamado()
         {
             var servico = new Mock<IPessoaService>();
-            var mapper = new Mock<IMapper>().Object;
             var mediator = new Mock<IMediatorHandler>().Object;
-            var notificationHandlerA = new DomainNotificationHandler<long>();
-            var notificationHandlerB = new DomainNotificationHandler<long, Pessoa>();
-            var notificacao = new DomainNotification<long, Pessoa>("", "");
-            _ = notificationHandlerB.Handle(notificacao, CancellationToken.None);
+            var notificationHandler = new DomainNotificationHandler<Pessoa>();
+            var notificacao = new DomainNotification<Pessoa>("", "");
+            _ = notificationHandler.Handle(notificacao, CancellationToken.None);
 
             var controller = new PessoaController(
-                mapper,
-                mediator,
                 servico.Object,
-                notificationHandlerA,
-                notificationHandlerB
+                mediator,
+                notificationHandler
             );
 
             _ = controller.GetValue();
@@ -137,20 +96,16 @@ namespace Library.Tests.Web
         {
             var repositorio = new Mock<IPessoaRepository>().Object;
             var servico = new PessoaService(repositorio);
-            var mapper = new Mock<IMapper>().Object;
             var mediator = new Mock<IMediatorHandler>().Object;
-            var notificationHandlerA = new DomainNotificationHandler<long>();
-            var notificationHandlerB = new DomainNotificationHandler<long, Pessoa>();
-            var notification = new DomainNotification<long, Pessoa>("", "");
+            var notificationHandler = new DomainNotificationHandler<Pessoa>();
+            var notification = new DomainNotification<Pessoa>("", "");
 
-            _ = notificationHandlerB.Handle(notification, CancellationToken.None);
+            _ = notificationHandler.Handle(notification, CancellationToken.None);
 
             var controller = new PessoaController(
-                mapper,
-                mediator,
                 servico,
-                notificationHandlerA,
-                notificationHandlerB
+                mediator,
+                notificationHandler
             );
 
             _ = controller.IsOperacaoValida().Should().BeFalse();

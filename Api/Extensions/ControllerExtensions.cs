@@ -7,7 +7,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Web.Extensions
+namespace Api.Extensions
 {
     using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Authorization;
@@ -23,17 +23,36 @@ namespace Web.Extensions
     public static class ControllerExtensions
     {
         /// <summary>
-        /// Adiciona configurações de controller.
+        /// Adiciona o HttpContext Accessor.
         /// </summary>
         /// <param name="services">
         /// <see cref="IServiceCollection"/>
         /// </param>
-        public static void AddControllerConfiguration
+        /// <see cref="IServiceCollection"/>
+        /// </returns>
+        public static IServiceCollection AddHttpContextAccessor
         (
             this IServiceCollection services
         )
         {
-            _ = services.AddAuthorization(authOptions =>
+            return services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+        }
+
+        /// <summary>
+        /// Adiciona configuração de autorização.
+        /// </summary>
+        /// <param name="services">
+        /// <see cref="IServiceCollection"/>
+        /// </param>
+        /// <returns>
+        /// <see cref="IServiceCollection"/>
+        /// </returns>
+        public static IServiceCollection AddAuthorization
+        (
+            this IServiceCollection services
+        )
+        {
+            return services.AddAuthorization(authOptions =>
             {
                 authOptions.AddPolicy(
                     JwtBearerDefaults.AuthenticationScheme,
@@ -43,8 +62,23 @@ namespace Web.Extensions
                     .Build()
                 );
             });
+        }
 
-            _ = services.AddControllers(config =>
+        /// <summary>
+        /// Adiciona configurações de controller.
+        /// </summary>
+        /// <param name="services">
+        /// <see cref="IServiceCollection"/>
+        /// </param>
+        /// <returns>
+        /// <see cref="IServiceCollection"/>
+        /// </returns>
+        public static IMvcBuilder AddControllerConfiguration
+        (
+            this IServiceCollection services
+        )
+        {
+            return services.AddControllers(config =>
             {
                 AuthorizationPolicy? policy = new AuthorizationPolicyBuilder()
                     .RequireAuthenticatedUser()
@@ -53,8 +87,6 @@ namespace Web.Extensions
                 config.Filters.Add(new AuthorizeFilter(policy));
 
             }).AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
-
-            _ = services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         }
     }
 }

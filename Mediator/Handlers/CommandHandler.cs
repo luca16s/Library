@@ -19,17 +19,10 @@ namespace Mediator.Handlers
     /// <summary>
     /// Classe de manipuladora de comandos com retorno.
     /// </summary>
-    /// <typeparam name="TId">
-    /// Tipo do identificador.
-    /// </typeparam>
-    /// <typeparam name="TResponse">
-    /// Tipo do retorno.
-    /// </typeparam>
-    public abstract class CommandHandler<TId>
-        where TId : struct
+    public abstract class CommandHandler
     {
         protected readonly IMediatorHandler _mediator;
-        protected readonly IDomainNotificationHandler<TId> _notifications;
+        protected readonly IDomainNotificationHandler _notifications;
 
         /// <summary>
         /// Construtor da classe de manipulação de comandos.
@@ -42,7 +35,7 @@ namespace Mediator.Handlers
         /// </param>
         protected CommandHandler(
             IMediatorHandler mediator,
-            IDomainNotificationHandler<TId> notifications
+            IDomainNotificationHandler notifications
         )
         {
             _mediator = mediator;
@@ -59,7 +52,7 @@ namespace Mediator.Handlers
         /// Retorna se entidade está válida.
         /// True: Caso válida.
         /// </returns>
-        protected bool ValidateEntity(Entity<TId> entity)
+        protected bool ValidateEntity(Entity entity)
         {
             NotifyErrorValidations(entity.ValidationResult);
             return false;
@@ -82,7 +75,7 @@ namespace Mediator.Handlers
                 return;
             }
 
-            _ = _mediator.RaiseEvent<DomainNotification<TId>, TId>(new DomainNotification<TId>(nome, mensagem));
+            _ = _mediator.Raise<DomainNotification>(new DomainNotification(nome, mensagem));
         }
 
         /// <summary>
@@ -117,18 +110,14 @@ namespace Mediator.Handlers
     /// <summary>
     /// Classe de manipuladora de comandos com retorno.
     /// </summary>
-    /// <typeparam name="TId">
-    /// Tipo do identificador.
-    /// </typeparam>
-    /// <typeparam name="TResponse">
+    /// <typeparam name="TReturn">
     /// Tipo do retorno.
     /// </typeparam>
-    public abstract class CommandHandler<TId, TResponse>
-        where TId : struct
-        where TResponse : notnull
+    public abstract class CommandHandler<TReturn>
+        where TReturn : notnull
     {
         protected readonly IMediatorHandler _mediator;
-        protected readonly IDomainNotificationHandler<TId, TResponse> _notifications;
+        protected readonly IDomainNotificationHandler<TReturn> _notifications;
 
         /// <summary>
         /// Construtor da classe de manipulação de comandos.
@@ -141,7 +130,7 @@ namespace Mediator.Handlers
         /// </param>
         protected CommandHandler(
             IMediatorHandler mediator,
-            IDomainNotificationHandler<TId, TResponse> notifications
+            IDomainNotificationHandler<TReturn> notifications
         )
         {
             _mediator = mediator;
@@ -158,7 +147,7 @@ namespace Mediator.Handlers
         /// Retorna se entidade está válida.
         /// True: Caso válida.
         /// </returns>
-        protected bool ValidateEntity(Entity<TId> entity)
+        protected bool ValidateEntity(Entity entity)
         {
             NotifyErrorValidations(entity.ValidationResult);
             return false;
@@ -181,7 +170,7 @@ namespace Mediator.Handlers
                 return;
             }
 
-            _ = _mediator.RaiseEvent<DomainNotification<TId, TResponse>, TId, TResponse>(new DomainNotification<TId, TResponse>(nome, mensagem));
+            _ = _mediator.Raise<DomainNotification<TReturn>, TReturn>(new DomainNotification<TReturn>(nome, mensagem));
         }
 
         /// <summary>

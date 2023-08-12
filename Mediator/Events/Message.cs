@@ -14,11 +14,7 @@ namespace Mediator.Events
     /// <summary>
     /// Classe base da mensagem sem retorno.
     /// </summary>
-    /// <typeparam name="TId">
-    /// Tipo do identificador.
-    /// </typeparam>
-    public abstract class Message<TId> : BaseMessage<TId>, IRequest
-        where TId : struct
+    public abstract class Message : BaseMessage, IRequest
     {
         /// <summary>
         /// Inicializa uma nova instância da classe Message.
@@ -32,15 +28,11 @@ namespace Mediator.Events
     /// <summary>
     /// Classe base da mensagem com retorno.
     /// </summary>
-    /// <typeparam name="TId">
-    /// Tipo do identificador.
-    /// </typeparam>
-    /// <typeparam name="TResponse">
+    /// <typeparam name="TReturn">
     /// Tipo do retorno.
     /// </typeparam>
-    public abstract class Message<TId, TResponse> : BaseMessage<TId>, IRequest<TResponse>
-        where TId : struct
-        where TResponse : notnull
+    public abstract class Message<TReturn> : BaseMessage, IRequest<TReturn>
+        where TReturn : notnull
     {
         /// <summary>
         /// Inicializa uma nova instância da classe Message.

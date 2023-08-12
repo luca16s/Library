@@ -22,7 +22,7 @@ namespace Core.Extensions
         /// <summary>
         /// Método de extensão que valida se texto contém somente dígitos.
         /// </summary>
-        /// <typeparam name="T">
+        /// <typeparam name="TEntity">
         /// Tipo da entidade a ser validada.
         /// </typeparam>
         /// <param name="ruleBuilder">
@@ -31,8 +31,8 @@ namespace Core.Extensions
         /// <returns>
         /// Retorna RuleBuilder pós validação.
         /// </returns>
-        public static IRuleBuilderOptions<T, string> ShouldOnlyHaveDigits<T>(
-            this IRuleBuilder<T, string> ruleBuilder
+        public static IRuleBuilderOptions<TEntity, string> ShouldOnlyHaveDigits<TEntity>(
+            this IRuleBuilder<TEntity, string> ruleBuilder
         )
         {
             return ruleBuilder.Must(property =>

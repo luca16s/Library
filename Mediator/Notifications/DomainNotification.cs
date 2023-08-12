@@ -14,22 +14,12 @@ namespace Mediator.Notifications
     /// <summary>
     /// Notificação de domínio sem retorno.
     /// </summary>
-    /// <typeparam name="TId">
-    /// Tipo do identificador.
-    /// </typeparam>
-    /// <typeparam name="TResponse">
-    /// Tipo do retorno.
-    /// </typeparam>
-    public class DomainNotification<TId> : Event<TId>
-        where TId : struct
+    public class DomainNotification : Event
     {
         /// <summary>
         /// Identificador da notigicação.
         /// </summary>
-        /// <typeparam name="TId">
-        /// Tipo do identificador.
-        /// </typeparam>
-        public TId NotificationId { get; private set; }
+        public long NotificationId { get; private set; }
 
         /// <summary>
         /// Chave da notificação.
@@ -68,23 +58,16 @@ namespace Mediator.Notifications
     /// <summary>
     /// Notificação de domínio com retorno.
     /// </summary>
-    /// <typeparam name="TId">
-    /// Tipo do identificador.
-    /// </typeparam>
-    /// <typeparam name="TResponse">
+    /// <typeparam name="TReturn">
     /// Tipo do retorno.
     /// </typeparam>
-    public class DomainNotification<TId, TResponse> : Event<TId, TResponse>
-        where TId : struct
-        where TResponse : notnull
+    public class DomainNotification<TReturn> : Event<TReturn>
+        where TReturn : notnull
     {
         /// <summary>
         /// Identificador da notigicação.
         /// </summary>
-        /// <typeparam name="TId">
-        /// Tipo do identificador.
-        /// </typeparam>
-        public TId NotificationId { get; private set; }
+        public long NotificationId { get; private set; }
 
         /// <summary>
         /// Chave da notificação.

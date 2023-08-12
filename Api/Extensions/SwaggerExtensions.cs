@@ -7,18 +7,21 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Web.Extensions
+namespace Api.Extensions
 {
+    using Api.Models;
+    using Api.Properties;
+
     using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.OpenApi.Models;
 
+    using Swashbuckle.AspNetCore.SwaggerGen;
+
     using System;
     using System.Collections.Generic;
     using System.Linq;
-
-    using Web.Models;
-    using Web.Properties;
+    using System.Reflection;
 
     public static class SwaggerExtensions
     {
@@ -28,33 +31,33 @@ namespace Web.Extensions
         /// <param name="services">
         /// <see cref="IServiceCollection"/>
         /// </param>
-        /// <param name="swaggerModel">
+        /// <param name="swaggerInfo">
         /// Arquivo de modelo com informações de swagger.
         /// </param>
         /// <exception cref="ArgumentNullException">
         /// Exceção caso propriedade de site não esteja preenchida.
         /// </exception>
-        public static void AddSwaggerConfiguration(
+        public static IServiceCollection AddSwaggerConfiguration(
             this IServiceCollection services,
-            SwaggerInformation swaggerModel
+            SwaggerInfo swaggerInfo
         )
         {
-            if (swaggerModel is null) throw new ArgumentNullException(nameof(swaggerModel));
-
-            _ = services.AddSwaggerGen(c =>
+            return swaggerInfo is null
+                ? throw new ArgumentNullException(nameof(swaggerInfo))
+                : services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc(
-                    swaggerModel.Version,
+                    swaggerInfo.AppVersion,
                     new OpenApiInfo
                     {
-                        Title = swaggerModel.AppName,
-                        Version = swaggerModel.Version,
-                        Description = swaggerModel.Description,
+                        Title = swaggerInfo.AppName,
+                        Version = swaggerInfo.AppVersion,
+                        Description = swaggerInfo.Description,
                         Contact = new OpenApiContact
                         {
-                            Url = new(swaggerModel.Site ?? string.Empty),
-                            Name = swaggerModel.Company,
-                            Email = swaggerModel.Email,
+                            Url = new(swaggerInfo.Site ?? string.Empty),
+                            Name = swaggerInfo.Company,
+                            Email = swaggerInfo.Email,
                         }
                     }
                 );
@@ -63,8 +66,8 @@ namespace Web.Extensions
                     new OpenApiSecurityScheme
                     {
                         In = ParameterLocation.Header,
-                        Name = Resources.SECURITY_SCHEME_HEADER_NAME,
                         Type = SecuritySchemeType.ApiKey,
+                        Name = Resources.SECURITY_SCHEME_HEADER_NAME,
                         Scheme = JwtBearerDefaults.AuthenticationScheme,
                         Description = Resources.SECURITY_SCHEME_DESCRIPTION,
                     }
@@ -74,14 +77,14 @@ namespace Web.Extensions
                     {
                         new OpenApiSecurityScheme
                         {
+                            In = ParameterLocation.Header,
+                            Scheme = Resources.OAUTH_SCHEME,
+                            BearerFormat = Resources.FORMAT,
                             Reference = new OpenApiReference
                             {
                                 Type = ReferenceType.SecurityScheme,
                                 Id = JwtBearerDefaults.AuthenticationScheme,
                             },
-                            In = ParameterLocation.Header,
-                            Scheme = Resources.OAUTH_SCHEME,
-                            BearerFormat = Resources.FORMAT,
                         },
                         new List<string>()
                     }
@@ -91,6 +94,10 @@ namespace Web.Extensions
                 c.OrderActionsBy(
                     (apiDesc) => $"{apiDesc.ActionDescriptor.RouteValues["controller"]}_{apiDesc.HttpMethod}"
                 );
+                c.CustomOperationIds(apiDesc =>
+                {
+                    return apiDesc.TryGetMethodInfo(out MethodInfo methodInfo) ? methodInfo.Name : null;
+                });
                 c.DescribeAllParametersInCamelCase();
             });
         }

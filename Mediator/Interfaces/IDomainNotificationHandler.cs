@@ -16,11 +16,7 @@ namespace Mediator.Interfaces
     /// <summary>
     /// Interface para gerenciamento da notificação de domínio sem retorno.
     /// </summary>
-    /// <typeparam name="TId">
-    /// Identificador da entidade.
-    /// </typeparam>
-    public interface IDomainNotificationHandler<TId> : INotificationHandler<DomainNotification<TId>>
-        where TId : struct
+    public interface IDomainNotificationHandler : INotificationHandler<DomainNotification>
     {
         /// <summary>
         /// Verifica se existem notificações.
@@ -41,21 +37,17 @@ namespace Mediator.Interfaces
         /// <returns>
         /// Retorna a lista de notificações.
         /// </returns>
-        List<DomainNotification<TId>> GetNotifications();
+        List<DomainNotification> GetNotifications();
     }
 
     /// <summary>
     /// Interface para gerenciamento da notificação de domínio com retorno.
     /// </summary>
-    /// <typeparam name="TId">
-    /// Identificador da entidade.
-    /// </typeparam>
-    /// <typeparam name="TResponse">
+    /// <typeparam name="TReturn">
     /// Resposta da operação.
     /// </typeparam>
-    public interface IDomainNotificationHandler<TId, TResponse> : INotificationHandler<DomainNotification<TId, TResponse>>
-        where TId : struct
-        where TResponse : notnull
+    public interface IDomainNotificationHandler<TReturn> : INotificationHandler<DomainNotification<TReturn>>
+        where TReturn : notnull
     {
         /// <summary>
         /// Verifica se existem notificações.
@@ -76,6 +68,6 @@ namespace Mediator.Interfaces
         /// <returns>
         /// Retorna a lista de notificações.
         /// </returns>
-        List<DomainNotification<TId, TResponse>> GetNotifications();
+        List<DomainNotification<TReturn>> GetNotifications();
     }
 }

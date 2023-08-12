@@ -7,7 +7,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Web.Models
+namespace Api.Models
 {
     using Microsoft.Extensions.Configuration;
     using Microsoft.IdentityModel.Tokens;
@@ -20,7 +20,10 @@ namespace Web.Models
 
         public SigningSettings(IConfiguration configuration)
         {
-            if (configuration == null) throw new ArgumentNullException(nameof(configuration));
+            if (configuration == null)
+            {
+                throw new ArgumentNullException(nameof(configuration));
+            }
 
             var secret = configuration[$"{nameof(SigningSettings)}:Secret"] ?? string.Empty;
 

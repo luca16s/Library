@@ -4,7 +4,7 @@
 
     using Library.Tests.Common;
 
-    public interface IPessoaService : IService<Pessoa, long>
+    public interface IPessoaService : IService<Pessoa>
     {
         string GetStringValue(string parametro);
     }

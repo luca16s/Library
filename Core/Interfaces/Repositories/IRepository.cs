@@ -21,12 +21,8 @@ namespace Core.Interfaces.Repositories
     /// <typeparam name="TEntity">
     /// Entidade que será salva.
     /// </typeparam>
-    /// <typeparam name="TId">
-    /// Tipo do identificador.
-    /// </typeparam>
-    public interface IRepository<TEntity, TId>
-        where TId : struct
-        where TEntity : Entity<TId>
+    public interface IRepository<TEntity>
+        where TEntity : Entity
     {
         /// <summary>
         /// Adiciona nova entidade no banco de dados de forma assíncrona.
@@ -62,7 +58,7 @@ namespace Core.Interfaces.Repositories
         /// <param name="item">
         /// Entidade a ser atualizada.
         /// </param>
-        Task Update(TId id, TEntity item);
+        Task Update(long id, TEntity item);
 
         /// <summary>
         /// Retorna uma entidade com base em um identificador de forma assíncrona.
@@ -73,7 +69,7 @@ namespace Core.Interfaces.Repositories
         /// <returns>
         /// Entidade encontrada.
         /// </returns>
-        Task<TEntity?> Get(TId id);
+        Task<TEntity?> Get(long id);
 
         /// <summary>
         /// Retorna todas as entidades do banco de dados de forma assíncrona.
@@ -111,7 +107,7 @@ namespace Core.Interfaces.Repositories
         /// <summary>
         /// Realiza a busca do maior item salvo no banco de dados.
         /// </summary>
-        /// <typeparam name="TResult">
+        /// <typeparam name="TReturn">
         /// Tipo do resultado da operação
         /// </typeparam>
         /// <param name="predicate">
@@ -120,12 +116,12 @@ namespace Core.Interfaces.Repositories
         /// <returns>
         /// Retorna maior item encontrado.
         /// </returns>
-        Task<TResult> Max<TResult>(Expression<Func<TEntity, TResult>> predicate);
+        Task<TReturn> Max<TReturn>(Expression<Func<TEntity, TReturn>> predicate);
 
         /// <summary>
         /// Realiza a busca do menor item salvo no banco de dados.
         /// </summary>
-        /// <typeparam name="TResult">
+        /// <typeparam name="TReturn">
         /// Tipo do resultado da operação
         /// </typeparam>
         /// <param name="predicate">
@@ -134,6 +130,6 @@ namespace Core.Interfaces.Repositories
         /// <returns>
         /// Retorna menor item encontrado.
         /// </returns>
-        Task<TResult> Min<TResult>(Expression<Func<TEntity, TResult>> predicate);
+        Task<TReturn> Min<TReturn>(Expression<Func<TEntity, TReturn>> predicate);
     }
 }

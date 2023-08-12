@@ -7,7 +7,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Web.Helpers
+namespace Api.Helpers
 {
     using System.Diagnostics;
     using System.Reflection;

@@ -20,13 +20,9 @@ namespace Data
     /// <typeparam name="TEntity">
     /// Entidade.
     /// </typeparam>
-    /// <typeparam name="TType">
-    /// Tipo do identificador da Entidade.
-    /// </typeparam>
-    public abstract class ConfigurationBase<TEntity, TType> :
+    public abstract class ConfigurationBase<TEntity> :
         IEntityTypeConfiguration<TEntity>
-        where TEntity : Entity<TType>
-        where TType : struct
+        where TEntity : Entity
     {
         /// <summary>
         /// Configuração base da Entidade.
@@ -38,7 +34,7 @@ namespace Data
         {
             _ = builder.HasKey(u => u.Id);
 
-            _ = builder.Ignore(c => c.ValidationResult);
+            _ = builder.Ignore(p => p.ValidationResult);
         }
     }
 }
