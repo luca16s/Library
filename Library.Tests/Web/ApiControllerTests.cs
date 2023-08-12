@@ -9,6 +9,8 @@ namespace Library.Tests.Web
     using Mediator.Interfaces;
     using Mediator.Notifications;
 
+    using Moq;
+
     using System.Threading;
 
     using Xunit;

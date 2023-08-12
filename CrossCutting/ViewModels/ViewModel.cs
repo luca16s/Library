@@ -9,7 +9,9 @@
 
 namespace CrossCutting.ViewModels
 {
-    using Microsoft.AspNetCore.Mvc;
+    using Swashbuckle.AspNetCore.Annotations;
+
+    using System.Text.Json.Serialization;
 
     /// <summary>
     /// ViewModel base.
@@ -19,7 +21,8 @@ namespace CrossCutting.ViewModels
         /// <summary>
         /// Identificador padrão de entidades.
         /// </summary>
-        [HiddenInput(DisplayValue = false)]
+        [JsonIgnore]
+        [SwaggerSchema(ReadOnly = true)]
         public long Id { get; set; }
     }
 }
