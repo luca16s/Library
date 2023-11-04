@@ -75,7 +75,7 @@ namespace Mediator.Handlers
                 return;
             }
 
-            _ = _mediator.Raise<DomainNotification>(new DomainNotification(nome, mensagem));
+            _ = _mediator.Raise(new DomainNotification(nome, mensagem));
         }
 
         /// <summary>
