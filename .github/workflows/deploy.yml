@@ -8,11 +8,11 @@ jobs:
     runs-on: windows-latest
     steps:
     - name: Realizando checkout
-      uses: actions/checkout@4.1.1
+      uses: actions/checkout@4
       with:
         fetch-depth: 0
     - name: Preparando .NET
-      uses: actions/setup-dotnet@v3.2.0
+      uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 8.x
     - name: Restaurando pacotes
