@@ -61,11 +61,11 @@ namespace Api.Extensions
         /// Assembly contendo as configurações de MediatR
         /// <see cref="Assembly"/>
         /// </param>
-        public static void AddMediatRConfiguration
+        public static IServiceCollection AddMediatRConfiguration
         (
            this IServiceCollection services,
            Assembly assembly
-        ) => _ = services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(assembly));
+        ) => services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(assembly));
 
         /// <summary>
         /// Adiciona configuração do AutoMapper.
@@ -97,19 +97,16 @@ namespace Api.Extensions
         /// <exception cref="ArgumentNullException">
         /// Exceção caso argumento Settings seja nulo.
         /// </exception>
-        public static void AddCorsConfiguration
+        public static IServiceCollection AddCorsConfiguration
         (
             this IServiceCollection services,
             Settings settings,
             string corsPolicyName
         )
         {
-            if (settings is null)
-            {
-                throw new ArgumentNullException(nameof(settings));
-            }
-
-            _ = services.AddCors(options =>
+            return settings is null
+                ? throw new ArgumentNullException(nameof(settings))
+                : services.AddCors(options =>
             {
                 options.AddPolicy(corsPolicyName, builder =>
                 {
