@@ -9,13 +9,13 @@ jobs:
     runs-on: windows-latest
     steps:
     - name: Realizando checkout do Projeto
-      uses: actions/checkout@v3
+      uses: actions/checkout@4.1.1
       with:
         fetch-depth: 0
     - name: Preparando .NET
-      uses: actions/setup-dotnet@v3
+      uses: actions/setup-dotnet@v3.2.0
       with:
-        dotnet-version: 8.0.x
+        dotnet-version: 8.x
     - name: Iniciando CodeQL
       uses: github/codeql-action/init@v2
       with:
@@ -27,7 +27,7 @@ jobs:
     - name: Rodando testes
       run: dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput='Library.Tests/coverage.json'
     - name: Enviando dados de cobertura
-      uses: codecov/codecov-action@v3
+      uses: codecov/codecov-action@v3.1.4
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
         file: Library.Tests/coverage.json
