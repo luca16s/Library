@@ -12,20 +12,23 @@ namespace Mediator.Handlers;
 using Mediator.Interfaces;
 using Mediator.Notifications;
 
+using MediatR;
+
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 /// <summary>
 /// Classe manipuladora de notificação de domínio.
 /// </summary>
-public class NotificationHandler : INotificationHandler
+public class DomainNotificationHandler : IDomainNotificationHandler
 {
-    private List<Notification> notifications;
+    private List<INotification> notifications;
 
     /// <summary>
     /// Constrói uma nova instância da classe manipuladora de notificação de domínio.
     /// </summary>
-    public NotificationHandler()
+    public DomainNotificationHandler(
+    )
     {
         notifications = [];
     }
@@ -37,7 +40,8 @@ public class NotificationHandler : INotificationHandler
     /// True: Contém notificações.
     /// False: Não contém notificações.
     /// </returns>
-    public virtual bool HasNotifications()
+    public virtual bool HasNotifications(
+    )
     {
         return notifications.Count != 0;
     }
@@ -45,7 +49,8 @@ public class NotificationHandler : INotificationHandler
     /// <summary>
     /// Limpa notificações.
     /// </summary>
-    public virtual void ClearNotifications()
+    public virtual void ClearNotifications(
+    )
     {
         notifications.Clear();
     }
@@ -56,7 +61,8 @@ public class NotificationHandler : INotificationHandler
     /// <returns>
     /// Lista das notificações adicionadas.
     /// </returns>
-    public virtual List<Notification> GetNotifications()
+    public virtual List<INotification> GetNotifications(
+    )
     {
         return notifications;
     }
@@ -70,7 +76,10 @@ public class NotificationHandler : INotificationHandler
     /// <param name="cancellationToken">
     /// Token de cancelamento.
     /// </param>
-    public Task Handle(Notification message, CancellationToken cancellationToken)
+    public Task Handle(
+        INotification message,
+        CancellationToken cancellationToken
+    )
     {
         notifications.Add(message);
         return Task.CompletedTask;
@@ -79,7 +88,8 @@ public class NotificationHandler : INotificationHandler
     /// <summary>
     /// Descarta manipulador de notificação de domínio.
     /// </summary>
-    public void Dispose()
+    public void Dispose(
+    )
     {
         notifications = [];
     }

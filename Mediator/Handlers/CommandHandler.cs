@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file=".cs" company="Îakaré Software'Oka">
+// <copyright file="CommandHandler.cs" company="Îakaré Software'Oka">
 //     Copyright (c) Îakaré Software'Oka.
 //     All rights reserved.
 //     Licensed under the MIT license.
@@ -22,7 +22,7 @@ using Mediator.Notifications;
 public abstract class CommandHandler
 {
     protected readonly IMediatorHandler _mediator;
-    protected readonly INotificationHandler _notifications;
+    protected readonly IDomainNotificationHandler _notifications;
 
     /// <summary>
     /// Construtor da classe de manipulação de comandos.
@@ -35,7 +35,7 @@ public abstract class CommandHandler
     /// </param>
     protected CommandHandler(
         IMediatorHandler mediator,
-        INotificationHandler notifications
+        IDomainNotificationHandler notifications
     )
     {
         _mediator = mediator;
@@ -52,7 +52,9 @@ public abstract class CommandHandler
     /// Retorna se entidade está válida.
     /// True: Caso válida.
     /// </returns>
-    protected bool ValidateEntity(Entity entity)
+    protected bool ValidateEntity(
+        Entity entity
+    )
     {
         NotifyErrorValidations(entity.ValidationResult);
         return false;
@@ -67,7 +69,10 @@ public abstract class CommandHandler
     /// <param name="mensagem">
     /// Mensagem da notificação.
     /// </param>
-    protected void NotifyError(string nome, string mensagem)
+    protected void NotifyError(
+        string nome,
+        string mensagem
+    )
     {
         if (string.IsNullOrWhiteSpace(nome) ||
             string.IsNullOrWhiteSpace(mensagem))
@@ -75,7 +80,7 @@ public abstract class CommandHandler
             return;
         }
 
-        _ = _mediator.Raise(new Notification(nome, mensagem));
+        _ = _mediator.Raise(new DomainNotification(nome, mensagem));
     }
 
     /// <summary>
@@ -93,7 +98,9 @@ public abstract class CommandHandler
     /// <param name="validationResult">
     /// Validação a ser notificada.
     /// </param>
-    protected void NotifyErrorValidations(ValidationResult validationResult)
+    protected void NotifyErrorValidations(
+        ValidationResult validationResult
+    )
     {
         foreach (ValidationFailure? error in validationResult.Errors)
         {
@@ -117,7 +124,7 @@ public abstract class CommandHandler<TReturn>
     where TReturn : notnull
 {
     protected readonly IMediatorHandler mediator;
-    protected readonly INotificationHandler notifications;
+    protected readonly IDomainNotificationHandler notifications;
 
     /// <summary>
     /// Construtor da classe de manipulação de comandos.
@@ -130,7 +137,7 @@ public abstract class CommandHandler<TReturn>
     /// </param>
     protected CommandHandler(
         IMediatorHandler mediator,
-        INotificationHandler notifications
+        IDomainNotificationHandler notifications
     )
     {
         this.mediator = mediator;
@@ -147,7 +154,9 @@ public abstract class CommandHandler<TReturn>
     /// Retorna se entidade está válida.
     /// True: Caso válida.
     /// </returns>
-    protected bool ValidateEntity(Entity entity)
+    protected bool ValidateEntity(
+        Entity entity
+    )
     {
         NotifyErrorValidations(entity.ValidationResult);
         return false;
@@ -162,7 +171,10 @@ public abstract class CommandHandler<TReturn>
     /// <param name="mensagem">
     /// Mensagem da notificação.
     /// </param>
-    protected void NotifyError(string nome, string mensagem)
+    protected void NotifyError(
+        string nome,
+        string mensagem
+    )
     {
         if (string.IsNullOrWhiteSpace(nome) ||
             string.IsNullOrWhiteSpace(mensagem))
@@ -170,7 +182,7 @@ public abstract class CommandHandler<TReturn>
             return;
         }
 
-        _ = mediator.Raise(new Notification(nome, mensagem));
+        _ = mediator.Raise(new DomainNotification(nome, mensagem));
     }
 
     /// <summary>
@@ -188,7 +200,9 @@ public abstract class CommandHandler<TReturn>
     /// <param name="validationResult">
     /// Validação a ser notificada.
     /// </param>
-    protected void NotifyErrorValidations(ValidationResult validationResult)
+    protected void NotifyErrorValidations(
+        ValidationResult validationResult
+    )
     {
         foreach (ValidationFailure? error in validationResult.Errors)
         {

@@ -119,7 +119,7 @@ public class MediatorHandler : IMediatorHandler
     public Task Raise<TNotification>(
         TNotification evento,
         CancellationToken cancellation = default
-    ) where TNotification : Notification
+    ) where TNotification : DomainNotification
     {
         return mediator.Publish(evento, cancellation);
     }

@@ -16,7 +16,7 @@ using MediatR;
 /// <summary>
 /// Interface para gerenciamento da notificação de domínio.
 /// </summary>
-public interface INotificationHandler : INotificationHandler<Notification>
+public interface IDomainNotificationHandler : INotificationHandler<INotification>
 {
     /// <summary>
     /// Verifica se existem notificações.
@@ -37,5 +37,5 @@ public interface INotificationHandler : INotificationHandler<Notification>
     /// <returns>
     /// Retorna a lista de notificações.
     /// </returns>
-    List<Notification> GetNotifications();
+    List<INotification> GetNotifications();
 }

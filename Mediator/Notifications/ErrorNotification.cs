@@ -1,9 +1,35 @@
-﻿namespace Mediator.Notifications;
+﻿// -----------------------------------------------------------------------
+// <copyright file="ErrorNotification.cs" company="Îakaré Software'Oka">
+//     Copyright (c) Îakaré Software'Oka.
+//     All rights reserved.
+//     Licensed under the MIT license.
+//     See LICENSE file in the project root for full license information.
+// </copyright>
+// -----------------------------------------------------------------------
+
+namespace Mediator.Notifications;
+
+/// <summary>
+/// Classe de notificação de erro.
+/// </summary>
+/// <param name="id">
+/// Identificador da notificação
+/// </param>
+/// <param name="value">
+/// Valor da notificação.
+/// </param>
 public class ErrorNotification(
     string id,
     string value
-) : Notification(id, value)
+) : DomainNotification(id, value)
 {
-    public string Exception { get; set; } = string.Empty;
-    public string StackTrace { get; set; } = string.Empty;
+    /// <summary>
+    /// Exceção lançada pela aplicação.
+    /// </summary>
+    public required string Exception { get; set; }
+
+    /// <summary>
+    /// Pilha de erros lançada pelo sistema.
+    /// </summary>
+    public required string StackTrace { get; set; }
 }

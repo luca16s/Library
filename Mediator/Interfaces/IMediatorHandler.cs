@@ -31,7 +31,7 @@ public interface IMediatorHandler
     Task Raise<TReturn>(
         TReturn evento,
         CancellationToken cancellation = default
-    ) where TReturn : Notification;
+    ) where TReturn : DomainNotification;
 
     /// <summary>
     /// Enviar comando com retorno.

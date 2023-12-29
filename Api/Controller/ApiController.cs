@@ -30,7 +30,7 @@ public class ApiController<TEntity>
     : ControllerBase
     where TEntity : Entity
 {
-    private readonly INotificationHandler handler;
+    private readonly IDomainNotificationHandler handler;
     protected readonly IMediatorHandler mediator;
 
     /// <summary>
@@ -45,7 +45,7 @@ public class ApiController<TEntity>
     public ApiController
     (
         IMediatorHandler mediator,
-        INotificationHandler handler
+        IDomainNotificationHandler handler
     )
     {
         ArgumentNullException.ThrowIfNull(mediator);
@@ -76,7 +76,7 @@ public class ApiController<TEntity>
         string mensagem
     )
     {
-        await mediator.Raise(new Notification(codigo, mensagem));
+        await mediator.Raise(new DomainNotification(codigo, mensagem));
     }
 
     [NonAction]
@@ -130,7 +130,7 @@ public class ApiController<TEntity, TService>
     where TEntity : Entity
     where TService : IService<TEntity>
 {
-    private readonly INotificationHandler handler;
+    private readonly IDomainNotificationHandler handler;
     protected readonly TService service;
     protected readonly IMediatorHandler mediator;
 
@@ -156,7 +156,7 @@ public class ApiController<TEntity, TService>
     (
         TService service,
         IMediatorHandler mediator,
-        INotificationHandler handler
+        IDomainNotificationHandler handler
     )
     {
         if (service is null)
@@ -193,7 +193,7 @@ public class ApiController<TEntity, TService>
         string mensagem
     )
     {
-        await mediator.Raise(new Notification(codigo, mensagem));
+        await mediator.Raise(new DomainNotification(codigo, mensagem));
     }
 
     [NonAction]
