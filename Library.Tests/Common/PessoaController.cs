@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 public class PessoaController(
     IPessoaService service,
     IMediatorHandler mediator,
-    IDomainNotificationHandler<Pessoa> notificationHandler
+    INotificationHandler notificationHandler
     ) : ApiController<Pessoa, IPessoaService>(
     service,
     mediator,

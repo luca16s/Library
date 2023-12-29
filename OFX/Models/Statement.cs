@@ -65,7 +65,7 @@ public class Statement
     ///  List de transações realizadas na referida conta.
     /// <br/><br/>
     /// </summary>
-    public List<Transaction> Transactions { get; private set; } = new List<Transaction>();
+    public List<Transaction> Transactions { get; private set; } = [];
 
     public Statement() { }
 

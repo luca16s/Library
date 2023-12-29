@@ -68,10 +68,7 @@ public class UnitOfWork<TContext>(
     /// </returns>
     public async Task CommitTransaction(IDbContextTransaction transaction)
     {
-        if (transaction == null)
-        {
-            throw new ArgumentNullException(nameof(transaction));
-        }
+        ArgumentNullException.ThrowIfNull(transaction);
 
         if (transaction != await CurrentTransaction)
         {

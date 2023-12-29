@@ -22,7 +22,7 @@ using Mediator.Notifications;
 public abstract class CommandHandler
 {
     protected readonly IMediatorHandler _mediator;
-    protected readonly IDomainNotificationHandler _notifications;
+    protected readonly INotificationHandler _notifications;
 
     /// <summary>
     /// Construtor da classe de manipulação de comandos.
@@ -35,7 +35,7 @@ public abstract class CommandHandler
     /// </param>
     protected CommandHandler(
         IMediatorHandler mediator,
-        IDomainNotificationHandler notifications
+        INotificationHandler notifications
     )
     {
         _mediator = mediator;
@@ -75,7 +75,7 @@ public abstract class CommandHandler
             return;
         }
 
-        _ = _mediator.Raise(new DomainNotification(nome, mensagem));
+        _ = _mediator.Raise(new Notification(nome, mensagem));
     }
 
     /// <summary>
@@ -116,8 +116,8 @@ public abstract class CommandHandler
 public abstract class CommandHandler<TReturn>
     where TReturn : notnull
 {
-    protected readonly IMediatorHandler _mediator;
-    protected readonly IDomainNotificationHandler<TReturn> _notifications;
+    protected readonly IMediatorHandler mediator;
+    protected readonly INotificationHandler notifications;
 
     /// <summary>
     /// Construtor da classe de manipulação de comandos.
@@ -130,11 +130,11 @@ public abstract class CommandHandler<TReturn>
     /// </param>
     protected CommandHandler(
         IMediatorHandler mediator,
-        IDomainNotificationHandler<TReturn> notifications
+        INotificationHandler notifications
     )
     {
-        _mediator = mediator;
-        _notifications = notifications;
+        this.mediator = mediator;
+        this.notifications = notifications;
     }
 
     /// <summary>
@@ -170,7 +170,7 @@ public abstract class CommandHandler<TReturn>
             return;
         }
 
-        _ = _mediator.Raise<DomainNotification<TReturn>, TReturn>(new DomainNotification<TReturn>(nome, mensagem));
+        _ = mediator.Raise(new Notification(nome, mensagem));
     }
 
     /// <summary>
@@ -180,7 +180,7 @@ public abstract class CommandHandler<TReturn>
     /// Retorna se há notificações.
     /// True: caso existam notificações.
     /// </returns>
-    protected bool HasNotifications() => _notifications.HasNotifications();
+    protected bool HasNotifications() => notifications.HasNotifications();
 
     /// <summary>
     /// Notifica validações de erro.

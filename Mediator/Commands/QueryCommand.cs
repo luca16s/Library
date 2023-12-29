@@ -1,6 +1,6 @@
 ﻿namespace Mediator.Commands;
 
-using Mediator.Events;
+using MediatR;
 
 using System.Text.Json.Serialization;
 
@@ -10,7 +10,7 @@ using System.Text.Json.Serialization;
 /// <typeparam name="TReturn">
 /// Tipo do retorno.
 /// </typeparam>
-public abstract class QueryCommand<TReturn> : Message<TReturn>
+public abstract class QueryCommand<TReturn> : BaseCommand, IRequest<TReturn>
     where TReturn : notnull
 {
     /// <summary>

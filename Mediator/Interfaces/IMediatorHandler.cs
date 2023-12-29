@@ -10,7 +10,7 @@
 namespace Mediator.Interfaces;
 
 using Mediator.Commands;
-using Mediator.Events;
+using Mediator.Notifications;
 
 using System.Threading.Tasks;
 
@@ -20,31 +20,10 @@ using System.Threading.Tasks;
 public interface IMediatorHandler
 {
     /// <summary>
-    /// Lançar evento com retorno.
-    /// </summary>
-    /// <typeparam name="TCommand">
-    /// Tipo do Evento.
-    /// </typeparam>
-    /// <typeparam name="TReturn">
-    /// Tipo do retorno.
-    /// </typeparam>
-    /// <param name="evento">
-    /// Evento a ser lançado.
-    /// </param>
-    /// <param name="cancellation">
-    /// Token de cancelamento.
-    /// </param>
-    Task Raise<TCommand, TReturn>(
-        TCommand evento,
-        CancellationToken cancellation = default
-    ) where TReturn : notnull
-      where TCommand : Event<TReturn>;
-
-    /// <summary>
-    /// Lançar evento sem retorno.
+    /// Lançar notificação.
     /// </summary>
     /// <typeparam name="TReturn">
-    /// Tipo do Evento.
+    /// Tipo da notificação.
     /// </typeparam>
     /// <param name="cancellation">
     /// Token de cancelamento.
@@ -52,7 +31,7 @@ public interface IMediatorHandler
     Task Raise<TReturn>(
         TReturn evento,
         CancellationToken cancellation = default
-    ) where TReturn : Event;
+    ) where TReturn : Notification;
 
     /// <summary>
     /// Enviar comando com retorno.

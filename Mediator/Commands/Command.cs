@@ -9,9 +9,10 @@
 
 namespace Mediator.Commands;
 
-using Mediator.Events;
+using MediatR;
 
 /// <summary>
 /// Classe base de comando sem retorno.
 /// </summary>
-public abstract class Command : Message { }
+public abstract class Command : BaseCommand, IRequest
+{ }

@@ -10,8 +10,8 @@
 namespace Mediator.Handlers;
 
 using Mediator.Commands;
-using Mediator.Events;
 using Mediator.Interfaces;
+using Mediator.Notifications;
 
 using MediatR;
 
@@ -30,8 +30,8 @@ using System.Threading.Tasks;
 /// </summary>
 public class MediatorHandler : IMediatorHandler
 {
-    private readonly IMediator _mediator;
-    private readonly IConnectionFactory _connectionFactory;
+    private readonly IMediator mediator;
+    private readonly ConnectionFactory connectionFactory;
 
     /// <summary>
     /// Construtor da classe de manipulação da mediação.
@@ -50,8 +50,8 @@ public class MediatorHandler : IMediatorHandler
         IConfiguration configuration
     )
     {
-        _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
-        _connectionFactory = new ConnectionFactory
+        this.mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+        connectionFactory = new ConnectionFactory
         {
             Uri = new Uri(configuration["rabbitmq:uri"] ?? string.Empty)
         };
@@ -78,7 +78,7 @@ public class MediatorHandler : IMediatorHandler
     ) where TReturn : notnull
       where TCommand : QueryCommand<TReturn>
     {
-        return _mediator.Send(comando, cancellation);
+        return mediator.Send(comando, cancellation);
     }
 
     /// <summary>
@@ -98,17 +98,14 @@ public class MediatorHandler : IMediatorHandler
         CancellationToken cancellation = default
     ) where TCommand : Command
     {
-        return _mediator.Send(comando, cancellation);
+        return mediator.Send(comando, cancellation);
     }
 
     /// <summary>
-    /// Lançar evento com retorno.
+    /// Lançar notificação.
     /// </summary>
-    /// <typeparam name="TCommand">
-    /// Tipo do evento.
-    /// </typeparam>
-    /// <typeparam name="TReturn">
-    /// Tipo do retorno.
+    /// <typeparam name="TNotification">
+    /// Tipo da notificação.
     /// </typeparam>
     /// <param name="evento">
     /// Evento a ser lançado.
@@ -119,36 +116,12 @@ public class MediatorHandler : IMediatorHandler
     /// <param name="cancellation">
     /// Token de cancelamento.
     /// </param>
-    public Task Raise<TCommand, TReturn>(
-        TCommand evento,
+    public Task Raise<TNotification>(
+        TNotification evento,
         CancellationToken cancellation = default
-    ) where TReturn : notnull
-      where TCommand : Event<TReturn>
+    ) where TNotification : Notification
     {
-        return _mediator.Publish(evento, cancellation);
-    }
-
-    /// <summary>
-    /// Lançar evento sem retorno.
-    /// </summary>
-    /// <typeparam name="TCommand">
-    /// Tipo do evento.
-    /// </typeparam>
-    /// <param name="evento">
-    /// Evento a ser lançado.
-    /// </param>
-    /// <param name="enqueue">
-    /// Deve enfileirar?
-    /// </param>
-    /// <param name="cancellation">
-    /// Token de cancelamento.
-    /// </param>
-    public Task Raise<TCommand>(
-        TCommand evento,
-        CancellationToken cancellation = default
-    ) where TCommand : Event
-    {
-        return _mediator.Publish(evento, cancellation);
+        return mediator.Publish(evento, cancellation);
     }
 
     /// <summary>
@@ -168,7 +141,7 @@ public class MediatorHandler : IMediatorHandler
         CancellationToken cancellation = default
     )
     {
-        using (IConnection? connection = _connectionFactory.CreateConnection())
+        using (IConnection? connection = connectionFactory.CreateConnection())
         {
             using (IModel? channel = connection.CreateModel())
             {

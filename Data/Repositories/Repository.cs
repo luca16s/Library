@@ -66,10 +66,7 @@ public class Repository<TContext, TEntity> : IRepository<TEntity>
 
     public Task Delete(TEntity item)
     {
-        if (item is null)
-        {
-            throw new ArgumentNullException(nameof(item));
-        }
+        ArgumentNullException.ThrowIfNull(item);
 
         EntityEntry<TEntity> entity = DbSet.Remove(item);
         entity.State = EntityState.Deleted;
@@ -78,10 +75,7 @@ public class Repository<TContext, TEntity> : IRepository<TEntity>
 
     public Task Update(long id, TEntity item)
     {
-        if (item is null)
-        {
-            throw new ArgumentNullException(nameof(item));
-        }
+        ArgumentNullException.ThrowIfNull(item);
 
         TEntity? entity = DbSet.Find(id) ??
             throw new NullReferenceException("Item pesquisado não existente no banco de dados.");

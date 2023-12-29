@@ -7,19 +7,19 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Mediator.Events;
+namespace Mediator.Commands;
 
 using System.Text.Json.Serialization;
 
 /// <summary>
 /// Classe base de mensagem.
 /// </summary>
-public abstract class BaseMessage
+public abstract class BaseCommand
 {
     /// <summary>
     /// Inicializa uma nova instância da classe Message.
     /// </summary>
-    protected BaseMessage()
+    protected BaseCommand()
     {
         MessageType = GetType().Name;
     }

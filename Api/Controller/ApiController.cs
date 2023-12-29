@@ -30,7 +30,7 @@ public class ApiController<TEntity>
     : ControllerBase
     where TEntity : Entity
 {
-    private readonly IDomainNotificationHandler handler;
+    private readonly INotificationHandler handler;
     protected readonly IMediatorHandler mediator;
 
     /// <summary>
@@ -45,18 +45,11 @@ public class ApiController<TEntity>
     public ApiController
     (
         IMediatorHandler mediator,
-        IDomainNotificationHandler handler
+        INotificationHandler handler
     )
     {
-        if (mediator is null)
-        {
-            throw new ArgumentNullException(nameof(mediator));
-        }
-
-        if (handler is null)
-        {
-            throw new ArgumentNullException(nameof(handler));
-        }
+        ArgumentNullException.ThrowIfNull(mediator);
+        ArgumentNullException.ThrowIfNull(handler);
 
         this.handler = handler;
         this.mediator = mediator;
@@ -66,10 +59,10 @@ public class ApiController<TEntity>
     protected bool IsOperationValid() => handler is not null && !handler.HasNotifications();
 
     [NonAction]
-    protected IActionResult GetResponse()
+    protected IActionResult GetResponse(
+    )
     {
-        List<string> errors = new();
-        errors.AddRange(handler.GetNotifications().Select(p => p.Value));
+        List<string> errors = [.. handler.GetNotifications().Select(p => p.Value)];
 
         return IsOperationValid() ?
             Ok() :
@@ -78,13 +71,18 @@ public class ApiController<TEntity>
     }
 
     [NonAction]
-    protected async Task NotifyError(string codigo, string mensagem)
+    protected async Task NotifyError(
+        string codigo,
+        string mensagem
+    )
     {
-        await mediator.Raise<DomainNotification<TEntity>, TEntity>(new DomainNotification<TEntity>(codigo, mensagem));
+        await mediator.Raise(new Notification(codigo, mensagem));
     }
 
     [NonAction]
-    protected async Task NotifyInvalidErrorModelAsync(string typeName)
+    protected async Task NotifyInvalidErrorModelAsync(
+        string typeName
+    )
     {
         IEnumerable<ModelError>? erros = ModelState.Values.SelectMany(m => m.Errors) ?? new List<ModelError>();
 
@@ -106,8 +104,7 @@ public class ApiController<TEntity>
         where Response : notnull
         where ViewModel : notnull
     {
-        List<string> errors = new();
-        errors.AddRange(handler.GetNotifications().Select(p => p.Value));
+        List<string> errors = [.. handler.GetNotifications().Select(p => p.Value)];
 
         return response is null ?
             NoContent() :
@@ -133,7 +130,7 @@ public class ApiController<TEntity, TService>
     where TEntity : Entity
     where TService : IService<TEntity>
 {
-    private readonly IDomainNotificationHandler<TEntity> handler;
+    private readonly INotificationHandler handler;
     protected readonly TService service;
     protected readonly IMediatorHandler mediator;
 
@@ -159,7 +156,7 @@ public class ApiController<TEntity, TService>
     (
         TService service,
         IMediatorHandler mediator,
-        IDomainNotificationHandler<TEntity> handler
+        INotificationHandler handler
     )
     {
         if (service is null)
@@ -167,15 +164,8 @@ public class ApiController<TEntity, TService>
             throw new ArgumentNullException(nameof(service));
         }
 
-        if (handler is null)
-        {
-            throw new ArgumentNullException(nameof(handler));
-        }
-
-        if (mediator is null)
-        {
-            throw new ArgumentNullException(nameof(mediator));
-        }
+        ArgumentNullException.ThrowIfNull(handler);
+        ArgumentNullException.ThrowIfNull(mediator);
 
         this.service = service;
         this.handler = handler;
@@ -186,10 +176,10 @@ public class ApiController<TEntity, TService>
     protected bool IsOperationValid() => handler is not null && !handler.HasNotifications();
 
     [NonAction]
-    protected IActionResult GetResponse()
+    protected IActionResult GetResponse(
+    )
     {
-        List<string> errors = new();
-        errors.AddRange(handler.GetNotifications().Select(p => p.Value));
+        List<string> errors = [.. handler.GetNotifications().Select(p => p.Value)];
 
         return IsOperationValid() ?
             Ok() :
@@ -198,13 +188,18 @@ public class ApiController<TEntity, TService>
     }
 
     [NonAction]
-    protected async Task NotifyError(string codigo, string mensagem)
+    protected async Task NotifyError(
+        string codigo,
+        string mensagem
+    )
     {
-        await mediator.Raise<DomainNotification<TEntity>, TEntity>(new DomainNotification<TEntity>(codigo, mensagem));
+        await mediator.Raise(new Notification(codigo, mensagem));
     }
 
     [NonAction]
-    protected async Task NotifyInvalidErrorModelAsync(string typeName)
+    protected async Task NotifyInvalidErrorModelAsync(
+        string typeName
+    )
     {
         IEnumerable<ModelError>? erros = ModelState.Values.SelectMany(m => m.Errors) ?? new List<ModelError>();
 
@@ -226,8 +221,7 @@ public class ApiController<TEntity, TService>
         where Response : notnull
         where ViewModel : notnull
     {
-        List<string> errors = new();
-        errors.AddRange(handler.GetNotifications().Select(p => p.Value));
+        List<string> errors = [.. handler.GetNotifications().Select(p => p.Value)];
 
         return response is null ?
             NoContent() :

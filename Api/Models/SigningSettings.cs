@@ -20,10 +20,7 @@ public class SigningSettings
 
     public SigningSettings(IConfiguration configuration)
     {
-        if (configuration == null)
-        {
-            throw new ArgumentNullException(nameof(configuration));
-        }
+        ArgumentNullException.ThrowIfNull(configuration);
 
         var secret = configuration[$"{nameof(SigningSettings)}:Secret"] ?? string.Empty;
 
