@@ -17,7 +17,7 @@ jobs:
       with:
         dotnet-version: 8.x
     - name: Iniciando CodeQL
-      uses: github/codeql-action/init@v2
+      uses: github/codeql-action/init@v3
       with:
         languages: csharp
     - name: Restaurando pacotes
@@ -36,5 +36,5 @@ jobs:
         fail_ci_if_error: true
         verbose: true
     - name: Realizando análise de código
-      uses: github/codeql-action/analyze@v2
+      uses: github/codeql-action/analyze@v3
 
