@@ -7,40 +7,39 @@
 // </copyright>
 // ------------------------------------------------------------------------------------
 
-namespace Core.Exceptions
+namespace Core.Exceptions;
+
+using Core.Properties;
+
+/// <summary>
+/// Exceção caso descrição do enum não tenha sido encontrada.
+/// </summary>
+public class EnumDescriptionNotFoundException : Exception
 {
-    using Core.Properties;
+    /// <summary>
+    /// Inicia uma nova instância da classe <see cref="EnumDescriptionNotFoundException" />.
+    /// </summary>
+    public EnumDescriptionNotFoundException()
+        : base(Resources.EnumDescriptionNotFound) { }
 
     /// <summary>
-    /// Exceção caso descrição do enum não tenha sido encontrada.
+    /// Inicia uma nova instância da classe <see cref="EnumDescriptionNotFoundException" />.
     /// </summary>
-    public class EnumDescriptionNotFoundException : Exception
-    {
-        /// <summary>
-        /// Inicia uma nova instância da classe <see cref="EnumDescriptionNotFoundException" />.
-        /// </summary>
-        public EnumDescriptionNotFoundException()
-            : base(Resources.EnumDescriptionNotFound) { }
+    /// <param name="message">
+    /// Mensagem a ser mostrada.
+    /// </param>
+    public EnumDescriptionNotFoundException(string message)
+        : base($"{Resources.EnumDescriptionNotFound}\n - {message}") { }
 
-        /// <summary>
-        /// Inicia uma nova instância da classe <see cref="EnumDescriptionNotFoundException" />.
-        /// </summary>
-        /// <param name="message">
-        /// Mensagem a ser mostrada.
-        /// </param>
-        public EnumDescriptionNotFoundException(string message)
-            : base($"{Resources.EnumDescriptionNotFound}\n - {message}") { }
-
-        /// <summary>
-        /// Inicia uma nova instância da classe <see cref="EnumDescriptionNotFoundException" />.
-        /// </summary>
-        /// <param name="message">
-        /// Mensagem a ser mostrada.
-        /// </param>
-        /// <param name="inner">
-        /// Mensagem herdada.
-        /// </param>
-        public EnumDescriptionNotFoundException(string message, Exception inner)
-            : base($"{Resources.EnumDescriptionNotFound}\n - {message}", inner) { }
-    }
+    /// <summary>
+    /// Inicia uma nova instância da classe <see cref="EnumDescriptionNotFoundException" />.
+    /// </summary>
+    /// <param name="message">
+    /// Mensagem a ser mostrada.
+    /// </param>
+    /// <param name="inner">
+    /// Mensagem herdada.
+    /// </param>
+    public EnumDescriptionNotFoundException(string message, Exception inner)
+        : base($"{Resources.EnumDescriptionNotFound}\n - {message}", inner) { }
 }

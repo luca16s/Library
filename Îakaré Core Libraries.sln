@@ -27,6 +27,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OFX", "OFX\OFX.csproj", "{5
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Itens de Solução", "Itens de Solução", "{1306DFE5-3B17-4D6E-8690-21B08E0A437A}"
 	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
 		.gitattributes = .gitattributes
 		.gitignore = .gitignore
 		.github\ISSUE_TEMPLATE\bug_report.md = .github\ISSUE_TEMPLATE\bug_report.md
@@ -96,7 +97,7 @@ Global
 		{5B448043-65BB-45D6-A3F7-E67D032C0A71} = {6A35284D-E871-4B9D-BF37-D568BEF49109}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		        SolutionGuid = {380AABB2-C952-4293-BD29-BFF0FB066A4C}
 		SolutionGuid = {1D8FB574-F9C8-49B5-B6D6-A0E1841D6149}
+		        SolutionGuid = {380AABB2-C952-4293-BD29-BFF0FB066A4C}
 	EndGlobalSection
 EndGlobal

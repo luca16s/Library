@@ -7,25 +7,24 @@
 // </copyright>
 // ------------------------------------------------------------------------------------
 
-namespace OFX.Enums
+namespace OFX.Enums;
+
+using System.ComponentModel;
+
+/// <summary>
+/// Correspondência de Códigos e Nomes dos bancos.
+/// </summary>
+public enum EBank
 {
-    using System.ComponentModel;
+    /// <summary>
+    /// Itaú Unibanco.
+    /// </summary>
+    [Description("ITAÚ UNIBANCO")]
+    ITAU = 341,
 
     /// <summary>
-    /// Correspondência de Códigos e Nomes dos bancos.
+    /// Caixa Econômica Federal.
     /// </summary>
-    public enum EBank
-    {
-        /// <summary>
-        /// Itaú Unibanco.
-        /// </summary>
-        [Description("ITAÚ UNIBANCO")]
-        ITAU = 341,
-
-        /// <summary>
-        /// Caixa Econômica Federal.
-        /// </summary>
-        [Description("CAIXA ECONOMICA FEDERAL")]
-        CAIXA = 104,
-    }
+    [Description("CAIXA ECONOMICA FEDERAL")]
+    CAIXA = 104,
 }

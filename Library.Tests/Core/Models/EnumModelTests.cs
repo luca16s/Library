@@ -1,45 +1,44 @@
-﻿namespace Library.Tests.Core.Models
+﻿namespace Library.Tests.Core.Models;
+
+using Bogus;
+
+using FluentAssertions;
+
+using global::Core.Models;
+
+using Library.Tests.Core;
+
+using Xunit;
+
+public class EnumModelTests
 {
-    using Bogus;
-
-    using FluentAssertions;
-
-    using global::Core.Models;
-
-    using Library.Tests.Core;
-
-    using Xunit;
-
-    public class EnumModelTests
+    [Fact]
+    public void EnumModelShouldNotBeNull()
     {
-        [Fact]
-        public void EnumModelShouldNotBeNull()
-        {
-            EnumModel enumModelo = new Faker<EnumModel>()
-                .RuleFor(g => g.Description, f => f.Lorem.Word())
-                .Generate();
+        EnumModel enumModelo = new Faker<EnumModel>()
+            .RuleFor(g => g.Description, f => f.Lorem.Word())
+            .Generate();
 
-            _ = enumModelo.Should().NotBeNull();
-        }
+        _ = enumModelo.Should().NotBeNull();
+    }
 
-        [Fact]
-        public void EnumValueShouldNotReturnNull()
-        {
-            EnumModel enumModelo = new Faker<EnumModel>()
-                .RuleFor(g => g.Value, f => EError.TESTE1)
-                .Generate();
+    [Fact]
+    public void EnumValueShouldNotReturnNull()
+    {
+        EnumModel enumModelo = new Faker<EnumModel>()
+            .RuleFor(g => g.Value, f => EError.TESTE1)
+            .Generate();
 
-            _ = enumModelo.Value.Should().NotBeNull();
-        }
+        _ = enumModelo.Value.Should().NotBeNull();
+    }
 
-        [Fact]
-        public void EnumDescriptionShouldNotReturnNull()
-        {
-            EnumModel enumModelo = new Faker<EnumModel>()
-                .RuleFor(g => g.Description, f => f.Lorem.Word())
-                .Generate();
+    [Fact]
+    public void EnumDescriptionShouldNotReturnNull()
+    {
+        EnumModel enumModelo = new Faker<EnumModel>()
+            .RuleFor(g => g.Description, f => f.Lorem.Word())
+            .Generate();
 
-            _ = enumModelo.Description.Should().NotBeNull();
-        }
+        _ = enumModelo.Description.Should().NotBeNull();
     }
 }

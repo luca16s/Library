@@ -7,37 +7,36 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Core.Interfaces.Repositories
+namespace Core.Interfaces.Repositories;
+
+using Microsoft.EntityFrameworkCore.Storage;
+
+/// <summary>
+/// Classe para servir de interface no salvamento do banco de dados.
+/// </summary>
+public interface IUnitOfWork
 {
-    using Microsoft.EntityFrameworkCore.Storage;
+    /// <summary>
+    /// Inicia transação com o banco de dados.
+    /// </summary>
+    /// <returns>
+    /// Retorna a transação.
+    /// </returns>
+    Task<IDbContextTransaction> BeginTransaction();
 
     /// <summary>
-    /// Classe para servir de interface no salvamento do banco de dados.
+    /// Comita a transação do banco.
     /// </summary>
-    public interface IUnitOfWork
-    {
-        /// <summary>
-        /// Inicia transação com o banco de dados.
-        /// </summary>
-        /// <returns>
-        /// Retorna a transação.
-        /// </returns>
-        Task<IDbContextTransaction> BeginTransaction();
+    /// <param name="transaction">
+    /// Transação aberta.
+    /// </param>
+    /// <returns>
+    /// Retorna a task.
+    /// </returns>
+    Task CommitTransaction(IDbContextTransaction transaction);
 
-        /// <summary>
-        /// Comita a transação do banco.
-        /// </summary>
-        /// <param name="transaction">
-        /// Transação aberta.
-        /// </param>
-        /// <returns>
-        /// Retorna a task.
-        /// </returns>
-        Task CommitTransaction(IDbContextTransaction transaction);
-
-        /// <summary>
-        /// Reverte alterações.
-        /// </summary>
-        Task RollbackTransaction();
-    }
+    /// <summary>
+    /// Reverte alterações.
+    /// </summary>
+    Task RollbackTransaction();
 }

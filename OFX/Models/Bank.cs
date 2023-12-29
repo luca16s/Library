@@ -7,48 +7,47 @@
 // </copyright>
 // ------------------------------------------------------------------------------------
 
-namespace OFX.Models
+namespace OFX.Models;
+
+using Core.Extensions;
+
+using OFX.Enums;
+
+public class Bank
 {
-    using Core.Extensions;
+    /// <summary>
+    /// CODE: BANKID
+    /// <br/><br/>
+    /// </summary>
+    public EBank Code { get; set; } = EBank.CAIXA;
 
-    using OFX.Enums;
+    /// <summary>
+    /// Nome do Banco indicado no campo <see cref="Code"/>
+    /// </summary>
+    public string Name { get; set; } = string.Empty;
 
-    public class Bank
+    public Bank() { }
+
+    public void Add(
+        string? bankCode
+    )
     {
-        /// <summary>
-        /// CODE: BANKID
-        /// <br/><br/>
-        /// </summary>
-        public EBank Code { get; set; } = EBank.CAIXA;
+        if (!Enum.TryParse(bankCode, out EBank code))
+            throw new Exception($"Código bancário não encontrado: {bankCode}");
 
-        /// <summary>
-        /// Nome do Banco indicado no campo <see cref="Code"/>
-        /// </summary>
-        public string Name { get; set; } = string.Empty;
+        Code = code;
+        Name = ToString();
+    }
 
-        public Bank() { }
-
-        public void Add(
-            string? bankCode
-        )
+    public override string ToString()
+    {
+        try
         {
-            if (!Enum.TryParse(bankCode, out EBank code))
-                throw new Exception($"Código bancário não encontrado: {bankCode}");
-
-            Code = code;
-            Name = ToString();
+            return Code.Description();
         }
-
-        public override string ToString()
+        catch (Exception)
         {
-            try
-            {
-                return Code.Description();
-            }
-            catch (Exception)
-            {
-                return string.Empty;
-            }
+            return string.Empty;
         }
     }
 }

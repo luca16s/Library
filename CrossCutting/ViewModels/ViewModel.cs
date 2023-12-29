@@ -7,22 +7,21 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace CrossCutting.ViewModels
+namespace CrossCutting.ViewModels;
+
+using Swashbuckle.AspNetCore.Annotations;
+
+using System.Text.Json.Serialization;
+
+/// <summary>
+/// ViewModel base.
+/// </summary>
+public class ViewModel
 {
-    using Swashbuckle.AspNetCore.Annotations;
-
-    using System.Text.Json.Serialization;
-
     /// <summary>
-    /// ViewModel base.
+    /// Identificador padrão de entidades.
     /// </summary>
-    public class ViewModel
-    {
-        /// <summary>
-        /// Identificador padrão de entidades.
-        /// </summary>
-        [JsonIgnore]
-        [SwaggerSchema(ReadOnly = true)]
-        public long Id { get; set; }
-    }
+    [JsonIgnore]
+    [SwaggerSchema(ReadOnly = true)]
+    public long Id { get; set; }
 }

@@ -1,16 +1,13 @@
-﻿namespace Library.Tests.Common
+﻿namespace Library.Tests.Common;
+
+using global::Data.Repositories;
+
+using Library.Tests.Common.Interfaces;
+
+internal class PessoaRepository(PessoaContext context) : Repository<PessoaContext, Pessoa>(context), IPessoaRepository
 {
-    using global::Data.Repositories;
-
-    using Library.Tests.Common.Interfaces;
-
-    internal class PessoaRepository : Repository<PessoaContext, Pessoa>, IPessoaRepository
+    public string GetStringValue(string parametro)
     {
-        public PessoaRepository(PessoaContext context) : base(context) { }
-
-        public string GetStringValue(string parametro)
-        {
-            throw new System.NotImplementedException();
-        }
+        throw new System.NotImplementedException();
     }
 }

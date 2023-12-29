@@ -7,67 +7,66 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Mediator.Interfaces
+namespace Mediator.Interfaces;
+
+using Mediator.Notifications;
+
+using MediatR;
+
+/// <summary>
+/// Interface para gerenciamento da notificação de domínio sem retorno.
+/// </summary>
+public interface IDomainNotificationHandler : INotificationHandler<DomainNotification>
 {
-    using Mediator.Notifications;
-
-    using MediatR;
+    /// <summary>
+    /// Verifica se existem notificações.
+    /// </summary>
+    /// <returns>
+    /// Retorna True caso existam notificações.
+    /// </returns>
+    bool HasNotifications();
 
     /// <summary>
-    /// Interface para gerenciamento da notificação de domínio sem retorno.
+    /// Limpar notificações.
     /// </summary>
-    public interface IDomainNotificationHandler : INotificationHandler<DomainNotification>
-    {
-        /// <summary>
-        /// Verifica se existem notificações.
-        /// </summary>
-        /// <returns>
-        /// Retorna True caso existam notificações.
-        /// </returns>
-        bool HasNotifications();
-
-        /// <summary>
-        /// Limpar notificações.
-        /// </summary>
-        void ClearNotifications();
-
-        /// <summary>
-        /// Pega as notificações.
-        /// </summary>
-        /// <returns>
-        /// Retorna a lista de notificações.
-        /// </returns>
-        List<DomainNotification> GetNotifications();
-    }
+    void ClearNotifications();
 
     /// <summary>
-    /// Interface para gerenciamento da notificação de domínio com retorno.
+    /// Pega as notificações.
     /// </summary>
-    /// <typeparam name="TReturn">
-    /// Resposta da operação.
-    /// </typeparam>
-    public interface IDomainNotificationHandler<TReturn> : INotificationHandler<DomainNotification<TReturn>>
-        where TReturn : notnull
-    {
-        /// <summary>
-        /// Verifica se existem notificações.
-        /// </summary>
-        /// <returns>
-        /// Retorna True caso existam notificações.
-        /// </returns>
-        bool HasNotifications();
+    /// <returns>
+    /// Retorna a lista de notificações.
+    /// </returns>
+    List<DomainNotification> GetNotifications();
+}
 
-        /// <summary>
-        /// Limpar notificações.
-        /// </summary>
-        void ClearNotifications();
+/// <summary>
+/// Interface para gerenciamento da notificação de domínio com retorno.
+/// </summary>
+/// <typeparam name="TReturn">
+/// Resposta da operação.
+/// </typeparam>
+public interface IDomainNotificationHandler<TReturn> : INotificationHandler<DomainNotification<TReturn>>
+    where TReturn : notnull
+{
+    /// <summary>
+    /// Verifica se existem notificações.
+    /// </summary>
+    /// <returns>
+    /// Retorna True caso existam notificações.
+    /// </returns>
+    bool HasNotifications();
 
-        /// <summary>
-        /// Pega as notificações.
-        /// </summary>
-        /// <returns>
-        /// Retorna a lista de notificações.
-        /// </returns>
-        List<DomainNotification<TReturn>> GetNotifications();
-    }
+    /// <summary>
+    /// Limpar notificações.
+    /// </summary>
+    void ClearNotifications();
+
+    /// <summary>
+    /// Pega as notificações.
+    /// </summary>
+    /// <returns>
+    /// Retorna a lista de notificações.
+    /// </returns>
+    List<DomainNotification<TReturn>> GetNotifications();
 }

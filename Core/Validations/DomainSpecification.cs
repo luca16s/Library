@@ -7,41 +7,40 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Core.Validations
+namespace Core.Validations;
+
+using Core.Models;
+
+using System.Diagnostics.CodeAnalysis;
+
+/// <summary>
+/// Classe de especificação de domínio.
+/// </summary>
+/// <typeparam name="TEntity">
+/// Entidade.
+/// </typeparam>
+[ExcludeFromCodeCoverage]
+public abstract class DomainSpecification<TEntity>
+    where TEntity : Entity
 {
-    using Core.Models;
+    protected readonly TEntity _entidade;
 
-    using System.Diagnostics.CodeAnalysis;
-
-    /// <summary>
-    /// Classe de especificação de domínio.
-    /// </summary>
-    /// <typeparam name="TEntity">
-    /// Entidade.
-    /// </typeparam>
-    [ExcludeFromCodeCoverage]
-    public abstract class DomainSpecification<TEntity>
-        where TEntity : Entity
+    protected DomainSpecification(TEntity entidade)
     {
-        protected readonly TEntity _entidade;
-
-        protected DomainSpecification(TEntity entidade)
+        if (entidade is null)
         {
-            if (entidade is null)
-            {
-                throw new ArgumentNullException(nameof(entidade), "Entidade não pode ser nula.");
-            }
-
-            _entidade = entidade;
+            throw new ArgumentNullException(nameof(entidade), "Entidade não pode ser nula.");
         }
 
-        /// <summary>
-        /// Verifica se entidade é válida.
-        /// </summary>
-        /// <returns>
-        /// True: Entidade é válida.
-        /// False: Entidade é inválida.
-        /// </returns>
-        public abstract bool IsValid();
+        _entidade = entidade;
     }
+
+    /// <summary>
+    /// Verifica se entidade é válida.
+    /// </summary>
+    /// <returns>
+    /// True: Entidade é válida.
+    /// False: Entidade é inválida.
+    /// </returns>
+    public abstract bool IsValid();
 }

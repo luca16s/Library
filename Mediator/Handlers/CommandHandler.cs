@@ -7,198 +7,197 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Mediator.Handlers
+namespace Mediator.Handlers;
+
+using Core.Models;
+
+using FluentValidation.Results;
+
+using Mediator.Interfaces;
+using Mediator.Notifications;
+
+/// <summary>
+/// Classe de manipuladora de comandos com retorno.
+/// </summary>
+public abstract class CommandHandler
 {
-    using Core.Models;
-
-    using FluentValidation.Results;
-
-    using Mediator.Interfaces;
-    using Mediator.Notifications;
+    protected readonly IMediatorHandler _mediator;
+    protected readonly IDomainNotificationHandler _notifications;
 
     /// <summary>
-    /// Classe de manipuladora de comandos com retorno.
+    /// Construtor da classe de manipulação de comandos.
     /// </summary>
-    public abstract class CommandHandler
+    /// <param name="mediator">
+    /// Interface do mediator.
+    /// </param>
+    /// <param name="notifications">
+    /// Inteface do notificador de domínio.
+    /// </param>
+    protected CommandHandler(
+        IMediatorHandler mediator,
+        IDomainNotificationHandler notifications
+    )
     {
-        protected readonly IMediatorHandler _mediator;
-        protected readonly IDomainNotificationHandler _notifications;
-
-        /// <summary>
-        /// Construtor da classe de manipulação de comandos.
-        /// </summary>
-        /// <param name="mediator">
-        /// Interface do mediator.
-        /// </param>
-        /// <param name="notifications">
-        /// Inteface do notificador de domínio.
-        /// </param>
-        protected CommandHandler(
-            IMediatorHandler mediator,
-            IDomainNotificationHandler notifications
-        )
-        {
-            _mediator = mediator;
-            _notifications = notifications;
-        }
-
-        /// <summary>
-        /// Valida entidade de domínio passada.
-        /// </summary>
-        /// <param name="entity">
-        /// Entidade a ser validada.
-        /// </param>
-        /// <returns>
-        /// Retorna se entidade está válida.
-        /// True: Caso válida.
-        /// </returns>
-        protected bool ValidateEntity(Entity entity)
-        {
-            NotifyErrorValidations(entity.ValidationResult);
-            return false;
-        }
-
-        /// <summary>
-        /// Notifica eventos do comando.
-        /// </summary>
-        /// <param name="nome">
-        /// Nome do evento a ser notificado.
-        /// </param>
-        /// <param name="mensagem">
-        /// Mensagem da notificação.
-        /// </param>
-        protected void NotifyError(string nome, string mensagem)
-        {
-            if (string.IsNullOrWhiteSpace(nome) ||
-                string.IsNullOrWhiteSpace(mensagem))
-            {
-                return;
-            }
-
-            _ = _mediator.Raise(new DomainNotification(nome, mensagem));
-        }
-
-        /// <summary>
-        /// Indica se há notificações.
-        /// </summary>
-        /// <returns>
-        /// Retorna se há notificações.
-        /// True: caso existam notificações.
-        /// </returns>
-        protected bool HasNotifications() => _notifications.HasNotifications();
-
-        /// <summary>
-        /// Notifica validações de erro.
-        /// </summary>
-        /// <param name="validationResult">
-        /// Validação a ser notificada.
-        /// </param>
-        protected void NotifyErrorValidations(ValidationResult validationResult)
-        {
-            foreach (ValidationFailure? error in validationResult.Errors)
-            {
-                if (error == null)
-                {
-                    continue;
-                }
-
-                NotifyError(error.PropertyName, error.ErrorMessage);
-            }
-        }
+        _mediator = mediator;
+        _notifications = notifications;
     }
 
     /// <summary>
-    /// Classe de manipuladora de comandos com retorno.
+    /// Valida entidade de domínio passada.
     /// </summary>
-    /// <typeparam name="TReturn">
-    /// Tipo do retorno.
-    /// </typeparam>
-    public abstract class CommandHandler<TReturn>
-        where TReturn : notnull
+    /// <param name="entity">
+    /// Entidade a ser validada.
+    /// </param>
+    /// <returns>
+    /// Retorna se entidade está válida.
+    /// True: Caso válida.
+    /// </returns>
+    protected bool ValidateEntity(Entity entity)
     {
-        protected readonly IMediatorHandler _mediator;
-        protected readonly IDomainNotificationHandler<TReturn> _notifications;
+        NotifyErrorValidations(entity.ValidationResult);
+        return false;
+    }
 
-        /// <summary>
-        /// Construtor da classe de manipulação de comandos.
-        /// </summary>
-        /// <param name="mediator">
-        /// Interface do mediator.
-        /// </param>
-        /// <param name="notifications">
-        /// Inteface do notificador de domínio.
-        /// </param>
-        protected CommandHandler(
-            IMediatorHandler mediator,
-            IDomainNotificationHandler<TReturn> notifications
-        )
+    /// <summary>
+    /// Notifica eventos do comando.
+    /// </summary>
+    /// <param name="nome">
+    /// Nome do evento a ser notificado.
+    /// </param>
+    /// <param name="mensagem">
+    /// Mensagem da notificação.
+    /// </param>
+    protected void NotifyError(string nome, string mensagem)
+    {
+        if (string.IsNullOrWhiteSpace(nome) ||
+            string.IsNullOrWhiteSpace(mensagem))
         {
-            _mediator = mediator;
-            _notifications = notifications;
+            return;
         }
 
-        /// <summary>
-        /// Valida entidade de domínio passada.
-        /// </summary>
-        /// <param name="entity">
-        /// Entidade a ser validada.
-        /// </param>
-        /// <returns>
-        /// Retorna se entidade está válida.
-        /// True: Caso válida.
-        /// </returns>
-        protected bool ValidateEntity(Entity entity)
-        {
-            NotifyErrorValidations(entity.ValidationResult);
-            return false;
-        }
+        _ = _mediator.Raise(new DomainNotification(nome, mensagem));
+    }
 
-        /// <summary>
-        /// Notifica eventos do comando.
-        /// </summary>
-        /// <param name="nome">
-        /// Nome do evento a ser notificado.
-        /// </param>
-        /// <param name="mensagem">
-        /// Mensagem da notificação.
-        /// </param>
-        protected void NotifyError(string nome, string mensagem)
+    /// <summary>
+    /// Indica se há notificações.
+    /// </summary>
+    /// <returns>
+    /// Retorna se há notificações.
+    /// True: caso existam notificações.
+    /// </returns>
+    protected bool HasNotifications() => _notifications.HasNotifications();
+
+    /// <summary>
+    /// Notifica validações de erro.
+    /// </summary>
+    /// <param name="validationResult">
+    /// Validação a ser notificada.
+    /// </param>
+    protected void NotifyErrorValidations(ValidationResult validationResult)
+    {
+        foreach (ValidationFailure? error in validationResult.Errors)
         {
-            if (string.IsNullOrWhiteSpace(nome) ||
-                string.IsNullOrWhiteSpace(mensagem))
+            if (error == null)
             {
-                return;
+                continue;
             }
 
-            _ = _mediator.Raise<DomainNotification<TReturn>, TReturn>(new DomainNotification<TReturn>(nome, mensagem));
+            NotifyError(error.PropertyName, error.ErrorMessage);
+        }
+    }
+}
+
+/// <summary>
+/// Classe de manipuladora de comandos com retorno.
+/// </summary>
+/// <typeparam name="TReturn">
+/// Tipo do retorno.
+/// </typeparam>
+public abstract class CommandHandler<TReturn>
+    where TReturn : notnull
+{
+    protected readonly IMediatorHandler _mediator;
+    protected readonly IDomainNotificationHandler<TReturn> _notifications;
+
+    /// <summary>
+    /// Construtor da classe de manipulação de comandos.
+    /// </summary>
+    /// <param name="mediator">
+    /// Interface do mediator.
+    /// </param>
+    /// <param name="notifications">
+    /// Inteface do notificador de domínio.
+    /// </param>
+    protected CommandHandler(
+        IMediatorHandler mediator,
+        IDomainNotificationHandler<TReturn> notifications
+    )
+    {
+        _mediator = mediator;
+        _notifications = notifications;
+    }
+
+    /// <summary>
+    /// Valida entidade de domínio passada.
+    /// </summary>
+    /// <param name="entity">
+    /// Entidade a ser validada.
+    /// </param>
+    /// <returns>
+    /// Retorna se entidade está válida.
+    /// True: Caso válida.
+    /// </returns>
+    protected bool ValidateEntity(Entity entity)
+    {
+        NotifyErrorValidations(entity.ValidationResult);
+        return false;
+    }
+
+    /// <summary>
+    /// Notifica eventos do comando.
+    /// </summary>
+    /// <param name="nome">
+    /// Nome do evento a ser notificado.
+    /// </param>
+    /// <param name="mensagem">
+    /// Mensagem da notificação.
+    /// </param>
+    protected void NotifyError(string nome, string mensagem)
+    {
+        if (string.IsNullOrWhiteSpace(nome) ||
+            string.IsNullOrWhiteSpace(mensagem))
+        {
+            return;
         }
 
-        /// <summary>
-        /// Indica se há notificações.
-        /// </summary>
-        /// <returns>
-        /// Retorna se há notificações.
-        /// True: caso existam notificações.
-        /// </returns>
-        protected bool HasNotifications() => _notifications.HasNotifications();
+        _ = _mediator.Raise<DomainNotification<TReturn>, TReturn>(new DomainNotification<TReturn>(nome, mensagem));
+    }
 
-        /// <summary>
-        /// Notifica validações de erro.
-        /// </summary>
-        /// <param name="validationResult">
-        /// Validação a ser notificada.
-        /// </param>
-        protected void NotifyErrorValidations(ValidationResult validationResult)
+    /// <summary>
+    /// Indica se há notificações.
+    /// </summary>
+    /// <returns>
+    /// Retorna se há notificações.
+    /// True: caso existam notificações.
+    /// </returns>
+    protected bool HasNotifications() => _notifications.HasNotifications();
+
+    /// <summary>
+    /// Notifica validações de erro.
+    /// </summary>
+    /// <param name="validationResult">
+    /// Validação a ser notificada.
+    /// </param>
+    protected void NotifyErrorValidations(ValidationResult validationResult)
+    {
+        foreach (ValidationFailure? error in validationResult.Errors)
         {
-            foreach (ValidationFailure? error in validationResult.Errors)
+            if (error == null)
             {
-                if (error == null)
-                {
-                    continue;
-                }
-
-                NotifyError(error.PropertyName, error.ErrorMessage);
+                continue;
             }
+
+            NotifyError(error.PropertyName, error.ErrorMessage);
         }
     }
 }

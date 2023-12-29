@@ -1,9 +1,8 @@
-﻿namespace Library.Tests.Core
+﻿namespace Library.Tests.Core;
+
+public enum EError
 {
-    public enum EError
-    {
-        TESTE1,
-        TESTE2,
-        TESTE3
-    }
+    TESTE1,
+    TESTE2,
+    TESTE3
 }

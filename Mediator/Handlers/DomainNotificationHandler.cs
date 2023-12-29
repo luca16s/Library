@@ -7,156 +7,155 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Mediator.Handlers
-{
-    using Mediator.Interfaces;
-    using Mediator.Notifications;
+namespace Mediator.Handlers;
 
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading.Tasks;
+using Mediator.Interfaces;
+using Mediator.Notifications;
+
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+/// <summary>
+/// Classe manipuladora de notificação de domínio sem resposta.
+/// </summary>
+public class DomainNotificationHandler : IDomainNotificationHandler
+{
+    private List<DomainNotification> _notifications;
 
     /// <summary>
-    /// Classe manipuladora de notificação de domínio sem resposta.
+    /// Constrói uma nova instância da classe manipuladora de notificação de domínio.
     /// </summary>
-    public class DomainNotificationHandler : IDomainNotificationHandler
+    public DomainNotificationHandler()
     {
-        private List<DomainNotification> _notifications;
-
-        /// <summary>
-        /// Constrói uma nova instância da classe manipuladora de notificação de domínio.
-        /// </summary>
-        public DomainNotificationHandler()
-        {
-            _notifications = new List<DomainNotification>();
-        }
-
-        /// <summary>
-        /// Verifica se tem notificações.
-        /// </summary>
-        /// <returns>
-        /// True: Contém notificações.
-        /// False: Não contém notificações.
-        /// </returns>
-        public virtual bool HasNotifications()
-        {
-            return _notifications.Any();
-        }
-
-        /// <summary>
-        /// Limpa notificações.
-        /// </summary>
-        public virtual void ClearNotifications()
-        {
-            _notifications.Clear();
-        }
-
-        /// <summary>
-        /// Busca todas as notificações.
-        /// </summary>
-        /// <returns>
-        /// Lista das notificações adicionadas.
-        /// </returns>
-        public virtual List<DomainNotification> GetNotifications()
-        {
-            return _notifications;
-        }
-
-        /// <summary>
-        /// Manipulador de notificação de domínio.
-        /// </summary>
-        /// <param name="message">
-        /// Mensagem a ser adicionada.
-        /// </param>
-        /// <param name="cancellationToken">
-        /// Token de cancelamento.
-        /// </param>
-        public Task Handle(DomainNotification message, CancellationToken cancellationToken)
-        {
-            _notifications.Add(message);
-            return Task.CompletedTask;
-        }
-
-        /// <summary>
-        /// Descarta manipulador de notificação de domínio.
-        /// </summary>
-        public void Dispose()
-        {
-            _notifications = new List<DomainNotification>();
-        }
+        _notifications = new List<DomainNotification>();
     }
 
     /// <summary>
-    /// Classe manipuladora de notificação de domínio com resposta.
+    /// Verifica se tem notificações.
     /// </summary>
-    /// <typeparam name="TReturn">
-    /// Tipo do retorno.
-    /// </typeparam>
-    public class DomainNotificationHandler<TReturn> : IDomainNotificationHandler<TReturn>
-        where TReturn : notnull
+    /// <returns>
+    /// True: Contém notificações.
+    /// False: Não contém notificações.
+    /// </returns>
+    public virtual bool HasNotifications()
     {
-        private List<DomainNotification<TReturn>> _notifications;
+        return _notifications.Any();
+    }
 
-        /// <summary>
-        /// Constrói uma nova instância da classe manipuladora de notificação de domínio.
-        /// </summary>
-        public DomainNotificationHandler()
-        {
-            _notifications = new List<DomainNotification<TReturn>>();
-        }
+    /// <summary>
+    /// Limpa notificações.
+    /// </summary>
+    public virtual void ClearNotifications()
+    {
+        _notifications.Clear();
+    }
 
-        /// <summary>
-        /// Verifica se tem notificações.
-        /// </summary>
-        /// <returns>
-        /// True: Contém notificações.
-        /// False: Não contém notificações.
-        /// </returns>
-        public virtual bool HasNotifications()
-        {
-            return _notifications.Any();
-        }
+    /// <summary>
+    /// Busca todas as notificações.
+    /// </summary>
+    /// <returns>
+    /// Lista das notificações adicionadas.
+    /// </returns>
+    public virtual List<DomainNotification> GetNotifications()
+    {
+        return _notifications;
+    }
 
-        /// <summary>
-        /// Limpa notificações.
-        /// </summary>
-        public virtual void ClearNotifications()
-        {
-            _notifications.Clear();
-        }
+    /// <summary>
+    /// Manipulador de notificação de domínio.
+    /// </summary>
+    /// <param name="message">
+    /// Mensagem a ser adicionada.
+    /// </param>
+    /// <param name="cancellationToken">
+    /// Token de cancelamento.
+    /// </param>
+    public Task Handle(DomainNotification message, CancellationToken cancellationToken)
+    {
+        _notifications.Add(message);
+        return Task.CompletedTask;
+    }
 
-        /// <summary>
-        /// Busca todas as notificações.
-        /// </summary>
-        /// <returns>
-        /// Lista das notificações adicionadas.
-        /// </returns>
-        public virtual List<DomainNotification<TReturn>> GetNotifications()
-        {
-            return _notifications;
-        }
+    /// <summary>
+    /// Descarta manipulador de notificação de domínio.
+    /// </summary>
+    public void Dispose()
+    {
+        _notifications = new List<DomainNotification>();
+    }
+}
 
-        /// <summary>
-        /// Manipulador de notificação de domínio.
-        /// </summary>
-        /// <param name="message">
-        /// Mensagem a ser adicionada.
-        /// </param>
-        /// <param name="cancellationToken">
-        /// Token de cancelamento.
-        /// </param>
-        public Task Handle(DomainNotification<TReturn> message, CancellationToken cancellationToken)
-        {
-            _notifications.Add(message);
-            return Task.CompletedTask;
-        }
+/// <summary>
+/// Classe manipuladora de notificação de domínio com resposta.
+/// </summary>
+/// <typeparam name="TReturn">
+/// Tipo do retorno.
+/// </typeparam>
+public class DomainNotificationHandler<TReturn> : IDomainNotificationHandler<TReturn>
+    where TReturn : notnull
+{
+    private List<DomainNotification<TReturn>> _notifications;
 
-        /// <summary>
-        /// Descarta manipulador de notificação de domínio.
-        /// </summary>
-        public void Dispose()
-        {
-            _notifications = new List<DomainNotification<TReturn>>();
-        }
+    /// <summary>
+    /// Constrói uma nova instância da classe manipuladora de notificação de domínio.
+    /// </summary>
+    public DomainNotificationHandler()
+    {
+        _notifications = new List<DomainNotification<TReturn>>();
+    }
+
+    /// <summary>
+    /// Verifica se tem notificações.
+    /// </summary>
+    /// <returns>
+    /// True: Contém notificações.
+    /// False: Não contém notificações.
+    /// </returns>
+    public virtual bool HasNotifications()
+    {
+        return _notifications.Any();
+    }
+
+    /// <summary>
+    /// Limpa notificações.
+    /// </summary>
+    public virtual void ClearNotifications()
+    {
+        _notifications.Clear();
+    }
+
+    /// <summary>
+    /// Busca todas as notificações.
+    /// </summary>
+    /// <returns>
+    /// Lista das notificações adicionadas.
+    /// </returns>
+    public virtual List<DomainNotification<TReturn>> GetNotifications()
+    {
+        return _notifications;
+    }
+
+    /// <summary>
+    /// Manipulador de notificação de domínio.
+    /// </summary>
+    /// <param name="message">
+    /// Mensagem a ser adicionada.
+    /// </param>
+    /// <param name="cancellationToken">
+    /// Token de cancelamento.
+    /// </param>
+    public Task Handle(DomainNotification<TReturn> message, CancellationToken cancellationToken)
+    {
+        _notifications.Add(message);
+        return Task.CompletedTask;
+    }
+
+    /// <summary>
+    /// Descarta manipulador de notificação de domínio.
+    /// </summary>
+    public void Dispose()
+    {
+        _notifications = new List<DomainNotification<TReturn>>();
     }
 }

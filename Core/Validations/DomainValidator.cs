@@ -7,40 +7,39 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Core.Validations
+namespace Core.Validations;
+
+using Core.Models;
+
+using FluentValidation;
+
+using System.Diagnostics.CodeAnalysis;
+
+/// <summary>
+/// Classe de validação de domínio.
+/// </summary>
+/// <typeparam name="TEntity">
+/// Entidade a ser validada.
+/// </typeparam>
+[ExcludeFromCodeCoverage]
+public abstract class DomainValidator<TEntity> : AbstractValidator<TEntity>
+    where TEntity : Entity
 {
-    using Core.Models;
+    protected readonly TEntity _entidade;
 
-    using FluentValidation;
-
-    using System.Diagnostics.CodeAnalysis;
-
-    /// <summary>
-    /// Classe de validação de domínio.
-    /// </summary>
-    /// <typeparam name="TEntity">
-    /// Entidade a ser validada.
-    /// </typeparam>
-    [ExcludeFromCodeCoverage]
-    public abstract class DomainValidator<TEntity> : AbstractValidator<TEntity>
-        where TEntity : Entity
+    protected DomainValidator(TEntity entidade)
     {
-        protected readonly TEntity _entidade;
-
-        protected DomainValidator(TEntity entidade)
+        if (entidade is null)
         {
-            if (entidade is null)
-            {
-                throw new ArgumentNullException(nameof(entidade), "Entidade não pode ser nula.");
-            }
-
-            _entidade = entidade;
-            Validar();
+            throw new ArgumentNullException(nameof(entidade), "Entidade não pode ser nula.");
         }
 
-        /// <summary>
-        /// Valida Entidade de domínio.
-        /// </summary>
-        protected abstract void Validar();
+        _entidade = entidade;
+        Validar();
     }
+
+    /// <summary>
+    /// Valida Entidade de domínio.
+    /// </summary>
+    protected abstract void Validar();
 }

@@ -7,34 +7,33 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Data
+namespace Data;
+
+using Core.Models;
+
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
+/// <summary>
+/// Classe de configuração base do banco de dados.
+/// </summary>
+/// <typeparam name="TEntity">
+/// Entidade.
+/// </typeparam>
+public abstract class ConfigurationBase<TEntity> :
+    IEntityTypeConfiguration<TEntity>
+    where TEntity : Entity
 {
-    using Core.Models;
-
-    using Microsoft.EntityFrameworkCore;
-    using Microsoft.EntityFrameworkCore.Metadata.Builders;
-
     /// <summary>
-    /// Classe de configuração base do banco de dados.
+    /// Configuração base da Entidade.
     /// </summary>
-    /// <typeparam name="TEntity">
-    /// Entidade.
-    /// </typeparam>
-    public abstract class ConfigurationBase<TEntity> :
-        IEntityTypeConfiguration<TEntity>
-        where TEntity : Entity
+    /// <param name="builder">
+    /// API para configuração da chamada do banco de dados.
+    /// </param>
+    public virtual void Configure(EntityTypeBuilder<TEntity> builder)
     {
-        /// <summary>
-        /// Configuração base da Entidade.
-        /// </summary>
-        /// <param name="builder">
-        /// API para configuração da chamada do banco de dados.
-        /// </param>
-        public virtual void Configure(EntityTypeBuilder<TEntity> builder)
-        {
-            _ = builder.HasKey(u => u.Id);
+        _ = builder.HasKey(u => u.Id);
 
-            _ = builder.Ignore(p => p.ValidationResult);
-        }
+        _ = builder.Ignore(p => p.ValidationResult);
     }
 }

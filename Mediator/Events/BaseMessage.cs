@@ -7,39 +7,38 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Mediator.Events
+namespace Mediator.Events;
+
+using System.Text.Json.Serialization;
+
+/// <summary>
+/// Classe base de mensagem.
+/// </summary>
+public abstract class BaseMessage
 {
-    using System.Text.Json.Serialization;
+    /// <summary>
+    /// Inicializa uma nova instância da classe Message.
+    /// </summary>
+    protected BaseMessage()
+    {
+        MessageType = GetType().Name;
+    }
 
     /// <summary>
-    /// Classe base de mensagem.
+    /// Identificador da mensagem.
     /// </summary>
-    public abstract class BaseMessage
-    {
-        /// <summary>
-        /// Inicializa uma nova instância da classe Message.
-        /// </summary>
-        protected BaseMessage()
-        {
-            MessageType = GetType().Name;
-        }
+    [JsonIgnore]
+    public long Id { get; protected set; }
 
-        /// <summary>
-        /// Identificador da mensagem.
-        /// </summary>
-        [JsonIgnore]
-        public long Id { get; protected set; }
+    /// <summary>
+    /// Tipo da mensagem.
+    /// </summary>
+    [JsonIgnore]
+    public string MessageType { get; protected set; }
 
-        /// <summary>
-        /// Tipo da mensagem.
-        /// </summary>
-        [JsonIgnore]
-        public string MessageType { get; protected set; }
-
-        /// <summary>
-        /// Timestamp da execução do comando.
-        /// </summary>
-        [JsonIgnore]
-        protected DateTime Timestamp { get; private set; } = DateTime.UtcNow;
-    }
+    /// <summary>
+    /// Timestamp da execução do comando.
+    /// </summary>
+    [JsonIgnore]
+    protected DateTime Timestamp { get; private set; } = DateTime.UtcNow;
 }

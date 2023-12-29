@@ -7,99 +7,98 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Api.Extensions
+namespace Api.Extensions;
+
+using Api.Models;
+using Api.Properties;
+
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.OpenApi.Models;
+
+using Swashbuckle.AspNetCore.SwaggerGen;
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+
+public static class SwaggerExtensions
 {
-    using Api.Models;
-    using Api.Properties;
-
-    using Microsoft.AspNetCore.Authentication.JwtBearer;
-    using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.OpenApi.Models;
-
-    using Swashbuckle.AspNetCore.SwaggerGen;
-
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Reflection;
-
-    public static class SwaggerExtensions
+    /// <summary>
+    /// Método de extensão para incluir configurações de swagger.
+    /// </summary>
+    /// <param name="services">
+    /// <see cref="IServiceCollection"/>
+    /// </param>
+    /// <param name="swaggerInfo">
+    /// Arquivo de modelo com informações de swagger.
+    /// </param>
+    /// <exception cref="ArgumentNullException">
+    /// Exceção caso propriedade de site não esteja preenchida.
+    /// </exception>
+    public static IServiceCollection AddSwaggerConfiguration(
+        this IServiceCollection services,
+        SwaggerInfo swaggerInfo
+    )
     {
-        /// <summary>
-        /// Método de extensão para incluir configurações de swagger.
-        /// </summary>
-        /// <param name="services">
-        /// <see cref="IServiceCollection"/>
-        /// </param>
-        /// <param name="swaggerInfo">
-        /// Arquivo de modelo com informações de swagger.
-        /// </param>
-        /// <exception cref="ArgumentNullException">
-        /// Exceção caso propriedade de site não esteja preenchida.
-        /// </exception>
-        public static IServiceCollection AddSwaggerConfiguration(
-            this IServiceCollection services,
-            SwaggerInfo swaggerInfo
-        )
+        return swaggerInfo is null
+            ? throw new ArgumentNullException(nameof(swaggerInfo))
+            : services.AddSwaggerGen(c =>
         {
-            return swaggerInfo is null
-                ? throw new ArgumentNullException(nameof(swaggerInfo))
-                : services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc(
-                    swaggerInfo.AppVersion,
-                    new OpenApiInfo
+            c.SwaggerDoc(
+                swaggerInfo.AppVersion,
+                new OpenApiInfo
+                {
+                    Title = swaggerInfo.AppName,
+                    Version = swaggerInfo.AppVersion,
+                    Description = swaggerInfo.Description,
+                    Contact = new OpenApiContact
                     {
-                        Title = swaggerInfo.AppName,
-                        Version = swaggerInfo.AppVersion,
-                        Description = swaggerInfo.Description,
-                        Contact = new OpenApiContact
-                        {
-                            Url = new(swaggerInfo.Site ?? string.Empty),
-                            Name = swaggerInfo.Company,
-                            Email = swaggerInfo.Email,
-                        }
+                        Url = new(swaggerInfo.Site ?? string.Empty),
+                        Name = swaggerInfo.Company,
+                        Email = swaggerInfo.Email,
                     }
-                );
-                c.AddSecurityDefinition(
-                    JwtBearerDefaults.AuthenticationScheme,
+                }
+            );
+            c.AddSecurityDefinition(
+                JwtBearerDefaults.AuthenticationScheme,
+                new OpenApiSecurityScheme
+                {
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey,
+                    Name = Resources.SECURITY_SCHEME_HEADER_NAME,
+                    Scheme = JwtBearerDefaults.AuthenticationScheme,
+                    Description = Resources.SECURITY_SCHEME_DESCRIPTION,
+                }
+            );
+            c.AddSecurityRequirement(new OpenApiSecurityRequirement()
+         {
+                {
                     new OpenApiSecurityScheme
                     {
                         In = ParameterLocation.Header,
-                        Type = SecuritySchemeType.ApiKey,
-                        Name = Resources.SECURITY_SCHEME_HEADER_NAME,
-                        Scheme = JwtBearerDefaults.AuthenticationScheme,
-                        Description = Resources.SECURITY_SCHEME_DESCRIPTION,
-                    }
-                );
-                c.AddSecurityRequirement(new OpenApiSecurityRequirement()
-             {
-                    {
-                        new OpenApiSecurityScheme
+                        Scheme = Resources.OAUTH_SCHEME,
+                        BearerFormat = Resources.FORMAT,
+                        Reference = new OpenApiReference
                         {
-                            In = ParameterLocation.Header,
-                            Scheme = Resources.OAUTH_SCHEME,
-                            BearerFormat = Resources.FORMAT,
-                            Reference = new OpenApiReference
-                            {
-                                Type = ReferenceType.SecurityScheme,
-                                Id = JwtBearerDefaults.AuthenticationScheme,
-                            },
+                            Type = ReferenceType.SecurityScheme,
+                            Id = JwtBearerDefaults.AuthenticationScheme,
                         },
-                        new List<string>()
-                    }
-             });
-                c.ResolveConflictingActions(apiDescription => apiDescription.First());
-                c.EnableAnnotations();
-                c.OrderActionsBy(
-                    (apiDesc) => $"{apiDesc.ActionDescriptor.RouteValues["controller"]}_{apiDesc.HttpMethod}"
-                );
-                c.CustomOperationIds(apiDesc =>
-                {
-                    return apiDesc.TryGetMethodInfo(out MethodInfo methodInfo) ? methodInfo.Name : null;
-                });
-                c.DescribeAllParametersInCamelCase();
+                    },
+                    new List<string>()
+                }
+         });
+            c.ResolveConflictingActions(apiDescription => apiDescription.First());
+            c.EnableAnnotations();
+            c.OrderActionsBy(
+                (apiDesc) => $"{apiDesc.ActionDescriptor.RouteValues["controller"]}_{apiDesc.HttpMethod}"
+            );
+            c.CustomOperationIds(apiDesc =>
+            {
+                return apiDesc.TryGetMethodInfo(out MethodInfo methodInfo) ? methodInfo.Name : null;
             });
-        }
+            c.DescribeAllParametersInCamelCase();
+        });
     }
 }

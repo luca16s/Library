@@ -7,39 +7,38 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Mediator.Events
+namespace Mediator.Events;
+
+using MediatR;
+
+/// <summary>
+/// Classe base da mensagem sem retorno.
+/// </summary>
+public abstract class Message : BaseMessage, IRequest
 {
-    using MediatR;
-
     /// <summary>
-    /// Classe base da mensagem sem retorno.
+    /// Inicializa uma nova instância da classe Message.
     /// </summary>
-    public abstract class Message : BaseMessage, IRequest
+    protected Message()
     {
-        /// <summary>
-        /// Inicializa uma nova instância da classe Message.
-        /// </summary>
-        protected Message()
-        {
-            MessageType = GetType().Name;
-        }
+        MessageType = GetType().Name;
     }
+}
 
+/// <summary>
+/// Classe base da mensagem com retorno.
+/// </summary>
+/// <typeparam name="TReturn">
+/// Tipo do retorno.
+/// </typeparam>
+public abstract class Message<TReturn> : BaseMessage, IRequest<TReturn>
+    where TReturn : notnull
+{
     /// <summary>
-    /// Classe base da mensagem com retorno.
+    /// Inicializa uma nova instância da classe Message.
     /// </summary>
-    /// <typeparam name="TReturn">
-    /// Tipo do retorno.
-    /// </typeparam>
-    public abstract class Message<TReturn> : BaseMessage, IRequest<TReturn>
-        where TReturn : notnull
+    protected Message()
     {
-        /// <summary>
-        /// Inicializa uma nova instância da classe Message.
-        /// </summary>
-        protected Message()
-        {
-            MessageType = GetType().Name;
-        }
+        MessageType = GetType().Name;
     }
 }

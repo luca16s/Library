@@ -1,11 +1,10 @@
-﻿namespace Library.Tests.Common.Interfaces
+﻿namespace Library.Tests.Common.Interfaces;
+
+using global::Core.Interfaces.Services;
+
+using Library.Tests.Common;
+
+public interface IPessoaService : IService<Pessoa>
 {
-    using global::Core.Interfaces.Services;
-
-    using Library.Tests.Common;
-
-    public interface IPessoaService : IService<Pessoa>
-    {
-        string GetStringValue(string parametro);
-    }
+    string GetStringValue(string parametro);
 }

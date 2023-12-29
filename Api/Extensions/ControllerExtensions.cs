@@ -7,86 +7,85 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Api.Extensions
-{
-    using Microsoft.AspNetCore.Authentication.JwtBearer;
-    using Microsoft.AspNetCore.Authorization;
-    using Microsoft.AspNetCore.Http;
-    using Microsoft.AspNetCore.Mvc.Authorization;
-    using Microsoft.Extensions.DependencyInjection;
+namespace Api.Extensions;
 
-    using Newtonsoft.Json;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.Extensions.DependencyInjection;
+
+using Newtonsoft.Json;
+
+/// <summary>
+/// Classe de extensão de Controller.
+/// </summary>
+public static class ControllerExtensions
+{
+    /// <summary>
+    /// Adiciona o HttpContext Accessor.
+    /// </summary>
+    /// <param name="services">
+    /// <see cref="IServiceCollection"/>
+    /// </param>
+    /// <see cref="IServiceCollection"/>
+    /// </returns>
+    public static IServiceCollection AddHttpContextAccessor
+    (
+        this IServiceCollection services
+    )
+    {
+        return services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+    }
 
     /// <summary>
-    /// Classe de extensão de Controller.
+    /// Adiciona configuração de autorização.
     /// </summary>
-    public static class ControllerExtensions
+    /// <param name="services">
+    /// <see cref="IServiceCollection"/>
+    /// </param>
+    /// <returns>
+    /// <see cref="IServiceCollection"/>
+    /// </returns>
+    public static IServiceCollection AddAuthorization
+    (
+        this IServiceCollection services
+    )
     {
-        /// <summary>
-        /// Adiciona o HttpContext Accessor.
-        /// </summary>
-        /// <param name="services">
-        /// <see cref="IServiceCollection"/>
-        /// </param>
-        /// <see cref="IServiceCollection"/>
-        /// </returns>
-        public static IServiceCollection AddHttpContextAccessor
-        (
-            this IServiceCollection services
-        )
+        return services.AddAuthorization(authOptions =>
         {
-            return services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-        }
+            authOptions.AddPolicy(
+                JwtBearerDefaults.AuthenticationScheme,
+                new AuthorizationPolicyBuilder()
+                .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme‌​)
+                .RequireAuthenticatedUser()
+                .Build()
+            );
+        });
+    }
 
-        /// <summary>
-        /// Adiciona configuração de autorização.
-        /// </summary>
-        /// <param name="services">
-        /// <see cref="IServiceCollection"/>
-        /// </param>
-        /// <returns>
-        /// <see cref="IServiceCollection"/>
-        /// </returns>
-        public static IServiceCollection AddAuthorization
-        (
-            this IServiceCollection services
-        )
+    /// <summary>
+    /// Adiciona configurações de controller.
+    /// </summary>
+    /// <param name="services">
+    /// <see cref="IServiceCollection"/>
+    /// </param>
+    /// <returns>
+    /// <see cref="IServiceCollection"/>
+    /// </returns>
+    public static IMvcBuilder AddControllerConfiguration
+    (
+        this IServiceCollection services
+    )
+    {
+        return services.AddControllers(config =>
         {
-            return services.AddAuthorization(authOptions =>
-            {
-                authOptions.AddPolicy(
-                    JwtBearerDefaults.AuthenticationScheme,
-                    new AuthorizationPolicyBuilder()
-                    .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme‌​)
-                    .RequireAuthenticatedUser()
-                    .Build()
-                );
-            });
-        }
+            AuthorizationPolicy? policy = new AuthorizationPolicyBuilder()
+                .RequireAuthenticatedUser()
+                .Build();
 
-        /// <summary>
-        /// Adiciona configurações de controller.
-        /// </summary>
-        /// <param name="services">
-        /// <see cref="IServiceCollection"/>
-        /// </param>
-        /// <returns>
-        /// <see cref="IServiceCollection"/>
-        /// </returns>
-        public static IMvcBuilder AddControllerConfiguration
-        (
-            this IServiceCollection services
-        )
-        {
-            return services.AddControllers(config =>
-            {
-                AuthorizationPolicy? policy = new AuthorizationPolicyBuilder()
-                    .RequireAuthenticatedUser()
-                    .Build();
+            config.Filters.Add(new AuthorizeFilter(policy));
 
-                config.Filters.Add(new AuthorizeFilter(policy));
-
-            }).AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
-        }
+        }).AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
     }
 }

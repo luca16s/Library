@@ -1,10 +1,9 @@
-﻿namespace OFX.Enums
-{
-    using System.ComponentModel;
+﻿namespace OFX.Enums;
 
-    public enum ELanguage
-    {
-        [Description("Pt-BR")]
-        POR
-    }
+using System.ComponentModel;
+
+public enum ELanguage
+{
+    [Description("Pt-BR")]
+    POR
 }

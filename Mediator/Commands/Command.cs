@@ -7,12 +7,11 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Mediator.Commands
-{
-    using Mediator.Events;
+namespace Mediator.Commands;
 
-    /// <summary>
-    /// Classe base de comando sem retorno.
-    /// </summary>
-    public abstract class Command : Message { }
-}
+using Mediator.Events;
+
+/// <summary>
+/// Classe base de comando sem retorno.
+/// </summary>
+public abstract class Command : Message { }

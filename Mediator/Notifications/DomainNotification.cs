@@ -7,99 +7,86 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Mediator.Notifications
+namespace Mediator.Notifications;
+
+using Mediator.Events;
+
+/// <summary>
+/// Notificação de domínio sem retorno.
+/// </summary>
+/// <remarks>
+/// Construtor da classe de Notificação de domínio.
+/// </remarks>
+/// <param name="key">
+/// Chave da notificação.
+/// </param>
+/// <param name="value">
+/// Valor da notificação.
+/// </param>
+public class DomainNotification(
+    string key,
+    string value
+    ) : Event
 {
-    using Mediator.Events;
+    /// <summary>
+    /// Identificador da notigicação.
+    /// </summary>
+    public long NotificationId { get; private set; }
 
     /// <summary>
-    /// Notificação de domínio sem retorno.
+    /// Chave da notificação.
     /// </summary>
-    public class DomainNotification : Event
-    {
-        /// <summary>
-        /// Identificador da notigicação.
-        /// </summary>
-        public long NotificationId { get; private set; }
-
-        /// <summary>
-        /// Chave da notificação.
-        /// </summary>
-        public string Key { get; private set; }
-
-        /// <summary>
-        /// Valor da notificação.
-        /// </summary>
-        public string Value { get; private set; }
-
-        /// <summary>
-        /// Versão da notificação.
-        /// </summary>
-        public int Version { get; private set; } = 1;
-
-        /// <summary>
-        /// Construtor da classe de Notificação de domínio.
-        /// </summary>
-        /// <param name="key">
-        /// Chave da notificação.
-        /// </param>
-        /// <param name="value">
-        /// Valor da notificação.
-        /// </param>
-        public DomainNotification(
-            string key,
-            string value
-        )
-        {
-            Key = key;
-            Value = value;
-        }
-    }
+    public string Key { get; private set; } = key;
 
     /// <summary>
-    /// Notificação de domínio com retorno.
+    /// Valor da notificação.
     /// </summary>
-    /// <typeparam name="TReturn">
-    /// Tipo do retorno.
-    /// </typeparam>
-    public class DomainNotification<TReturn> : Event<TReturn>
-        where TReturn : notnull
-    {
-        /// <summary>
-        /// Identificador da notigicação.
-        /// </summary>
-        public long NotificationId { get; private set; }
+    public string Value { get; private set; } = value;
 
-        /// <summary>
-        /// Chave da notificação.
-        /// </summary>
-        public string Key { get; private set; }
+    /// <summary>
+    /// Versão da notificação.
+    /// </summary>
+    public int Version { get; private set; } = 1;
+}
 
-        /// <summary>
-        /// Valor da notificação.
-        /// </summary>
-        public string Value { get; private set; }
+/// <summary>
+/// Notificação de domínio com retorno.
+/// </summary>
+/// <typeparam name="TReturn">
+/// Tipo do retorno.
+/// </typeparam>
+/// <remarks>
+/// Construtor da classe de Notificação de domínio.
+/// </remarks>
+/// <param name="key">
+/// Chave da notificação.
+/// </param>
+/// <param name="value">
+/// Valor da notificação.
+/// </param>
+public class DomainNotification<TReturn>(
+    string key,
+    string value
+    ) : Event<TReturn>
+    where TReturn : notnull
+{
+    /// <summary>
+    /// Identificador da notigicação.
+    /// </summary>
+    public long NotificationId { get; private set; }
 
-        /// <summary>
-        /// Versão da notificação.
-        /// </summary>
-        public int Version { get; private set; } = 1;
+    /// <summary>
+    /// Chave da notificação.
+    /// </summary>
+    public string Key { get; private set; } = key;
 
-        /// <summary>
-        /// Construtor da classe de Notificação de domínio.
-        /// </summary>
-        /// <param name="key">
-        /// Chave da notificação.
-        /// </param>
-        /// <param name="value">
-        /// Valor da notificação.
-        /// </param>
-        public DomainNotification(
-            string key,
-            string value
-        )
-        {
-            Key = key;
-            Value = value;
-        }
-    }
+    /// <summary>
+    /// Valor da notificação.
+    /// </summary>
+    public string Value { get; private set; } = value;
+
+    /// <summary>
+    /// Versão da notificação.
+    /// </summary>
+    public int Version { get; private set; } = 1;
 }

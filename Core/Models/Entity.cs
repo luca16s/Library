@@ -7,147 +7,141 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Core.Models
+namespace Core.Models;
+
+using FluentValidation.Results;
+
+/// <summary>
+/// Entidade base.
+/// </summary>
+/// <remarks>
+/// Inicia uma nova instância da classe <see cref="Entity"/>.
+/// Construtor com identificador passado via parametro.
+/// </remarks>
+/// <param name="id">
+/// Identificador.
+/// </param>
+public abstract class Entity(long id)
 {
-    using FluentValidation.Results;
+    private int? _requestedHashCode;
 
     /// <summary>
-    /// Entidade base.
+    /// Obtém identificador da entidade.
     /// </summary>
-    public abstract class Entity
+    public long Id { get; private set; } = id;
+
+    /// <summary>
+    /// Lista com as validações executadas para entidade.
+    /// </summary>
+    public ValidationResult ValidationResult { get; private set; } = new ValidationResult();
+
+    /// <summary>
+    /// Gera o hash para a entidade.
+    /// </summary>
+    /// <returns>
+    /// Hash da entidade.
+    /// </returns>
+    public override int GetHashCode()
     {
-        private int? _requestedHashCode;
-
-        /// <summary>
-        /// Inicia uma nova instância da classe <see cref="Entity"/>.
-        /// Construtor com identificador passado via parametro.
-        /// </summary>
-        /// <param name="id">
-        /// Identificador.
-        /// </param>
-        public Entity(long id)
+        if (!_requestedHashCode.HasValue)
         {
-            Id = id;
+            _requestedHashCode = Id.GetHashCode() ^ 31;
         }
 
-        /// <summary>
-        /// Obtém identificador da entidade.
-        /// </summary>
-        public long Id { get; private set; }
+        return _requestedHashCode.Value;
+    }
 
-        /// <summary>
-        /// Lista com as validações executadas para entidade.
-        /// </summary>
-        public ValidationResult ValidationResult { get; private set; } = new ValidationResult();
-
-        /// <summary>
-        /// Gera o hash para a entidade.
-        /// </summary>
-        /// <returns>
-        /// Hash da entidade.
-        /// </returns>
-        public override int GetHashCode()
+    /// <summary>
+    /// Verifica se entidade é igual.
+    /// </summary>
+    /// <param name="obj">
+    /// Entidade a ser comparada.
+    /// </param>
+    /// <returns>
+    /// True: Entidade igual.
+    /// False: Entidade diferente.
+    /// </returns>
+    public override bool Equals(object? obj)
+    {
+        if (obj is null)
         {
-            if (!_requestedHashCode.HasValue)
-            {
-                _requestedHashCode = Id.GetHashCode() ^ 31;
-            }
-
-            return _requestedHashCode.Value;
+            return false;
         }
 
-        /// <summary>
-        /// Verifica se entidade é igual.
-        /// </summary>
-        /// <param name="obj">
-        /// Entidade a ser comparada.
-        /// </param>
-        /// <returns>
-        /// True: Entidade igual.
-        /// False: Entidade diferente.
-        /// </returns>
-        public override bool Equals(object? obj)
+        if (obj is not Entity || GetType() != obj.GetType())
         {
-            if (obj is null)
-            {
-                return false;
-            }
-
-            if (obj is not Entity || GetType() != obj.GetType())
-            {
-                return false;
-            }
-
-            if (ReferenceEquals(this, obj))
-            {
-                return true;
-            }
-
-            Entity item = (Entity)obj;
-
-            return item.Id.Equals(Id);
+            return false;
         }
 
-        /// <summary>
-        /// Adiciona erros de validação ao validationResult da entidade.
-        /// </summary>
-        /// <param name="validationResult">
-        /// Validação a ser adicionada.
-        /// </param>
-        public void AddValidationError(ValidationResult validationResult)
+        if (ReferenceEquals(this, obj))
         {
-            if (validationResult is null)
+            return true;
+        }
+
+        Entity item = (Entity)obj;
+
+        return item.Id.Equals(Id);
+    }
+
+    /// <summary>
+    /// Adiciona erros de validação ao validationResult da entidade.
+    /// </summary>
+    /// <param name="validationResult">
+    /// Validação a ser adicionada.
+    /// </param>
+    public void AddValidationError(ValidationResult validationResult)
+    {
+        if (validationResult is null)
+        {
+            return;
+        }
+
+        foreach (ValidationFailure? error in validationResult.Errors)
+        {
+            if (error is null)
             {
-                return;
+                continue;
             }
 
-            foreach (ValidationFailure? error in validationResult.Errors)
-            {
-                if (error is null)
-                {
-                    continue;
-                }
-
-                ValidationResult.Errors.Add(new ValidationFailure(error.PropertyName, error.ErrorMessage));
-            }
+            ValidationResult.Errors.Add(new ValidationFailure(error.PropertyName, error.ErrorMessage));
         }
+    }
 
-        /// <summary>
-        /// Verifica se entidade é igual.
-        /// </summary>
-        /// <param name="left">
-        /// Entidade a esquerda.
-        /// </param>
-        /// <param name="right">
-        /// Entidade a direita.
-        /// </param>
-        /// <returns>
-        /// True: Entidade igual.
-        /// False: Entidade diferente.
-        /// </returns>
-        public static bool operator ==(Entity left, Entity right)
-        {
-            return Equals(left, null) ?
-                Equals(right, null) :
-                left.Equals(right);
-        }
+    /// <summary>
+    /// Verifica se entidade é igual.
+    /// </summary>
+    /// <param name="left">
+    /// Entidade a esquerda.
+    /// </param>
+    /// <param name="right">
+    /// Entidade a direita.
+    /// </param>
+    /// <returns>
+    /// True: Entidade igual.
+    /// False: Entidade diferente.
+    /// </returns>
+    public static bool operator ==(Entity left, Entity right)
+    {
+        return Equals(left, null) ?
+            Equals(right, null) :
+            left.Equals(right);
+    }
 
-        /// <summary>
-        /// Verifica se entidade é diferente.
-        /// </summary>
-        /// <param name="left">
-        /// Entidade a esquerda.
-        /// </param>
-        /// <param name="right">
-        /// Entidade a direita.
-        /// </param>
-        /// <returns>
-        /// True: Entidade diferente.
-        /// False: Entidade igual.
-        /// </returns>
-        public static bool operator !=(Entity left, Entity right)
-        {
-            return !(left == right);
-        }
+    /// <summary>
+    /// Verifica se entidade é diferente.
+    /// </summary>
+    /// <param name="left">
+    /// Entidade a esquerda.
+    /// </param>
+    /// <param name="right">
+    /// Entidade a direita.
+    /// </param>
+    /// <returns>
+    /// True: Entidade diferente.
+    /// False: Entidade igual.
+    /// </returns>
+    public static bool operator !=(Entity left, Entity right)
+    {
+        return !(left == right);
     }
 }

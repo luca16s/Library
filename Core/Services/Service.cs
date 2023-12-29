@@ -7,106 +7,98 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Core.Services
+namespace Core.Services;
+
+using Core.Interfaces.Repositories;
+using Core.Interfaces.Services;
+using Core.Models;
+
+using Microsoft.EntityFrameworkCore.Storage;
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
+
+public class Service<TRepository, TEntity>(
+    IUnitOfWork unitOfWork,
+    TRepository repository
+    ) : IService<TEntity>
+    where TEntity : Entity
+    where TRepository : IRepository<TEntity>
 {
-    using Core.Interfaces.Repositories;
-    using Core.Interfaces.Services;
-    using Core.Models;
+    private readonly IUnitOfWork _unitOfWork = unitOfWork;
+    public readonly TRepository _repository = repository;
 
-    using Microsoft.EntityFrameworkCore.Storage;
-
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Linq.Expressions;
-    using System.Threading.Tasks;
-
-    public class Service<TRepository, TEntity> : IService<TEntity>
-        where TEntity : Entity
-        where TRepository : IRepository<TEntity>
+    public async Task Create(TEntity item)
     {
-        private readonly IUnitOfWork _unitOfWork;
-        public readonly TRepository _repository;
-
-        public Service
-        (
-            IUnitOfWork unitOfWork,
-            TRepository repository
-        )
+        using IDbContextTransaction transaction = await _unitOfWork.BeginTransaction();
+        try
         {
-            _unitOfWork = unitOfWork;
-            _repository = repository;
+            await _repository.Create(item);
+        }
+        catch (Exception)
+        {
+            await _unitOfWork.RollbackTransaction();
+            throw new InvalidOperationException("");
         }
 
-        public async Task Create(TEntity item)
-        {
-            using IDbContextTransaction transaction = await _unitOfWork.BeginTransaction();
-            try
-            {
-                await _repository.Create(item);
-            }
-            catch (Exception)
-            {
-                await _unitOfWork.RollbackTransaction();
-                throw new InvalidOperationException("");
-            }
+        await _unitOfWork.CommitTransaction(transaction);
+    }
 
-            await _unitOfWork.CommitTransaction(transaction);
+    public async Task Create(IEnumerable<TEntity> items)
+    {
+        using IDbContextTransaction transaction = await _unitOfWork.BeginTransaction();
+        try
+        {
+            await _repository.Create(items);
+        }
+        catch (Exception)
+        {
+            await _unitOfWork.RollbackTransaction();
+            throw new InvalidOperationException("");
         }
 
-        public async Task Create(IEnumerable<TEntity> items)
-        {
-            using IDbContextTransaction transaction = await _unitOfWork.BeginTransaction();
-            try
-            {
-                await _repository.Create(items);
-            }
-            catch (Exception)
-            {
-                await _unitOfWork.RollbackTransaction();
-                throw new InvalidOperationException("");
-            }
+        await _unitOfWork.CommitTransaction(transaction);
+    }
 
-            await _unitOfWork.CommitTransaction(transaction);
+    public async Task Delete(TEntity item)
+    {
+        using IDbContextTransaction transaction = await _unitOfWork.BeginTransaction();
+        await _repository.Delete(item);
+
+        await _unitOfWork.CommitTransaction(transaction);
+    }
+
+    public async Task Update(long id, TEntity item)
+    {
+        using IDbContextTransaction transaction = await _unitOfWork.BeginTransaction();
+        try
+        {
+            await _repository.Update(id, item);
+        }
+        catch (Exception)
+        {
+            await _unitOfWork.RollbackTransaction();
+            throw new InvalidOperationException("");
         }
 
-        public async Task Delete(TEntity item)
-        {
-            using IDbContextTransaction transaction = await _unitOfWork.BeginTransaction();
-            await _repository.Delete(item);
+        await _unitOfWork.CommitTransaction(transaction);
+    }
 
-            await _unitOfWork.CommitTransaction(transaction);
-        }
+    public async Task<TEntity?> Get(long id)
+    {
+        return await _repository.Get(id);
+    }
 
-        public async Task Update(long id, TEntity item)
-        {
-            using IDbContextTransaction transaction = await _unitOfWork.BeginTransaction();
-            try
-            {
-                await _repository.Update(id, item);
-            }
-            catch (Exception)
-            {
-                await _unitOfWork.RollbackTransaction();
-                throw new InvalidOperationException("");
-            }
+    public IQueryable<TEntity> GetAll(int amountToSkip = 0, int amountToTake = 25)
+    {
+        return _repository.GetAll(amountToSkip, amountToTake);
+    }
 
-            await _unitOfWork.CommitTransaction(transaction);
-        }
-
-        public async Task<TEntity?> Get(long id)
-        {
-            return await _repository.Get(id);
-        }
-
-        public IQueryable<TEntity> GetAll(int amountToSkip = 0, int amountToTake = 25)
-        {
-            return _repository.GetAll(amountToSkip, amountToTake);
-        }
-
-        public IQueryable<TEntity> Search(Expression<Func<TEntity, bool>> predicate)
-        {
-            return _repository.Search(predicate);
-        }
+    public IQueryable<TEntity> Search(Expression<Func<TEntity, bool>> predicate)
+    {
+        return _repository.Search(predicate);
     }
 }

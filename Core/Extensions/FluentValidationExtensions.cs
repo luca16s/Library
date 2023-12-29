@@ -7,40 +7,39 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Core.Extensions
+namespace Core.Extensions;
+
+using FluentValidation;
+
+using System.Diagnostics.CodeAnalysis;
+
+/// <summary>
+/// Classe de extensão para operações com Classes de validação.
+/// </summary>
+[ExcludeFromCodeCoverage]
+public static class FluentValidationExtensions
 {
-    using FluentValidation;
-
-    using System.Diagnostics.CodeAnalysis;
-
     /// <summary>
-    /// Classe de extensão para operações com Classes de validação.
+    /// Método de extensão que valida se texto contém somente dígitos.
     /// </summary>
-    [ExcludeFromCodeCoverage]
-    public static class FluentValidationExtensions
+    /// <typeparam name="TEntity">
+    /// Tipo da entidade a ser validada.
+    /// </typeparam>
+    /// <param name="ruleBuilder">
+    /// RuleBuilder para realizar validação.
+    /// </param>
+    /// <returns>
+    /// Retorna RuleBuilder pós validação.
+    /// </returns>
+    public static IRuleBuilderOptions<TEntity, string> ShouldOnlyHaveDigits<TEntity>(
+        this IRuleBuilder<TEntity, string> ruleBuilder
+    )
     {
-        /// <summary>
-        /// Método de extensão que valida se texto contém somente dígitos.
-        /// </summary>
-        /// <typeparam name="TEntity">
-        /// Tipo da entidade a ser validada.
-        /// </typeparam>
-        /// <param name="ruleBuilder">
-        /// RuleBuilder para realizar validação.
-        /// </param>
-        /// <returns>
-        /// Retorna RuleBuilder pós validação.
-        /// </returns>
-        public static IRuleBuilderOptions<TEntity, string> ShouldOnlyHaveDigits<TEntity>(
-            this IRuleBuilder<TEntity, string> ruleBuilder
-        )
+        return ruleBuilder.Must(property =>
         {
-            return ruleBuilder.Must(property =>
-            {
-                return !string.IsNullOrWhiteSpace(property) &&
-                property is string value &&
-                value.All(c => c is >= '0' and <= '9');
-            });
-        }
+            return !string.IsNullOrWhiteSpace(property) &&
+            property is string value &&
+            value.All(c => c is >= '0' and <= '9');
+        });
     }
 }

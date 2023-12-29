@@ -1,19 +1,16 @@
-﻿namespace Library.Tests.Common
+﻿namespace Library.Tests.Common;
+
+using Microsoft.EntityFrameworkCore;
+
+public class PessoaContext(DbContextOptions<PessoaContext> options) : DbContext(options)
 {
-    using Microsoft.EntityFrameworkCore;
-
-    public class PessoaContext : DbContext
+    protected override void OnModelCreating(ModelBuilder builder)
     {
-        public PessoaContext(DbContextOptions<PessoaContext> options) : base(options) { }
+        _ = builder
+            .ApplyConfiguration(new PessoaConfiguration());
 
-        protected override void OnModelCreating(ModelBuilder builder)
-        {
-            _ = builder
-                .ApplyConfiguration(new PessoaConfiguration());
-
-            base.OnModelCreating(builder);
-        }
-
-        public DbSet<Pessoa> Pessoas { get; set; }
+        base.OnModelCreating(builder);
     }
+
+    public DbSet<Pessoa> Pessoas { get; set; }
 }

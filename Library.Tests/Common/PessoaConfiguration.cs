@@ -1,6 +1,5 @@
-﻿namespace Library.Tests.Common
-{
-    using global::Data;
+﻿namespace Library.Tests.Common;
 
-    public class PessoaConfiguration : ConfigurationBase<Pessoa> { }
-}
+using global::Data;
+
+public class PessoaConfiguration : ConfigurationBase<Pessoa> { }

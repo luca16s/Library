@@ -7,91 +7,90 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Core.Interfaces.Services
-{
-    using Core.Models;
+namespace Core.Interfaces.Services;
 
-    using System.Linq.Expressions;
+using Core.Models;
+
+using System.Linq.Expressions;
+
+/// <summary>
+/// Interface assíncrona de serviço.
+/// </summary>
+/// <typeparam name="TEntity">
+/// Entidade que será salva.
+/// </typeparam>
+public interface IService<TEntity>
+    where TEntity : Entity
+{
+    /// <summary>
+    /// Adiciona nova entidade no banco de dados de forma assíncrona.
+    /// </summary>
+    /// <param name="item">
+    /// Entidade a ser salva.
+    /// </param>
+    Task Create(TEntity item);
 
     /// <summary>
-    /// Interface assíncrona de serviço.
+    /// Adiciona de forma assíncrona diversos items ao banco de dados.
     /// </summary>
-    /// <typeparam name="TEntity">
-    /// Entidade que será salva.
-    /// </typeparam>
-    public interface IService<TEntity>
-        where TEntity : Entity
-    {
-        /// <summary>
-        /// Adiciona nova entidade no banco de dados de forma assíncrona.
-        /// </summary>
-        /// <param name="item">
-        /// Entidade a ser salva.
-        /// </param>
-        Task Create(TEntity item);
+    /// <param name="items">
+    /// Entidades para serem salvas.
+    /// </param>
+    /// <returns></returns>
+    Task Create(IEnumerable<TEntity> items);
 
-        /// <summary>
-        /// Adiciona de forma assíncrona diversos items ao banco de dados.
-        /// </summary>
-        /// <param name="items">
-        /// Entidades para serem salvas.
-        /// </param>
-        /// <returns></returns>
-        Task Create(IEnumerable<TEntity> items);
+    /// <summary>
+    /// Deleta uma entidade no banco de dados de forma assíncrona.
+    /// </summary>
+    /// <param name="item">
+    /// Entidade a ser deletada.
+    /// </param>
+    Task Delete(TEntity item);
 
-        /// <summary>
-        /// Deleta uma entidade no banco de dados de forma assíncrona.
-        /// </summary>
-        /// <param name="item">
-        /// Entidade a ser deletada.
-        /// </param>
-        Task Delete(TEntity item);
+    /// <summary>
+    /// Atualiza uma entidade com base em um identificador passado de forma assíncrona.
+    /// </summary>
+    /// <param name="id">
+    /// Identificador da entidade.
+    /// </param>
+    /// <param name="item">
+    /// Entidade a ser atualizada.
+    /// </param>
+    Task Update(long id, TEntity item);
 
-        /// <summary>
-        /// Atualiza uma entidade com base em um identificador passado de forma assíncrona.
-        /// </summary>
-        /// <param name="id">
-        /// Identificador da entidade.
-        /// </param>
-        /// <param name="item">
-        /// Entidade a ser atualizada.
-        /// </param>
-        Task Update(long id, TEntity item);
+    /// <summary>
+    /// Retorna uma entidade com base em um identificador de forma assíncrona.
+    /// </summary>
+    /// <param name="id">
+    /// Identificador da entidade.
+    /// </param>
+    /// <returns>
+    /// Entidade encontrada.
+    /// </returns>
+    Task<TEntity?> Get(long id);
 
-        /// <summary>
-        /// Retorna uma entidade com base em um identificador de forma assíncrona.
-        /// </summary>
-        /// <param name="id">
-        /// Identificador da entidade.
-        /// </param>
-        /// <returns>
-        /// Entidade encontrada.
-        /// </returns>
-        Task<TEntity?> Get(long id);
+    /// <summary>
+    /// Retorna todas as entidades do banco de dados de forma assíncrona.
+    /// </summary>
+    /// <param name="amountToSkip">
+    /// Quantidade de itens a serem ignorados.
+    /// </param>
+    /// <param name="amountToTake">
+    /// Quantidade de itens a ser buscadas.
+    /// </param>
+    /// <returns>
+    /// Todas as entidades.
+    /// </returns>
+    IQueryable<TEntity> GetAll(int amountToSkip = 0, int amountToTake = 25);
 
-        /// <summary>
-        /// Retorna todas as entidades do banco de dados de forma assíncrona.
-        /// </summary>
-        /// <param name="amountToSkip">
-        /// Quantidade de itens a serem ignorados.
-        /// </param>
-        /// <param name="amountToTake">
-        /// Quantidade de itens a ser buscadas.
-        /// </param>
-        /// <returns>
-        /// Todas as entidades.
-        /// </returns>
-        IQueryable<TEntity> GetAll(int amountToSkip = 0, int amountToTake = 25);
-
-        /// <summary>
-        /// Busca determinados itens na base de dados.
-        /// </summary>
-        /// <param name="predicate">
-        /// Termo de busca.
-        /// </param>
-        /// <returns>
-        /// Lista de itens encontrados.
-        /// </returns>
-        IQueryable<TEntity> Search(Expression<Func<TEntity, bool>> predicate);
-    }
+    /// <summary>
+    /// Busca determinados itens na base de dados.
+    /// </summary>
+    /// <param name="predicate">
+    /// Termo de busca.
+    /// </param>
+    /// <returns>
+    /// Lista de itens encontrados.
+    /// </returns>
+    IQueryable<TEntity> Search(Expression<Func<TEntity, bool>> predicate);
 }

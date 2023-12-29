@@ -1,12 +1,11 @@
-﻿namespace OFX.Enums
+﻿namespace OFX.Enums;
+
+public enum EPartDateTime
 {
-    public enum EPartDateTime
-    {
-        DAY,
-        MONTH,
-        YEAR,
-        HOUR,
-        MINUTE,
-        SECOND
-    }
+    DAY,
+    MONTH,
+    YEAR,
+    HOUR,
+    MINUTE,
+    SECOND
 }

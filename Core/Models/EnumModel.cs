@@ -7,21 +7,20 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Core.Models
+namespace Core.Models;
+
+/// <summary>
+/// Classe modelo para conversão de enumerador em lista.
+/// </summary>
+public class EnumModel
 {
     /// <summary>
-    /// Classe modelo para conversão de enumerador em lista.
+    /// Descrição do enum.
     /// </summary>
-    public class EnumModel
-    {
-        /// <summary>
-        /// Descrição do enum.
-        /// </summary>
-        public string? Description { get; set; }
+    public string? Description { get; set; }
 
-        /// <summary>
-        /// Valor do enum.
-        /// </summary>
-        public Enum? Value { get; set; }
-    }
+    /// <summary>
+    /// Valor do enum.
+    /// </summary>
+    public Enum? Value { get; set; }
 }

@@ -1,16 +1,15 @@
-﻿namespace Library.Tests.Core
+﻿namespace Library.Tests.Core;
+
+using System.ComponentModel;
+
+public enum EOK
 {
-    using System.ComponentModel;
+    [Description("TESTE 1")]
+    TESTE1,
 
-    public enum EOK
-    {
-        [Description("TESTE 1")]
-        TESTE1,
+    [Description("TESTE 2")]
+    TESTE2,
 
-        [Description("TESTE 2")]
-        TESTE2,
-
-        [Description("TESTE 3")]
-        TESTE3
-    }
+    [Description("TESTE 3")]
+    TESTE3
 }

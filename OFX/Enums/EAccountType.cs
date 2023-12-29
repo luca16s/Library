@@ -7,28 +7,27 @@
 // </copyright>
 // ------------------------------------------------------------------------------------
 
-namespace OFX.Enums
+namespace OFX.Enums;
+
+using System.ComponentModel;
+
+public enum EAccountType
 {
-    using System.ComponentModel;
+    /// <summary>
+    /// Conta Corrente.
+    /// </summary>
+    [Description("Conta Corrente")]
+    CHECKING = 1,
 
-    public enum EAccountType
-    {
-        /// <summary>
-        /// Conta Corrente.
-        /// </summary>
-        [Description("Conta Corrente")]
-        CHECKING = 1,
+    /// <summary>
+    /// Conta de Crédito.
+    /// </summary>
+    [Description("Conta de Crédito")]
+    CREDIT = 2,
 
-        /// <summary>
-        /// Conta de Crédito.
-        /// </summary>
-        [Description("Conta de Crédito")]
-        CREDIT = 2,
-
-        /// <summary>
-        /// Conta poupança.
-        /// </summary>
-        [Description("Conta Poupança")]
-        SAVINGS = 3
-    }
+    /// <summary>
+    /// Conta poupança.
+    /// </summary>
+    [Description("Conta Poupança")]
+    SAVINGS = 3
 }

@@ -7,11 +7,10 @@
 // </copyright>
 // ------------------------------------------------------------------------------------
 
-namespace OFX.Enums
+namespace OFX.Enums;
+
+public enum ECurrency
 {
-    public enum ECurrency
-    {
-        USD,
-        BRL,
-    }
+    USD,
+    BRL,
 }

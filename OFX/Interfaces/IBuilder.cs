@@ -1,24 +1,23 @@
-namespace OFX.Interfaces
+namespace OFX.Interfaces;
+
+using OFX.Models;
+
+using System.Xml.Linq;
+
+/// <summary>
+/// 
+/// </summary>
+public interface IBuilder
 {
-    using OFX.Models;
+    Bank BuildBank(XDocument document);
 
-    using System.Xml.Linq;
+    Header BuildHeader(XDocument document);
 
-    /// <summary>
-    /// 
-    /// </summary>
-    public interface IBuilder
-    {
-        Bank BuildBank(XDocument document);
+    Balance BuildBalance(XDocument document);
 
-        Header BuildHeader(XDocument document);
+    Account BuildAccount(XDocument document);
 
-        Balance BuildBalance(XDocument document);
+    Statement BuildStatement(XDocument document);
 
-        Account BuildAccount(XDocument document);
-
-        Statement BuildStatement(XDocument document);
-
-        IOrderedEnumerable<Transaction> BuildTransactions(XDocument document);
-    }
+    IOrderedEnumerable<Transaction> BuildTransactions(XDocument document);
 }

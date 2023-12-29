@@ -7,28 +7,27 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Core.Interfaces.Patterns
+namespace Core.Interfaces.Patterns;
+
+/// <summary>
+/// Interface para criação de fábricas.
+/// </summary>
+/// <typeparam name="TEntity">
+/// Tipo que define entidade a ser instanciada.
+/// </typeparam>
+/// <typeparam name="TReturn">
+/// Entidade Instanciada.
+/// </typeparam>
+public interface IFactory<TEntity, out TReturn>
 {
     /// <summary>
-    /// Interface para criação de fábricas.
+    /// Instancia um tipo concreto.
     /// </summary>
-    /// <typeparam name="TEntity">
-    /// Tipo que define entidade a ser instanciada.
-    /// </typeparam>
-    /// <typeparam name="TReturn">
-    /// Entidade Instanciada.
-    /// </typeparam>
-    public interface IFactory<TEntity, out TReturn>
-    {
-        /// <summary>
-        /// Instancia um tipo concreto.
-        /// </summary>
-        /// <param name="entity">
-        /// Entidade a ser instanciada.
-        /// </param>
-        /// <returns>
-        /// <see cref="TEntity"> Tipo concreto.
-        /// </returns>
-        TReturn Create(TEntity entity);
-    }
+    /// <param name="entity">
+    /// Entidade a ser instanciada.
+    /// </param>
+    /// <returns>
+    /// <see cref="TEntity"> Tipo concreto.
+    /// </returns>
+    TReturn Create(TEntity entity);
 }

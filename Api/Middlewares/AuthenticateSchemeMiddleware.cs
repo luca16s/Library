@@ -7,54 +7,47 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Api.Middlewares
-{
-    using Microsoft.AspNetCore.Authentication;
-    using Microsoft.AspNetCore.Http;
+namespace Api.Middlewares;
 
-    using System;
-    using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Http;
+
+using System;
+using System.Threading.Tasks;
+
+/// <summary>
+/// Middleware de autenticação.
+/// </summary>
+/// <remarks>
+/// Cria um novo middleware para verificar se o usuário está autenticado na aplicação
+/// </remarks>
+/// <param name="next">Próximo middleware do pipeline</param>
+/// <param name="scheme">Schema de autenticação</param>
+public class AuthenticateSchemeMiddleware(RequestDelegate next, string scheme)
+{
+    private readonly RequestDelegate _next = next;
+    private readonly string _scheme = scheme ?? throw new ArgumentNullException(nameof(scheme));
 
     /// <summary>
-    /// Middleware de autenticação.
+    /// Executa o middleware de forma assíncrona
     /// </summary>
-    public class AuthenticateSchemeMiddleware
+    /// <param name="httpContext">
+    /// <see cref="HttpContext"/>
+    /// Contexto HTTP do request
+    /// </param>
+    /// <returns>
+    /// </returns>
+    public async Task Invoke(HttpContext httpContext)
     {
-        private readonly RequestDelegate _next;
-        private readonly string _scheme;
+        AuthenticateResult? result = await httpContext.AuthenticateAsync(_scheme);
 
-        /// <summary>
-        /// Cria um novo middleware para verificar se o usuário está autenticado na aplicação
-        /// </summary>
-        /// <param name="next">Próximo middleware do pipeline</param>
-        /// <param name="scheme">Schema de autenticação</param>
-        public AuthenticateSchemeMiddleware(RequestDelegate next, string scheme)
+        if (result != null
+            && result.Succeeded
+            && result.Principal != null)
         {
-            _next = next;
-            _scheme = scheme ?? throw new ArgumentNullException(nameof(scheme));
+            httpContext.User = result.Principal;
         }
 
-        /// <summary>
-        /// Executa o middleware de forma assíncrona
-        /// </summary>
-        /// <param name="httpContext">
-        /// <see cref="HttpContext"/>
-        /// Contexto HTTP do request
-        /// </param>
-        /// <returns>
-        /// </returns>
-        public async Task Invoke(HttpContext httpContext)
-        {
-            AuthenticateResult? result = await httpContext.AuthenticateAsync(_scheme);
-
-            if (result != null
-                && result.Succeeded
-                && result.Principal != null)
-            {
-                httpContext.User = result.Principal;
-            }
-
-            await _next(httpContext);
-        }
+        await _next(httpContext);
     }
 }

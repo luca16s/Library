@@ -7,28 +7,27 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Api.Models
+namespace Api.Models;
+
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
+
+using System.Text;
+
+public class SigningSettings
 {
-    using Microsoft.Extensions.Configuration;
-    using Microsoft.IdentityModel.Tokens;
+    public SigningCredentials SigningCredentials { get; }
 
-    using System.Text;
-
-    public class SigningSettings
+    public SigningSettings(IConfiguration configuration)
     {
-        public SigningCredentials SigningCredentials { get; }
-
-        public SigningSettings(IConfiguration configuration)
+        if (configuration == null)
         {
-            if (configuration == null)
-            {
-                throw new ArgumentNullException(nameof(configuration));
-            }
-
-            var secret = configuration[$"{nameof(SigningSettings)}:Secret"] ?? string.Empty;
-
-            SymmetricSecurityKey? symmetricKey = new(Encoding.UTF8.GetBytes(secret));
-            SigningCredentials = new SigningCredentials(symmetricKey, SecurityAlgorithms.HmacSha256Signature);
+            throw new ArgumentNullException(nameof(configuration));
         }
+
+        var secret = configuration[$"{nameof(SigningSettings)}:Secret"] ?? string.Empty;
+
+        SymmetricSecurityKey? symmetricKey = new(Encoding.UTF8.GetBytes(secret));
+        SigningCredentials = new SigningCredentials(symmetricKey, SecurityAlgorithms.HmacSha256Signature);
     }
 }
