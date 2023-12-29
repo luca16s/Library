@@ -23,18 +23,15 @@ using MediatR;
 /// <param name="value">
 /// Valor da notificação.
 /// </param>
-public class DomainNotification(
-    string id,
-    string value
-) : INotification
+public class DomainNotification : INotification
 {
     /// <summary>
     /// Identificador da notificação.
     /// </summary>
-    public string Id { get; private set; } = id;
+    public required string Id { get; set; }
 
     /// <summary>
     /// Valor da notificação.
     /// </summary>
-    public string Value { get; private set; } = value;
+    public required string Value { get; set; }
 }

@@ -12,8 +12,6 @@ namespace Mediator.Handlers;
 using Mediator.Interfaces;
 using Mediator.Notifications;
 
-using MediatR;
-
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -22,7 +20,7 @@ using System.Threading.Tasks;
 /// </summary>
 public class DomainNotificationHandler : IDomainNotificationHandler
 {
-    private List<INotification> notifications;
+    private List<DomainNotification> notifications;
 
     /// <summary>
     /// Constrói uma nova instância da classe manipuladora de notificação de domínio.
@@ -61,7 +59,7 @@ public class DomainNotificationHandler : IDomainNotificationHandler
     /// <returns>
     /// Lista das notificações adicionadas.
     /// </returns>
-    public virtual List<INotification> GetNotifications(
+    public virtual List<DomainNotification> GetNotifications(
     )
     {
         return notifications;
@@ -77,7 +75,7 @@ public class DomainNotificationHandler : IDomainNotificationHandler
     /// Token de cancelamento.
     /// </param>
     public Task Handle(
-        INotification message,
+        DomainNotification message,
         CancellationToken cancellationToken
     )
     {

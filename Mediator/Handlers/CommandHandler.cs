@@ -80,7 +80,7 @@ public abstract class CommandHandler
             return;
         }
 
-        _ = _mediator.Raise(new DomainNotification(nome, mensagem));
+        _ = _mediator.RaiseError(new ErrorNotification { StackTrace = mensagem, Exception = nome });
     }
 
     /// <summary>
@@ -182,7 +182,7 @@ public abstract class CommandHandler<TReturn>
             return;
         }
 
-        _ = mediator.Raise(new DomainNotification(nome, mensagem));
+        _ = mediator.RaiseError(new ErrorNotification { StackTrace = mensagem, Exception = nome });
     }
 
     /// <summary>

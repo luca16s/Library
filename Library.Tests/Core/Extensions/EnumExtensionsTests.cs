@@ -27,12 +27,12 @@ public class EnumExtensionsTests
     [Fact]
     public void GetAllValuesAndDescriptionsShouldReturnListOfItems()
     {
-        EnumModel[] listaModelo = new EnumModel[]
-        {
-            new EnumModel { Value = EOK.TESTE1, Description ="TESTE 1" },
-            new EnumModel { Value = EOK.TESTE2, Description ="TESTE 2" },
-            new EnumModel { Value = EOK.TESTE3, Description ="TESTE 3" },
-        };
+        EnumModel[] listaModelo =
+        [
+            new() { Value = EOK.TESTE1, Description = "TESTE 1" },
+            new() { Value = EOK.TESTE2, Description = "TESTE 2" },
+            new() { Value = EOK.TESTE3, Description = "TESTE 3" },
+        ];
 
         IEnumerable<EnumModel> retorno = EOK.TESTE1.GetAllValuesAndDescriptions();
 

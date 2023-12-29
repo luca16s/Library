@@ -34,6 +34,20 @@ public interface IMediatorHandler
     ) where TReturn : DomainNotification;
 
     /// <summary>
+    /// Lançar notificação de erro.
+    /// </summary>
+    /// <typeparam name="TReturn">
+    /// Tipo da notificação.
+    /// </typeparam>
+    /// <param name="cancellation">
+    /// Token de cancelamento.
+    /// </param>
+    Task RaiseError<TReturn>(
+        TReturn evento,
+        CancellationToken cancellation = default
+    ) where TReturn : ErrorNotification;
+
+    /// <summary>
     /// Enviar comando com retorno.
     /// </summary>
     /// <typeparam name="TCommand">

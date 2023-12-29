@@ -125,6 +125,29 @@ public class MediatorHandler : IMediatorHandler
     }
 
     /// <summary>
+    /// Lançar notificação de erro.
+    /// </summary>
+    /// <typeparam name="TNotification">
+    /// Tipo da notificação.
+    /// </typeparam>
+    /// <param name="evento">
+    /// Evento a ser lançado.
+    /// </param>
+    /// <param name="enqueue">
+    /// Deve enfileirar?
+    /// </param>
+    /// <param name="cancellation">
+    /// Token de cancelamento.
+    /// </param>
+    public Task RaiseError<TNotification>(
+        TNotification evento,
+        CancellationToken cancellation = default
+    ) where TNotification : ErrorNotification
+    {
+        return mediator.Publish(evento, cancellation);
+    }
+
+    /// <summary>
     /// Publicar comando em uma fila.
     /// </summary>
     /// <typeparam name="TCommand">

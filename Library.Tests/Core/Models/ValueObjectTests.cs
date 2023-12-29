@@ -118,8 +118,10 @@ public class ValueObjectTests
     [Fact]
     public void EqualsShouldBeTrueIfHasSameReference()
     {
-        ObjetoValor objeto = new();
-        objeto.Nome = "A";
+        ObjetoValor objeto = new()
+        {
+            Nome = "A"
+        };
 
         var result = objeto.Equals(objeto);
 

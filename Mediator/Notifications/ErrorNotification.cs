@@ -9,19 +9,12 @@
 
 namespace Mediator.Notifications;
 
+using MediatR;
+
 /// <summary>
 /// Classe de notificação de erro.
 /// </summary>
-/// <param name="id">
-/// Identificador da notificação
-/// </param>
-/// <param name="value">
-/// Valor da notificação.
-/// </param>
-public class ErrorNotification(
-    string id,
-    string value
-) : DomainNotification(id, value)
+public class ErrorNotification : INotification
 {
     /// <summary>
     /// Exceção lançada pela aplicação.

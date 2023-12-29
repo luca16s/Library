@@ -24,7 +24,7 @@ public class ApiControllerTests
         var servico = new PessoaService(repositorio);
         var mediator = new Mock<IMediatorHandler>().Object;
         var notificationHandler = new DomainNotificationHandler();
-        var notificacao = new DomainNotification("", "");
+        var notificacao = new DomainNotification { Id = "", Value = "" };
         _ = notificationHandler.Handle(notificacao, CancellationToken.None);
 
         var controller = new PessoaController(
@@ -43,7 +43,7 @@ public class ApiControllerTests
         var servico = new PessoaService(repositorio);
         var mediator = new Mock<IMediatorHandler>().Object;
         var notificationHandler = new DomainNotificationHandler();
-        var notificacao = new DomainNotification("", "");
+        var notificacao = new DomainNotification { Id = "", Value = "" };
 
         _ = notificationHandler.Handle(notificacao, CancellationToken.None);
 
@@ -79,7 +79,7 @@ public class ApiControllerTests
         var servico = new Mock<IPessoaService>();
         var mediator = new Mock<IMediatorHandler>().Object;
         var notificationHandler = new DomainNotificationHandler();
-        var notificacao = new DomainNotification("", "");
+        var notificacao = new DomainNotification { Id = "", Value = "" };
         _ = notificationHandler.Handle(notificacao, CancellationToken.None);
 
         var controller = new PessoaController(
@@ -100,7 +100,7 @@ public class ApiControllerTests
         var servico = new PessoaService(repositorio);
         var mediator = new Mock<IMediatorHandler>().Object;
         var notificationHandler = new DomainNotificationHandler();
-        var notificacao = new DomainNotification("", "");
+        var notificacao = new DomainNotification { Id = "", Value = "" };
 
         _ = notificationHandler.Handle(notificacao, CancellationToken.None);
 

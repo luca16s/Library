@@ -76,7 +76,7 @@ public class ApiController<TEntity>
         string mensagem
     )
     {
-        await mediator.Raise(new DomainNotification(codigo, mensagem));
+        await mediator.RaiseError(new ErrorNotification { StackTrace = mensagem, Exception = codigo });
     }
 
     [NonAction]
@@ -193,7 +193,7 @@ public class ApiController<TEntity, TService>
         string mensagem
     )
     {
-        await mediator.Raise(new DomainNotification(codigo, mensagem));
+        await mediator.RaiseError(new ErrorNotification { StackTrace = mensagem, Exception = codigo });
     }
 
     [NonAction]

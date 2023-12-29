@@ -5,7 +5,6 @@ using Bogus;
 using FluentAssertions;
 
 using Library.Tests.Common;
-using Library.Tests.Common.Interfaces;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -18,40 +17,40 @@ using Xunit;
 
 public class RepositoryTests
 {
-    private readonly PessoaContext Context;
-    private readonly IPessoaRepository Repository;
+    private readonly PessoaContext context;
+    private readonly PessoaRepository repository;
 
     public RepositoryTests()
     {
         var option = new DbContextOptionsBuilder<PessoaContext>()
         .UseInMemoryDatabase(databaseName: "DB")
         .Options;
-        Context = new(option);
+        context = new(option);
 
-        _ = Context.Database.EnsureDeleted();
+        _ = context.Database.EnsureDeleted();
         for (int i = 0; i < 30; i++)
         {
             var faker = new Faker<Pessoa>()
                 .RuleFor(u => u.Nome, (f, u) => f.Name.FirstName())
                 .RuleFor(u => u.Idade, (f, u) => f.Random.Number(0, 100));
 
-            _ = Context.Pessoas.Add(new Pessoa(i + 1)
+            _ = context.Pessoas.Add(new Pessoa(i + 1)
             {
                 Nome = faker.Generate().Nome,
                 Idade = faker.Generate().Idade,
             });
-            _ = Context.SaveChanges();
+            _ = context.SaveChanges();
         }
 
-        Repository = new PessoaRepository(Context);
+        repository = new PessoaRepository(context);
     }
 
     [Fact]
     [Trait("Method", "Get")]
     public async Task GetDeveRetornarNuloQuandoIdNaoEncontrado()
     {
-        var expectedId = Context.Pessoas.Count() + 1;
-        var result = await Repository.Get(expectedId);
+        var expectedId = context.Pessoas.Count() + 1;
+        var result = await repository.Get(expectedId);
 
         _ = result.Should().BeNull();
     }
@@ -62,10 +61,10 @@ public class RepositoryTests
     {
         var id = 50;
         var expectedPessoa = new Pessoa(id) { Nome = "Jhon" };
-        _ = Context.Pessoas.Add(expectedPessoa);
-        _ = Context.SaveChanges();
+        _ = context.Pessoas.Add(expectedPessoa);
+        _ = context.SaveChanges();
 
-        var result = await Repository.Get(id);
+        var result = await repository.Get(id);
 
         _ = result.Should().NotBeNull();
         _ = result.Id.Should().Be(expectedPessoa.Id);
@@ -76,7 +75,7 @@ public class RepositoryTests
     [Trait("Method", "GetAll")]
     public void GetAllDeveRetornarTodosItens()
     {
-        var result = Repository.GetAll(0, 2);
+        var result = repository.GetAll(0, 2);
 
         _ = result.Should().NotBeNull();
         _ = result.Should().HaveCount(2);
@@ -86,7 +85,7 @@ public class RepositoryTests
     [Trait("Method", "GetAll")]
     public void GetAllDeveRetornarQuantidadeIgualPassada()
     {
-        var result = Repository.GetAll(0, 1);
+        var result = repository.GetAll(0, 1);
 
         _ = result.Should().NotBeNull();
         _ = result.Should().HaveCount(1);
@@ -96,21 +95,21 @@ public class RepositoryTests
     [Trait("Method", "GetAll")]
     public void GetAllDeveRetornarQuantidadePadraoQuandoSemQuantidadeInformada()
     {
-        var result = Repository.GetAll();
+        var result = repository.GetAll();
 
         _ = result.Should().NotBeNull();
         _ = result.Should().HaveCount(25);
-        _ = result.Should().NotHaveCount(Context.Pessoas.Count());
+        _ = result.Should().NotHaveCount(context.Pessoas.Count());
     }
 
     [Fact]
     [Trait("Method", "GetAll")]
     public void GetAllDeveIgnorarItensPassados()
     {
-        var expectedResult = Repository
+        var expectedResult = repository
             .GetAll(10, 30)
             .ToList();
-        var result = Repository
+        var result = repository
             .GetAll(10)
             .ToList();
 
@@ -123,12 +122,12 @@ public class RepositoryTests
     [Trait("Method", "Create")]
     public async Task CreateDeveSalvarItemPassado()
     {
-        var id = Context.Pessoas.Count() + 1;
+        var id = context.Pessoas.Count() + 1;
         var expectedPessoa = new Pessoa(id) { Nome = "Jhon" };
-        await Repository.Create(expectedPessoa);
-        _ = Context.SaveChanges();
+        await repository.Create(expectedPessoa);
+        _ = context.SaveChanges();
 
-        var result = await Repository.Get(id);
+        var result = await repository.Get(id);
 
         _ = result.Should().NotBeNull();
         _ = result.Id.Should().Be(expectedPessoa.Id);
@@ -152,10 +151,10 @@ public class RepositoryTests
             listaPessoas.Add(new Pessoa(i + 1) { Nome = faker.Generate().Nome });
         }
 
-        await Repository.Create(listaPessoas);
-        _ = Context.SaveChanges();
+        await repository.Create(listaPessoas);
+        _ = context.SaveChanges();
 
-        var result = Repository.GetAll(amountToSkip, amountToTake).ToList();
+        var result = repository.GetAll(amountToSkip, amountToTake).ToList();
 
         _ = result.Should().NotBeNull();
         _ = result.SequenceEqual(listaPessoas);
@@ -167,11 +166,11 @@ public class RepositoryTests
     public async Task DeleteDeveRemoverItemPassado()
     {
         var id = 1;
-        var expectedPessoa = await Repository.Get(id);
-        await Repository.Delete(expectedPessoa);
-        _ = Context.SaveChanges();
+        var expectedPessoa = await repository.Get(id);
+        await repository.Delete(expectedPessoa);
+        _ = context.SaveChanges();
 
-        var result = await Repository.Get(id);
+        var result = await repository.Get(id);
 
         _ = result.Should().BeNull();
     }
@@ -181,9 +180,9 @@ public class RepositoryTests
     public async Task DeleteDeveLancarExcecaoQuandoParametroEstaNulo()
     {
         var id = 100;
-        var expectedPessoa = await Repository.Get(id);
+        var expectedPessoa = await repository.Get(id);
 
-        var acao = async () => await Repository.Delete(expectedPessoa);
+        var acao = async () => await repository.Delete(expectedPessoa);
 
         _ = await acao.Should().ThrowAsync<ArgumentNullException>()
             .WithParameterName("item");
@@ -194,13 +193,13 @@ public class RepositoryTests
     public async Task UpdateDeveAtualizarQuandoItemPassado()
     {
         var id = 1;
-        var expectedPessoa = await Repository.Get(id);
+        var expectedPessoa = await repository.Get(id);
         expectedPessoa.Nome = "Nome Atualizado";
 
-        await Repository.Update(id, expectedPessoa);
-        _ = Context.SaveChanges();
+        await repository.Update(id, expectedPessoa);
+        _ = context.SaveChanges();
 
-        var result = await Repository.Get(id);
+        var result = await repository.Get(id);
 
         _ = result.Should().NotBeNull();
         _ = result.Id.Should().Be(expectedPessoa.Id);
@@ -212,9 +211,9 @@ public class RepositoryTests
     public async Task UpdateDeveLancarExcecaoQuandoParametroNulo()
     {
         var id = 100;
-        var expectedPessoa = await Repository.Get(id);
+        var expectedPessoa = await repository.Get(id);
 
-        var acao = async () => await Repository.Update(id, expectedPessoa);
+        var acao = async () => await repository.Update(id, expectedPessoa);
 
         _ = await acao.Should().ThrowAsync<ArgumentNullException>()
             .WithParameterName("item");
@@ -225,9 +224,9 @@ public class RepositoryTests
     public async Task UpdateDeveLancarExcecaoQuandoIdDeItemPassadoInexistente()
     {
         var id = 100;
-        var expectedPessoa = await Repository.Get(1);
+        var expectedPessoa = await repository.Get(1);
 
-        var acao = async () => await Repository.Update(id, expectedPessoa);
+        var acao = async () => await repository.Update(id, expectedPessoa);
 
         _ = await acao.Should().ThrowAsync<NullReferenceException>()
             .WithMessage("Item pesquisado não existente no banco de dados.");
@@ -239,10 +238,10 @@ public class RepositoryTests
     {
         var id = 50;
         var expectedPessoa = new Pessoa(id) { Nome = "Jhon" };
-        _ = Context.Pessoas.Add(expectedPessoa);
-        _ = Context.SaveChanges();
+        _ = context.Pessoas.Add(expectedPessoa);
+        _ = context.SaveChanges();
 
-        var result = Repository.Search(x => x.Nome == expectedPessoa.Nome).ToList();
+        var result = repository.Search(x => x.Nome == expectedPessoa.Nome).ToList();
 
         _ = result.Should().NotBeNull();
         _ = result.Should().Contain(expectedPessoa);
@@ -254,7 +253,7 @@ public class RepositoryTests
     {
         long id = 5340;
 
-        var result = Repository.Search(x => x.Id == id).ToList();
+        var result = repository.Search(x => x.Id == id).ToList();
 
         _ = result.Should().BeEmpty();
     }
@@ -263,8 +262,8 @@ public class RepositoryTests
     [Trait("Method", "Count")]
     public async Task CountDeveRetornarZeroCasoTabelaVazia()
     {
-        _ = Context.Database.EnsureDeleted();
-        var result = await Repository.Count();
+        _ = context.Database.EnsureDeleted();
+        var result = await repository.Count();
 
         _ = result.Should().Be(0);
     }
@@ -273,8 +272,8 @@ public class RepositoryTests
     [Trait("Method", "Count")]
     public async Task CountDeveRetornarTotalDeItemsCasoTabelaPreenchida()
     {
-        var expectedCount = Context.Pessoas.Count();
-        var result = await Repository.Count();
+        var expectedCount = context.Pessoas.Count();
+        var result = await repository.Count();
 
         _ = result.Should().Be(expectedCount);
     }
@@ -283,9 +282,9 @@ public class RepositoryTests
     [Trait("Method", "Max")]
     public async Task MaxDeveRetornarMensagemErroCasoTabelaVazia()
     {
-        _ = Context.Database.EnsureDeleted();
+        _ = context.Database.EnsureDeleted();
 
-        var acao = async () => await Repository.Max(x => x.Idade);
+        var acao = async () => await repository.Max(x => x.Idade);
 
         _ = await acao.Should().ThrowAsync<InvalidOperationException>()
             .WithMessage("Tabela não contém items ou foi passada uma entidade ao invés de uma propriedade.");
@@ -295,8 +294,8 @@ public class RepositoryTests
     [Trait("Method", "Max")]
     public async Task MaxDeveRetornarMaiorItemEncontrado()
     {
-        var expectedAge = Context.Pessoas.Max(x => x.Idade);
-        var result = await Repository.Max(x => x.Idade);
+        var expectedAge = context.Pessoas.Max(x => x.Idade);
+        var result = await repository.Max(x => x.Idade);
         _ = result.Should().Be(expectedAge);
     }
 
@@ -304,7 +303,7 @@ public class RepositoryTests
     [Trait("Method", "Max")]
     public async Task MaxDeveRetornarMensagemErroCasoItemPassadoNaoSejaPropriedade()
     {
-        var acao = async () => await Repository.Max(x => x);
+        var acao = async () => await repository.Max(x => x);
         _ = await acao.Should().ThrowAsync<InvalidOperationException>()
             .WithMessage("Tabela não contém items ou foi passada uma entidade ao invés de uma propriedade.");
     }
@@ -313,9 +312,9 @@ public class RepositoryTests
     [Trait("Method", "Min")]
     public async Task MinDeveRetornarMensagemErroCasoTabelaVazia()
     {
-        _ = Context.Database.EnsureDeleted();
+        _ = context.Database.EnsureDeleted();
 
-        var acao = async () => await Repository.Min(x => x.Idade);
+        var acao = async () => await repository.Min(x => x.Idade);
 
         _ = await acao.Should().ThrowAsync<InvalidOperationException>()
             .WithMessage("Tabela não contém items ou foi passada uma entidade ao invés de uma propriedade.");
@@ -325,8 +324,8 @@ public class RepositoryTests
     [Trait("Method", "Min")]
     public async Task MinDeveRetornarMenorItemEncontrado()
     {
-        var expectedAge = Context.Pessoas.Min(x => x.Idade);
-        var result = await Repository.Min(x => x.Idade);
+        var expectedAge = context.Pessoas.Min(x => x.Idade);
+        var result = await repository.Min(x => x.Idade);
         _ = result.Should().Be(expectedAge);
     }
 
@@ -334,7 +333,7 @@ public class RepositoryTests
     [Trait("Method", "Min")]
     public async Task MinDeveRetornarMensagemErroCasoItemPassadoNaoSejaPropriedade()
     {
-        var acao = async () => await Repository.Min(x => x);
+        var acao = async () => await repository.Min(x => x);
         _ = await acao.Should().ThrowAsync<InvalidOperationException>()
             .WithMessage("Tabela não contém items ou foi passada uma entidade ao invés de uma propriedade.");
     }
