@@ -117,36 +117,4 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ACESSOR_NULL" xml:space="preserve">
-    <value>Acessor is null.</value>
-  </data>
-  <data name="CORS_POLICY_NAME" xml:space="preserve">
-    <value>KAPIBARA_CORS</value>
-  </data>
-  <data name="FORMAT" xml:space="preserve">
-    <value>application/json</value>
-  </data>
-  <data name="HTTP_CONTEXT_NULL" xml:space="preserve">
-    <value>HttpContex can not be null.</value>
-  </data>
-  <data name="IDENTITY_NULL" xml:space="preserve">
-    <value>Identity can not be null.</value>
-  </data>
-  <data name="OAUTH_SCHEME" xml:space="preserve">
-    <value>oauth2</value>
-  </data>
-  <data name="SECURITY_SCHEME_DESCRIPTION" xml:space="preserve">
-    <value>JWT Authorization header using the Bearer scheme.
-                                                            Enter 'Bearer'[space] and then your token in the text input below.
-                                                            Example: Bearer 12345abcdef</value>
-  </data>
-  <data name="SECURITY_SCHEME_HEADER_NAME" xml:space="preserve">
-    <value>Authorization</value>
-  </data>
-  <data name="UNAUTHORIZED" xml:space="preserve">
-    <value>Não autorizado.</value>
-  </data>
-  <data name="USER_NULL" xml:space="preserve">
-    <value>User can not be null.</value>
-  </data>
 </root>

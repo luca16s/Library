@@ -70,9 +70,9 @@ public static class SwaggerExtensions
                 {
                     In = ParameterLocation.Header,
                     Type = SecuritySchemeType.ApiKey,
-                    Name = Resources.SECURITY_SCHEME_HEADER_NAME,
+                    Name = swaggerInfo.SecuritySchemeHeaderName,
                     Scheme = JwtBearerDefaults.AuthenticationScheme,
-                    Description = Resources.SECURITY_SCHEME_DESCRIPTION,
+                    Description = swaggerInfo.SecuritySchemeDescription,
                 }
             );
             c.AddSecurityRequirement(new OpenApiSecurityRequirement()
@@ -81,8 +81,8 @@ public static class SwaggerExtensions
                     new OpenApiSecurityScheme
                     {
                         In = ParameterLocation.Header,
-                        Scheme = Resources.OAUTH_SCHEME,
-                        BearerFormat = Resources.FORMAT,
+                        Scheme = swaggerInfo.OAuthScheme,
+                        BearerFormat = swaggerInfo.BearerFormat,
                         Reference = new OpenApiReference
                         {
                             Type = ReferenceType.SecurityScheme,

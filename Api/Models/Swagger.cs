@@ -43,4 +43,24 @@ public class SwaggerInfo
     /// Descrição da aplicação.
     /// </summary>
     public string Description { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Indica como é formatado o Token.
+    /// </summary>
+    public string BearerFormat { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Nome da autorização HTTP.
+    /// </summary>
+    public string OAuthScheme { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Descrição curta do esquema de segurança.
+    /// </summary>
+    public string SecuritySchemeDescription { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Nome do header de segurança.
+    /// </summary>
+    public string SecuritySchemeHeaderName { get; set; } = string.Empty;
 }
