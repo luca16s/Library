@@ -14,6 +14,7 @@ using Api.Properties;
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 
 using Swashbuckle.AspNetCore.SwaggerGen;
@@ -38,13 +39,15 @@ public static class SwaggerExtensions
     /// Exceção caso propriedade de site não esteja preenchida.
     /// </exception>
     public static IServiceCollection AddSwaggerConfiguration(
-        this IServiceCollection services,
-        SwaggerInfo swaggerInfo
+        this IServiceCollection services
     )
     {
-        return swaggerInfo is null
-            ? throw new ArgumentNullException(nameof(swaggerInfo))
-            : services.AddSwaggerGen(c =>
+        SwaggerInfo swaggerInfo = services
+            .BuildServiceProvider()
+            .GetService<IOptions<SwaggerInfo>>()?.Value
+            ?? throw new NullReferenceException("Não foi possível recuperar as informações do swagger.");
+
+        return services.AddSwaggerGen(c =>
         {
             c.SwaggerDoc(
                 swaggerInfo.AppVersion,
