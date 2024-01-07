@@ -9,9 +9,12 @@
 
 namespace Api.Extensions;
 
+using Api.Helpers;
+
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -73,7 +76,7 @@ public static class ControllerExtensions
     /// <returns>
     /// <see cref="IServiceCollection"/>
     /// </returns>
-    public static IMvcBuilder AddControllerConfiguration
+    public static IMvcBuilder AddController
     (
         this IServiceCollection services
     )
@@ -85,7 +88,11 @@ public static class ControllerExtensions
                 .Build();
 
             config.Filters.Add(new AuthorizeFilter(policy));
-
+            config.Conventions.Add(
+                new RouteTokenTransformerConvention(
+                    new URLTransformer()
+                    )
+            );
         }).AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
     }
 }

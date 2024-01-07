@@ -22,7 +22,7 @@ public interface IUnitOfWork
     /// <returns>
     /// Retorna a transação.
     /// </returns>
-    Task<IDbContextTransaction> BeginTransaction();
+    Task<IDbContextTransaction> BeginTransactionAsync();
 
     /// <summary>
     /// Comita a transação do banco.
@@ -33,10 +33,10 @@ public interface IUnitOfWork
     /// <returns>
     /// Retorna a task.
     /// </returns>
-    Task CommitTransaction(IDbContextTransaction transaction);
+    Task CommitTransactionAsync(IDbContextTransaction transaction);
 
     /// <summary>
     /// Reverte alterações.
     /// </summary>
-    Task RollbackTransaction();
+    Task RollbackTransactionAsync();
 }

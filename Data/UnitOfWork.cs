@@ -28,11 +28,6 @@ public class UnitOfWork<TContext>(
     private readonly TContext _baseContext = baseContext;
 
     /// <summary>
-    /// Indica se há uma transação ativa.
-    /// </summary>
-    public bool HasActiveTransaction => CurrentTransaction != null;
-
-    /// <summary>
     /// Retorna a transação atual.
     /// </summary>
     public Task<IDbContextTransaction> CurrentTransaction { get; private set; } = null!;
@@ -43,12 +38,10 @@ public class UnitOfWork<TContext>(
     /// <returns>
     /// Retorna a transação.
     /// </returns>
-    public async Task<IDbContextTransaction> BeginTransaction()
+    public async Task<IDbContextTransaction> BeginTransactionAsync()
     {
-        if (CurrentTransaction != null)
-        {
+        if (CurrentTransaction is not null)
             return await CurrentTransaction;
-        }
 
         _baseContext.Database.OpenConnection();
 
@@ -66,13 +59,16 @@ public class UnitOfWork<TContext>(
     /// <returns>
     /// Retorna a task.
     /// </returns>
-    public async Task CommitTransaction(IDbContextTransaction transaction)
+    public async Task CommitTransactionAsync(
+        IDbContextTransaction transaction
+    )
     {
         ArgumentNullException.ThrowIfNull(transaction);
 
-        if (transaction != await CurrentTransaction)
+        if (await CurrentTransaction is IDbContextTransaction current)
         {
-            throw new InvalidOperationException(string.Format("Transação {0} não é a atual.", transaction.TransactionId));
+            if (transaction != current)
+                throw new InvalidOperationException($"Transação {transaction.TransactionId} não é a atual.");
         }
 
         try
@@ -81,9 +77,7 @@ public class UnitOfWork<TContext>(
             bool isObjectSavedAsync = _baseContext.SaveChanges() > 0;
 
             if (isObjectSavedAsync)
-            {
                 transaction.Commit();
-            }
         }
         catch (DbUpdateConcurrencyException ex)
         {
@@ -114,7 +108,7 @@ public class UnitOfWork<TContext>(
                 }
             }
 
-            await RollbackTransaction();
+            await RollbackTransactionAsync();
             throw new DbUpdateException(ex.Message);
         }
     }
@@ -122,9 +116,12 @@ public class UnitOfWork<TContext>(
     /// <summary>
     /// Reverte alterações.
     /// </summary>
-    public async Task RollbackTransaction()
+    public async Task RollbackTransactionAsync()
     {
-        var transaction = await CurrentTransaction;
-        transaction.Rollback();
+        if (CurrentTransaction is null)
+            throw new InvalidOperationException("Não é possível dar rollback sem uma transação aberta.");
+
+        await (await CurrentTransaction).RollbackAsync();
+        CurrentTransaction = null!;
     }
 }

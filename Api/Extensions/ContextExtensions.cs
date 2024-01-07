@@ -16,13 +16,12 @@ public static class ContextExtensions
     {
         string? connectionString =
             settings
-            .ConnectionString
+            .ConnectionStrings
             .FirstOrDefault(c => c.Nome.Equals(schema, StringComparison.Ordinal))
            ?.Url;
 
         return string.IsNullOrWhiteSpace(connectionString)
-            ? throw new ArgumentNullException(
-                nameof(connectionString),
+            ? throw new InvalidOperationException(
                 "String de conexão com o banco de dados não pode ser nula."
             )
             : services

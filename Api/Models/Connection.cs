@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="Conexao.cs" company="Îakaré Software'Oka">
+// <copyright file="Connection.cs" company="Îakaré Software'Oka">
 //     Copyright (c) Îakaré Software'Oka.
 //     All rights reserved.
 //     Licensed under the MIT license.
@@ -9,7 +9,7 @@
 
 namespace Api.Models;
 
-public class Conexao
+public class Connection
 {
     /// <summary>
     /// Url de conexão podendo ser com Banco de Dados ou API.

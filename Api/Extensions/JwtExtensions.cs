@@ -9,15 +9,16 @@ public static class JwtExtensions
 {
     public static string CreateJwtToken(
         this ClaimsIdentity? _,
-        JwtSettings jwtSettings,
-        SigningSettings signSettings
+        Settings settings
     )
     {
+        Signing signing = new(settings.Secret);
+
         var token = new JwtSecurityToken(
-            issuer: jwtSettings.Issuer,
-            audience: jwtSettings.Audience,
+            issuer: settings.Jwt.Issuer,
+            audience: settings.Jwt.Audience,
             expires: DateTime.Now.AddMinutes(120),
-            signingCredentials: signSettings.SigningCredentials
+            signingCredentials: signing.Credentials
         );
 
         return new JwtSecurityTokenHandler().WriteToken(token);

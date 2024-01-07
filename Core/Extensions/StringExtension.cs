@@ -7,12 +7,11 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+namespace Core.Extensions;
 using Core.Exceptions;
 
 using System.ComponentModel;
 using System.Reflection;
-
-namespace Core.Extensions;
 
 /// <summary>
 /// Classe de extensão para operações com string.

@@ -7,12 +7,11 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+namespace Core.Extensions;
 using Core.Exceptions;
 using Core.Models;
 
 using System.ComponentModel;
-
-namespace Core.Extensions;
 
 /// <summary>
 /// Classe de extensão para operações com enumeradores.

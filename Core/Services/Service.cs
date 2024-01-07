@@ -33,58 +33,58 @@ public class Service<TRepository, TEntity>(
 
     public async Task Create(TEntity item)
     {
-        using IDbContextTransaction transaction = await _unitOfWork.BeginTransaction();
+        using IDbContextTransaction transaction = await _unitOfWork.BeginTransactionAsync();
         try
         {
             await _repository.Create(item);
         }
         catch (Exception)
         {
-            await _unitOfWork.RollbackTransaction();
+            await _unitOfWork.RollbackTransactionAsync();
             throw new InvalidOperationException("");
         }
 
-        await _unitOfWork.CommitTransaction(transaction);
+        await _unitOfWork.CommitTransactionAsync(transaction);
     }
 
     public async Task Create(IEnumerable<TEntity> items)
     {
-        using IDbContextTransaction transaction = await _unitOfWork.BeginTransaction();
+        using IDbContextTransaction transaction = await _unitOfWork.BeginTransactionAsync();
         try
         {
             await _repository.Create(items);
         }
         catch (Exception)
         {
-            await _unitOfWork.RollbackTransaction();
+            await _unitOfWork.RollbackTransactionAsync();
             throw new InvalidOperationException("");
         }
 
-        await _unitOfWork.CommitTransaction(transaction);
+        await _unitOfWork.CommitTransactionAsync(transaction);
     }
 
     public async Task Delete(TEntity item)
     {
-        using IDbContextTransaction transaction = await _unitOfWork.BeginTransaction();
+        using IDbContextTransaction transaction = await _unitOfWork.BeginTransactionAsync();
         await _repository.Delete(item);
 
-        await _unitOfWork.CommitTransaction(transaction);
+        await _unitOfWork.CommitTransactionAsync(transaction);
     }
 
     public async Task Update(long id, TEntity item)
     {
-        using IDbContextTransaction transaction = await _unitOfWork.BeginTransaction();
+        using IDbContextTransaction transaction = await _unitOfWork.BeginTransactionAsync();
         try
         {
             await _repository.Update(id, item);
         }
         catch (Exception)
         {
-            await _unitOfWork.RollbackTransaction();
+            await _unitOfWork.RollbackTransactionAsync();
             throw new InvalidOperationException("");
         }
 
-        await _unitOfWork.CommitTransaction(transaction);
+        await _unitOfWork.CommitTransactionAsync(transaction);
     }
 
     public async Task<TEntity?> Get(long id)

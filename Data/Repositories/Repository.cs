@@ -26,69 +26,114 @@ public class Repository<TContext, TEntity> : IRepository<TEntity>
     where TEntity : Entity
 {
     private TContext Context { get; }
-
+    private IUnitOfWork UnitOfWork { get; set; }
     protected DbSet<TEntity> DbSet { get; set; }
 
-    public Repository(TContext context)
+    public Repository(
+        TContext context,
+        IUnitOfWork unitOfWork
+    )
     {
         Context = context;
+        UnitOfWork = unitOfWork;
         DbSet = Context.Set<TEntity>();
     }
 
-    public async Task Create(TEntity item)
+    public async Task Create(
+        TEntity item
+    )
     {
+        var transaction = await UnitOfWork.BeginTransactionAsync();
+
         try
         {
             EntityEntry<TEntity> entity = await DbSet.AddAsync(item);
             entity.State = EntityState.Added;
+
+            await UnitOfWork.CommitTransactionAsync(transaction);
         }
         catch (DbUpdateException e)
         {
+            await UnitOfWork.RollbackTransactionAsync();
             throw new Exception(e.Message);
         }
     }
 
-    public async Task Create(IEnumerable<TEntity> items)
+    public async Task Create(
+        IEnumerable<TEntity> items
+    )
     {
+        var transaction = await UnitOfWork.BeginTransactionAsync();
+
         try
         {
             foreach (var item in items)
             {
                 EntityEntry<TEntity> entity = await DbSet.AddAsync(item);
                 entity.State = EntityState.Added;
+
+                await UnitOfWork.CommitTransactionAsync(transaction);
             }
         }
         catch (DbUpdateException e)
         {
+            await UnitOfWork.RollbackTransactionAsync();
             throw new Exception(e.Message);
         }
     }
 
-    public Task Delete(TEntity item)
+    public async Task Delete(
+        TEntity item
+    )
     {
         ArgumentNullException.ThrowIfNull(item);
 
-        EntityEntry<TEntity> entity = DbSet.Remove(item);
-        entity.State = EntityState.Deleted;
-        return Task.CompletedTask;
+        var transaction = await UnitOfWork.BeginTransactionAsync();
+
+        try
+        {
+            EntityEntry<TEntity> entity = DbSet.Remove(item);
+            entity.State = EntityState.Deleted;
+            await UnitOfWork.CommitTransactionAsync(transaction);
+        }
+        catch (Exception e)
+        {
+            await UnitOfWork.RollbackTransactionAsync();
+            throw new Exception(e.Message);
+        }
     }
 
-    public Task Update(long id, TEntity item)
+    public async Task Update(
+        long id,
+        TEntity item
+    )
     {
         ArgumentNullException.ThrowIfNull(item);
 
-        TEntity? entity = DbSet.Find(id) ??
-            throw new NullReferenceException("Item pesquisado não existente no banco de dados.");
+        var transaction = await UnitOfWork.BeginTransactionAsync();
 
-        Context.Entry(entity).State = EntityState.Detached;
+        try
+        {
+            TEntity? entity = DbSet.Find(id) ??
+                throw new NullReferenceException("Item pesquisado não existente no banco de dados.");
 
-        EntityEntry<TEntity> entry = DbSet.Update(item);
-        entry.CurrentValues.SetValues(item);
-        entry.State = EntityState.Modified;
-        return Task.CompletedTask;
+            Context.Entry(entity).State = EntityState.Detached;
+
+            EntityEntry<TEntity> entry = DbSet.Update(item);
+            entry.CurrentValues.SetValues(item);
+            entry.State = EntityState.Modified;
+            await UnitOfWork.CommitTransactionAsync(transaction);
+        }
+        catch (Exception e)
+        {
+            await UnitOfWork.RollbackTransactionAsync();
+            throw new Exception(e.Message);
+        }
     }
 
-    public async Task<TEntity?> Get(long id)
+    public async Task<TEntity?> Get(
+        long id
+    )
     {
         return await DbSet.FindAsync(id);
     }
@@ -108,12 +153,16 @@ public class Repository<TContext, TEntity> : IRepository<TEntity>
         return await DbSet.CountAsync();
     }
 
-    public IQueryable<TEntity> Search(Expression<Func<TEntity, bool>> predicate)
+    public IQueryable<TEntity> Search(
+        Expression<Func<TEntity, bool>> predicate
+    )
     {
         return DbSet.Where(predicate);
     }
 
-    public async Task<TResult> Max<TResult>(Expression<Func<TEntity, TResult>> predicate)
+    public async Task<TResult> Max<TResult>(
+        Expression<Func<TEntity, TResult>> predicate
+    )
     {
         try
         {
@@ -128,7 +177,9 @@ public class Repository<TContext, TEntity> : IRepository<TEntity>
         }
     }
 
-    public async Task<TResult> Min<TResult>(Expression<Func<TEntity, TResult>> predicate)
+    public async Task<TResult> Min<TResult>(
+        Expression<Func<TEntity, TResult>> predicate
+    )
     {
         try
         {

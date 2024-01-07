@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="SwaggerInformation.cs" company="Îakaré Software'Oka">
+// <copyright file="Swagger.cs" company="Îakaré Software'Oka">
 //     Copyright (c) Îakaré Software'Oka.
 //     All rights reserved.
 //     Licensed under the MIT license.
@@ -12,7 +12,7 @@ namespace Api.Models;
 /// <summary>
 /// Informações para preenchimento do swagger.
 /// </summary>
-public class SwaggerInfo
+public class Swagger
 {
     /// <summary>
     /// Site da aplicação.

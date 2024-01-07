@@ -76,7 +76,7 @@ public static class BindExtensions
     /// Assembly contendo as configurações de MediatR
     /// <see cref="Assembly"/>
     /// </param>
-    public static void AddAutoMapperConfiguration
+    public static void AddAutoMapper
     (
         this IServiceCollection services,
        Assembly assembly
@@ -100,19 +100,19 @@ public static class BindExtensions
     public static IServiceCollection AddCorsConfiguration
     (
         this IServiceCollection services,
-        Settings settings,
-        string corsPolicyName
+        Settings settings
     )
     {
         return settings is null
             ? throw new ArgumentNullException(nameof(settings))
             : services.AddCors(options =>
         {
-            options.AddPolicy(corsPolicyName, builder =>
+            options.AddPolicy(settings.CorsPolicyName, builder =>
             {
                 foreach (string domain in settings.AllowedDomains)
                 {
-                    _ = builder.WithOrigins(domain)
+                    _ = builder
+                    .WithOrigins(domain)
                     .AllowAnyHeader()
                     .AllowAnyMethod();
                 }
@@ -132,19 +132,15 @@ public static class BindExtensions
     public static void AddJwtConfiguration
     (
        this IServiceCollection services,
-       JwtSettings tokenSettings,
-       SigningSettings signingSettings
+        Settings settings
     )
     {
-        if (tokenSettings is null)
+        if (settings is null)
         {
-            throw new NullReferenceException(nameof(tokenSettings));
+            throw new NullReferenceException(nameof(settings));
         }
 
-        if (signingSettings is null)
-        {
-            throw new NullReferenceException(nameof(signingSettings));
-        }
+        Signing signing = new(settings.Secret);
 
         _ = services.AddAuthentication(authOptions =>
         {
@@ -163,9 +159,9 @@ public static class BindExtensions
                 ClockSkew = TimeSpan.Zero,
                 RequireExpirationTime = true,
                 ValidateIssuerSigningKey = true,
-                ValidIssuer = tokenSettings.Issuer,
-                ValidAudience = tokenSettings.Issuer,
-                IssuerSigningKey = signingSettings.SigningCredentials.Key,
+                ValidIssuer = settings.Jwt.Issuer,
+                ValidAudience = settings.Jwt.Issuer,
+                IssuerSigningKey = signing.Credentials.Key,
             };
         });
     }

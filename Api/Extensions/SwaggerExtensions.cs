@@ -10,11 +10,10 @@
 namespace Api.Extensions;
 
 using Api.Models;
-using Api.Properties;
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 
 using Swashbuckle.AspNetCore.SwaggerGen;
@@ -24,6 +23,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
+/// <summary>
+/// Extensão de swagger.
+/// </summary>
 public static class SwaggerExtensions
 {
     /// <summary>
@@ -32,35 +34,28 @@ public static class SwaggerExtensions
     /// <param name="services">
     /// <see cref="IServiceCollection"/>
     /// </param>
-    /// <param name="swaggerInfo">
-    /// Arquivo de modelo com informações de swagger.
-    /// </param>
     /// <exception cref="ArgumentNullException">
     /// Exceção caso propriedade de site não esteja preenchida.
     /// </exception>
     public static IServiceCollection AddSwaggerConfiguration(
-        this IServiceCollection services
+        this IServiceCollection services,
+        Settings settings
     )
     {
-        SwaggerInfo swaggerInfo = services
-            .BuildServiceProvider()
-            .GetService<IOptions<SwaggerInfo>>()?.Value
-            ?? throw new NullReferenceException("Não foi possível recuperar as informações do swagger.");
-
         return services.AddSwaggerGen(c =>
         {
             c.SwaggerDoc(
-                swaggerInfo.AppVersion,
+                settings.Swagger.AppVersion,
                 new OpenApiInfo
                 {
-                    Title = swaggerInfo.AppName,
-                    Version = swaggerInfo.AppVersion,
-                    Description = swaggerInfo.Description,
+                    Title = settings.Swagger.AppName,
+                    Version = settings.Swagger.AppVersion,
+                    Description = settings.Swagger.Description,
                     Contact = new OpenApiContact
                     {
-                        Url = new(swaggerInfo.Site ?? string.Empty),
-                        Name = swaggerInfo.Company,
-                        Email = swaggerInfo.Email,
+                        Url = new(settings.Swagger.Site ?? string.Empty),
+                        Name = settings.Swagger.Company,
+                        Email = settings.Swagger.Email,
                     }
                 }
             );
@@ -70,9 +65,9 @@ public static class SwaggerExtensions
                 {
                     In = ParameterLocation.Header,
                     Type = SecuritySchemeType.ApiKey,
-                    Name = swaggerInfo.SecuritySchemeHeaderName,
+                    Name = settings.Swagger.SecuritySchemeHeaderName,
                     Scheme = JwtBearerDefaults.AuthenticationScheme,
-                    Description = swaggerInfo.SecuritySchemeDescription,
+                    Description = settings.Swagger.SecuritySchemeDescription,
                 }
             );
             c.AddSecurityRequirement(new OpenApiSecurityRequirement()
@@ -81,8 +76,8 @@ public static class SwaggerExtensions
                     new OpenApiSecurityScheme
                     {
                         In = ParameterLocation.Header,
-                        Scheme = swaggerInfo.OAuthScheme,
-                        BearerFormat = swaggerInfo.BearerFormat,
+                        Scheme = settings.Swagger.OAuthScheme,
+                        BearerFormat = settings.Swagger.BearerFormat,
                         Reference = new OpenApiReference
                         {
                             Type = ReferenceType.SecurityScheme,
@@ -102,6 +97,18 @@ public static class SwaggerExtensions
                 return apiDesc.TryGetMethodInfo(out MethodInfo methodInfo) ? methodInfo.Name : null;
             });
             c.DescribeAllParametersInCamelCase();
+        });
+    }
+
+    public static void Swagger(
+        this WebApplication app,
+        Settings settings
+    )
+    {
+        _ = app.UseSwagger();
+        app.UseSwaggerUI(c =>
+        {
+            c.SwaggerEndpoint($"/swagger/{settings.Swagger.AppVersion}/swagger.json", settings.Swagger.AppName);
         });
     }
 }
