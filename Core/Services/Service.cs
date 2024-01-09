@@ -31,12 +31,15 @@ public class Service<TRepository, TEntity>(
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
     public readonly TRepository _repository = repository;
 
-    public async Task Create(TEntity item)
+    public async Task Create(
+        TEntity item,
+        CancellationToken cancellationToken
+    )
     {
         using IDbContextTransaction transaction = await _unitOfWork.BeginTransactionAsync();
         try
         {
-            await _repository.Create(item);
+            await _repository.Create(item, cancellationToken);
         }
         catch (Exception)
         {
@@ -47,12 +50,15 @@ public class Service<TRepository, TEntity>(
         await _unitOfWork.CommitTransactionAsync(transaction);
     }
 
-    public async Task Create(IEnumerable<TEntity> items)
+    public async Task Create(
+        IEnumerable<TEntity> items,
+        CancellationToken cancellationToken
+    )
     {
         using IDbContextTransaction transaction = await _unitOfWork.BeginTransactionAsync();
         try
         {
-            await _repository.Create(items);
+            await _repository.Create(items, cancellationToken);
         }
         catch (Exception)
         {
@@ -63,7 +69,9 @@ public class Service<TRepository, TEntity>(
         await _unitOfWork.CommitTransactionAsync(transaction);
     }
 
-    public async Task Delete(TEntity item)
+    public async Task Delete(
+        TEntity item
+    )
     {
         using IDbContextTransaction transaction = await _unitOfWork.BeginTransactionAsync();
         await _repository.Delete(item);
@@ -71,7 +79,10 @@ public class Service<TRepository, TEntity>(
         await _unitOfWork.CommitTransactionAsync(transaction);
     }
 
-    public async Task Update(long id, TEntity item)
+    public async Task Update(
+        long id,
+        TEntity item
+    )
     {
         using IDbContextTransaction transaction = await _unitOfWork.BeginTransactionAsync();
         try
@@ -87,17 +98,25 @@ public class Service<TRepository, TEntity>(
         await _unitOfWork.CommitTransactionAsync(transaction);
     }
 
-    public async Task<TEntity?> Get(long id)
+    public async Task<TEntity?> Get(
+        long id,
+        CancellationToken cancellationToken
+    )
     {
-        return await _repository.Get(id);
+        return await _repository.Get(id, cancellationToken);
     }
 
-    public IQueryable<TEntity> GetAll(int amountToSkip = 0, int amountToTake = 25)
+    public IQueryable<TEntity> GetAll(
+        int amountToSkip = 0,
+        int amountToTake = 25
+    )
     {
         return _repository.GetAll(amountToSkip, amountToTake);
     }
 
-    public IQueryable<TEntity> Search(Expression<Func<TEntity, bool>> predicate)
+    public IQueryable<TEntity> Search(
+        Expression<Func<TEntity, bool>> predicate
+    )
     {
         return _repository.Search(predicate);
     }

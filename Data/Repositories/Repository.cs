@@ -19,6 +19,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading;
 using System.Threading.Tasks;
 
 public class Repository<TContext, TEntity> : IRepository<TEntity>
@@ -40,14 +41,15 @@ public class Repository<TContext, TEntity> : IRepository<TEntity>
     }
 
     public async Task Create(
-        TEntity item
+        TEntity item,
+        CancellationToken cancellationToken
     )
     {
         var transaction = await UnitOfWork.BeginTransactionAsync();
 
         try
         {
-            EntityEntry<TEntity> entity = await DbSet.AddAsync(item);
+            EntityEntry<TEntity> entity = await DbSet.AddAsync(item, cancellationToken);
             entity.State = EntityState.Added;
 
             await UnitOfWork.CommitTransactionAsync(transaction);
@@ -60,7 +62,8 @@ public class Repository<TContext, TEntity> : IRepository<TEntity>
     }
 
     public async Task Create(
-        IEnumerable<TEntity> items
+        IEnumerable<TEntity> items,
+        CancellationToken cancellationToken
     )
     {
         var transaction = await UnitOfWork.BeginTransactionAsync();
@@ -69,7 +72,7 @@ public class Repository<TContext, TEntity> : IRepository<TEntity>
         {
             foreach (var item in items)
             {
-                EntityEntry<TEntity> entity = await DbSet.AddAsync(item);
+                EntityEntry<TEntity> entity = await DbSet.AddAsync(item, cancellationToken);
                 entity.State = EntityState.Added;
 
                 await UnitOfWork.CommitTransactionAsync(transaction);
@@ -132,10 +135,14 @@ public class Repository<TContext, TEntity> : IRepository<TEntity>
     }
 
     public async Task<TEntity?> Get(
-        long id
+        long id,
+        CancellationToken cancellationToken
     )
     {
-        return await DbSet.FindAsync(id);
+        return await DbSet.FindAsync(
+            [id, cancellationToken],
+            cancellationToken: cancellationToken
+        );
     }
 
     public IQueryable<TEntity> GetAll(
@@ -148,9 +155,11 @@ public class Repository<TContext, TEntity> : IRepository<TEntity>
             .Take(amountToTake);
     }
 
-    public async Task<long> Count()
+    public async Task<long> Count(
+        CancellationToken cancellationToken
+    )
     {
-        return await DbSet.CountAsync();
+        return await DbSet.CountAsync(cancellationToken);
     }
 
     public IQueryable<TEntity> Search(
@@ -161,12 +170,13 @@ public class Repository<TContext, TEntity> : IRepository<TEntity>
     }
 
     public async Task<TResult> Max<TResult>(
-        Expression<Func<TEntity, TResult>> predicate
+        Expression<Func<TEntity, TResult>> predicate,
+        CancellationToken cancellationToken
     )
     {
         try
         {
-            return await DbSet.MaxAsync(predicate);
+            return await DbSet.MaxAsync(predicate, cancellationToken);
         }
         catch (Exception ex)
         {
@@ -178,12 +188,13 @@ public class Repository<TContext, TEntity> : IRepository<TEntity>
     }
 
     public async Task<TResult> Min<TResult>(
-        Expression<Func<TEntity, TResult>> predicate
+        Expression<Func<TEntity, TResult>> predicate,
+        CancellationToken cancellationToken
     )
     {
         try
         {
-            return await DbSet.MinAsync(predicate);
+            return await DbSet.MinAsync(predicate, cancellationToken);
         }
         catch (Exception ex)
         {

@@ -30,7 +30,13 @@ public interface IRepository<TEntity>
     /// <param name="item">
     /// Entidade a ser salva.
     /// </param>
-    Task Create(TEntity item);
+    /// <param name="cancellationToken">
+    /// Um <see cref="CancellationToken" /> para observar enquanto espera a conclusão da tarefa.
+    /// </param>
+    Task Create(
+        TEntity item,
+        CancellationToken cancellationToken
+    );
 
     /// <summary>
     /// Adiciona de forma assíncrona diversos items ao banco de dados.
@@ -38,8 +44,14 @@ public interface IRepository<TEntity>
     /// <param name="items">
     /// Entidades para serem salvas.
     /// </param>
+    /// <param name="cancellationToken">
+    /// Um <see cref="CancellationToken" /> para observar enquanto espera a conclusão da tarefa.
+    /// </param>
     /// <returns></returns>
-    Task Create(IEnumerable<TEntity> items);
+    Task Create(
+        IEnumerable<TEntity> items,
+        CancellationToken cancellationToken
+    );
 
     /// <summary>
     /// Deleta uma entidade no banco de dados.
@@ -47,7 +59,9 @@ public interface IRepository<TEntity>
     /// <param name="item">
     /// Entidade a ser deletada.
     /// </param>
-    Task Delete(TEntity item);
+    Task Delete(
+        TEntity item
+    );
 
     /// <summary>
     /// Atualiza uma entidade com base em um identificador passado.
@@ -58,7 +72,10 @@ public interface IRepository<TEntity>
     /// <param name="item">
     /// Entidade a ser atualizada.
     /// </param>
-    Task Update(long id, TEntity item);
+    Task Update(
+        long id,
+        TEntity item
+    );
 
     /// <summary>
     /// Retorna uma entidade com base em um identificador de forma assíncrona.
@@ -66,10 +83,16 @@ public interface IRepository<TEntity>
     /// <param name="id">
     /// Identificador da entidade.
     /// </param>
+    /// <param name="cancellationToken">
+    /// Um <see cref="CancellationToken" /> para observar enquanto espera a conclusão da tarefa.
+    /// </param>
     /// <returns>
     /// Entidade encontrada.
     /// </returns>
-    Task<TEntity?> Get(long id);
+    Task<TEntity?> Get(
+        long id,
+        CancellationToken cancellationToken
+    );
 
     /// <summary>
     /// Retorna todas as entidades do banco de dados de forma assíncrona.
@@ -83,7 +106,10 @@ public interface IRepository<TEntity>
     /// <returns>
     /// Todas as entidades.
     /// </returns>
-    IQueryable<TEntity> GetAll(int amountToSkip = 0, int amountToTake = 25);
+    IQueryable<TEntity> GetAll(
+        int amountToSkip = 0,
+        int amountToTake = 25
+    );
 
     /// <summary>
     /// Busca determinados itens na base de dados.
@@ -94,15 +120,22 @@ public interface IRepository<TEntity>
     /// <returns>
     /// Lista de itens encontrados.
     /// </returns>
-    IQueryable<TEntity> Search(Expression<Func<TEntity, bool>> predicate);
+    IQueryable<TEntity> Search(
+        Expression<Func<TEntity, bool>> predicate
+    );
 
     /// <summary>
     /// Realiza a contagem de items salvos para determinada tabela.
     /// </summary>
+    /// <param name="cancellationToken">
+    /// Um <see cref="CancellationToken" /> para observar enquanto espera a conclusão da tarefa.
+    /// </param>
     /// <returns>
     /// Retorna total de items salvos no banco de dados.
     /// </returns>
-    Task<long> Count();
+    Task<long> Count(
+        CancellationToken cancellationToken
+    );
 
     /// <summary>
     /// Realiza a busca do maior item salvo no banco de dados.
@@ -113,10 +146,16 @@ public interface IRepository<TEntity>
     /// <param name="predicate">
     /// Termo de busca.
     /// </param>
+    /// <param name="cancellationToken">
+    /// Um <see cref="CancellationToken" /> para observar enquanto espera a conclusão da tarefa.
+    /// </param>
     /// <returns>
     /// Retorna maior item encontrado.
     /// </returns>
-    Task<TReturn> Max<TReturn>(Expression<Func<TEntity, TReturn>> predicate);
+    Task<TReturn> Max<TReturn>(
+        Expression<Func<TEntity, TReturn>> predicate,
+        CancellationToken cancellationToken
+    );
 
     /// <summary>
     /// Realiza a busca do menor item salvo no banco de dados.
@@ -127,8 +166,14 @@ public interface IRepository<TEntity>
     /// <param name="predicate">
     /// Termo de busca.
     /// </param>
+    /// <param name="cancellationToken">
+    /// Um <see cref="CancellationToken" /> para observar enquanto espera a conclusão da tarefa.
+    /// </param>
     /// <returns>
     /// Retorna menor item encontrado.
     /// </returns>
-    Task<TReturn> Min<TReturn>(Expression<Func<TEntity, TReturn>> predicate);
+    Task<TReturn> Min<TReturn>(
+        Expression<Func<TEntity, TReturn>> predicate,
+        CancellationToken cancellationToken
+    );
 }
