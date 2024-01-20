@@ -9,9 +9,12 @@ using Library.Tests.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 
+using Newtonsoft.Json.Linq;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 using Xunit;
@@ -72,6 +75,20 @@ public class RepositoryTest
         _ = result.Should().NotBeNull();
         _ = result.Id.Should().Be(expectedPessoa.Id);
         _ = result.Nome.Should().Be(expectedPessoa.Nome);
+    }
+
+    [Fact]
+    [Trait("Método: ", "Get")]
+    public async Task GetDeveCancelarBuscaComCancellationTokenPassado()
+    {
+        var expectedId = context.Pessoas.Count() + 1;
+
+        CancellationTokenSource source = new();
+        source.Cancel();
+
+        var acao = async () => await repository.GetAsync(expectedId, source.Token);
+
+        _ = await acao.Should().ThrowAsync<OperationCanceledException>();
     }
 
     [Fact]
@@ -139,6 +156,21 @@ public class RepositoryTest
 
     [Fact]
     [Trait("Método: ", "Create")]
+    public async Task CreateDeveCancelarSaveComCancellationTokenPassado()
+    {
+        var id = context.Pessoas.Count() + 1;
+        var expectedPessoa = new Pessoa(id) { Nome = "Jhon" };
+
+        CancellationTokenSource source = new();
+        source.Cancel();
+
+        var acao = async () => await repository.CreateAsync(expectedPessoa, source.Token);
+
+        _ = await acao.Should().ThrowAsync<OperationCanceledException>();
+    }
+
+    [Fact]
+    [Trait("Método: ", "Create")]
     public async Task CreateDeveSalvarTodosItemsPassados()
     {
         var amountToSkip = 30;
@@ -162,6 +194,30 @@ public class RepositoryTest
         _ = result.Should().NotBeNull();
         _ = result.SequenceEqual(listaPessoas);
         _ = result.Count.Should().Be(expectedAmount);
+    }
+
+    [Fact]
+    [Trait("Método: ", "Create")]
+    public async Task CreateDeveCancelarSaveVariosComCancellationTokenPassado()
+    {
+        var amountToSkip = 30;
+        var amountToTake = 30;
+        var listaPessoas = new List<Pessoa>();
+
+        for (int i = 30; i < amountToTake + amountToSkip; i++)
+        {
+            var faker = new Faker<Pessoa>()
+                .RuleFor(u => u.Nome, (f, u) => f.Name.FirstName());
+
+            listaPessoas.Add(new Pessoa(i + 1) { Nome = faker.Generate().Nome });
+        }
+
+        CancellationTokenSource source = new();
+        source.Cancel();
+
+        var acao = async () => await repository.CreateAsync(listaPessoas, source.Token);
+
+        _ = await acao.Should().ThrowAsync<OperationCanceledException>();
     }
 
     [Fact]
@@ -273,12 +329,66 @@ public class RepositoryTest
 
     [Fact]
     [Trait("Método: ", "Count")]
+    public async Task CountDeveCancelarContagemComCancellationTokenPassado()
+    {
+        CancellationTokenSource source = new();
+        source.Cancel();
+
+        var acao = async () => await repository.CountAsync(source.Token);
+
+        _ = await acao.Should().ThrowAsync<OperationCanceledException>();
+    }
+
+    [Fact]
+    [Trait("Método: ", "Count")]
     public async Task CountDeveRetornarTotalDeItemsCasoTabelaPreenchida()
     {
         var expectedCount = context.Pessoas.Count();
         var result = await repository.CountAsync();
 
         _ = result.Should().Be(expectedCount);
+    }
+
+    [Fact]
+    [Trait("Método: ", "Min")]
+    public async Task MinDeveRetornarMensagemErroCasoTabelaVazia()
+    {
+        _ = context.Database.EnsureDeleted();
+
+        var acao = async () => await repository.MinAsync(x => x.Idade);
+
+        _ = await acao.Should().ThrowAsync<InvalidOperationException>()
+            .WithMessage("Tabela não contém items ou foi passada uma entidade ao invés de uma propriedade.");
+    }
+
+    [Fact]
+    [Trait("Método: ", "Min")]
+    public async Task MinDeveRetornarMenorItemEncontrado()
+    {
+        var expectedAge = context.Pessoas.Min(x => x.Idade);
+        var result = await repository.MinAsync(x => x.Idade);
+        _ = result.Should().Be(expectedAge);
+    }
+
+    [Fact]
+    [Trait("Método: ", "Min")]
+    public async Task MinDeveRetornarMensagemErroCasoItemPassadoNaoSejaPropriedade()
+    {
+        var acao = async () => await repository.MinAsync(x => x);
+        _ = await acao.Should().ThrowAsync<InvalidOperationException>()
+            .WithMessage("Tabela não contém items ou foi passada uma entidade ao invés de uma propriedade.");
+    }
+
+    [Fact]
+    [Trait("Método: ", "Min")]
+    public async Task MinDeveCancelarBuscaMenorComCancellationTokenPassado()
+    {
+        CancellationTokenSource source = new();
+        source.Cancel();
+
+        var acao = async () => await repository.MinAsync(x => x.Idade, source.Token);
+
+        _ = await acao.Should().ThrowAsync<OperationCanceledException>();
     }
 
     [Fact]
@@ -312,32 +422,14 @@ public class RepositoryTest
     }
 
     [Fact]
-    [Trait("Método: ", "Min")]
-    public async Task MinDeveRetornarMensagemErroCasoTabelaVazia()
+    [Trait("Método: ", "Max")]
+    public async Task MaxDeveCancelarBuscaMaiorComCancellationTokenPassado()
     {
-        _ = context.Database.EnsureDeleted();
+        CancellationTokenSource source = new();
+        source.Cancel();
 
-        var acao = async () => await repository.MinAsync(x => x.Idade);
+        var acao = async () => await repository.MaxAsync(x => x.Idade, source.Token);
 
-        _ = await acao.Should().ThrowAsync<InvalidOperationException>()
-            .WithMessage("Tabela não contém items ou foi passada uma entidade ao invés de uma propriedade.");
-    }
-
-    [Fact]
-    [Trait("Método: ", "Min")]
-    public async Task MinDeveRetornarMenorItemEncontrado()
-    {
-        var expectedAge = context.Pessoas.Min(x => x.Idade);
-        var result = await repository.MinAsync(x => x.Idade);
-        _ = result.Should().Be(expectedAge);
-    }
-
-    [Fact]
-    [Trait("Método: ", "Min")]
-    public async Task MinDeveRetornarMensagemErroCasoItemPassadoNaoSejaPropriedade()
-    {
-        var acao = async () => await repository.MinAsync(x => x);
-        _ = await acao.Should().ThrowAsync<InvalidOperationException>()
-            .WithMessage("Tabela não contém items ou foi passada uma entidade ao invés de uma propriedade.");
+        _ = await acao.Should().ThrowAsync<OperationCanceledException>();
     }
 }

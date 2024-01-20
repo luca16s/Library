@@ -42,6 +42,8 @@ public abstract class Repository<TContext, TEntity>(
         CancellationToken cancellationToken
     )
     {
+        cancellationToken.ThrowIfCancellationRequested();
+
         var transaction = await UnitOfWork.BeginTransactionAsync(cancellationToken);
 
         try
@@ -67,6 +69,8 @@ public abstract class Repository<TContext, TEntity>(
         CancellationToken cancellationToken
     )
     {
+        cancellationToken.ThrowIfCancellationRequested();
+
         var transaction = await UnitOfWork.BeginTransactionAsync(cancellationToken);
 
         try
@@ -146,7 +150,7 @@ public abstract class Repository<TContext, TEntity>(
     {
         return await DbSet.FindAsync(
             [id, cancellationToken],
-            cancellationToken: cancellationToken
+            cancellationToken
         );
     }
 
@@ -162,7 +166,8 @@ public abstract class Repository<TContext, TEntity>(
             .Take(amountToTake);
     }
 
-    public async Task<long> CountAsync()
+    public async Task<long> CountAsync(
+    )
         => await CountAsync(CancellationToken.None);
 
     public async Task<long> CountAsync(
@@ -192,7 +197,7 @@ public abstract class Repository<TContext, TEntity>(
         {
             return await DbSet.MinAsync(predicate, cancellationToken);
         }
-        catch (Exception ex)
+        catch (InvalidOperationException ex)
         {
             throw new InvalidOperationException(
                 "Tabela não contém items ou foi passada uma entidade ao invés de uma propriedade.",
@@ -214,7 +219,7 @@ public abstract class Repository<TContext, TEntity>(
         {
             return await DbSet.MaxAsync(predicate, cancellationToken);
         }
-        catch (Exception ex)
+        catch (InvalidOperationException ex)
         {
             throw new InvalidOperationException(
                 "Tabela não contém items ou foi passada uma entidade ao invés de uma propriedade.",
