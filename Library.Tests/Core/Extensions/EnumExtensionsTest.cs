@@ -13,7 +13,7 @@ using System.Collections.Generic;
 
 using Xunit;
 
-public class EnumExtensionsTests
+public class EnumExtensionsTest
 {
     [Fact]
     public void DescriptionShouldStringEmptyWhenNull()

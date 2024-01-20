@@ -1,6 +1,6 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="IService.cs" company="Îakaré Software'Oka">
-//     Copyright (c) Îakaré Software'Oka.
+// <copyright file="IService.cs" company="Îakaré Softwareoka Inc.">
+//     Copyright (c) Îakaré Softwareoka Inc..
 //     All rights reserved.
 //     Licensed under the MIT license.
 //     See LICENSE file in the project root for full license information.
@@ -28,12 +28,33 @@ public interface IService<TEntity>
     /// <param name="item">
     /// Entidade a ser salva.
     /// </param>
+    Task CreateAsync(
+        TEntity item
+    );
+
+    /// <summary>
+    /// Adiciona nova entidade no banco de dados de forma assíncrona.
+    /// </summary>
+    /// <param name="item">
+    /// Entidade a ser salva.
+    /// </param>
     /// <param name="cancellationToken">
     /// Um <see cref="CancellationToken" /> para observar enquanto espera a conclusão da tarefa.
     /// </param>
-    Task Create(
+    Task CreateAsync(
         TEntity item,
         CancellationToken cancellationToken
+    );
+
+    /// <summary>
+    /// Adiciona de forma assíncrona diversos items ao banco de dados.
+    /// </summary>
+    /// <param name="items">
+    /// Entidades para serem salvas.
+    /// </param>
+    /// <returns></returns>
+    Task CreateAsync(
+        IEnumerable<TEntity> items
     );
 
     /// <summary>
@@ -46,7 +67,7 @@ public interface IService<TEntity>
     /// Um <see cref="CancellationToken" /> para observar enquanto espera a conclusão da tarefa.
     /// </param>
     /// <returns></returns>
-    Task Create(
+    Task CreateAsync(
         IEnumerable<TEntity> items,
         CancellationToken cancellationToken
     );
@@ -81,13 +102,26 @@ public interface IService<TEntity>
     /// <param name="id">
     /// Identificador da entidade.
     /// </param>
+    /// <returns>
+    /// Entidade encontrada.
+    /// </returns>
+    Task<TEntity?> GetAsync(
+        long id
+    );
+
+    /// <summary>
+    /// Retorna uma entidade com base em um identificador de forma assíncrona.
+    /// </summary>
+    /// <param name="id">
+    /// Identificador da entidade.
+    /// </param>
     /// <param name="cancellationToken">
     /// Um <see cref="CancellationToken" /> para observar enquanto espera a conclusão da tarefa.
     /// </param>
     /// <returns>
     /// Entidade encontrada.
     /// </returns>
-    Task<TEntity?> Get(
+    Task<TEntity?> GetAsync(
         long id,
         CancellationToken cancellationToken
     );

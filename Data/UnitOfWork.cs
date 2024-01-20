@@ -1,4 +1,13 @@
-﻿namespace Data;
+﻿// -----------------------------------------------------------------------
+// <copyright file="UnitOfWork.cs" company="Îakaré Softwareoka Inc.">
+//     Copyright (c) Îakaré Softwareoka Inc..
+//     All rights reserved.
+//     Licensed under the MIT license.
+//     See LICENSE file in the project root for full license information.
+// </copyright>
+// -----------------------------------------------------------------------
+
+namespace Data;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
@@ -22,8 +31,7 @@ using System.Data;
 /// </param>
 public class UnitOfWork<TContext>(
     TContext baseContext
-    )
-    where TContext : DbContext
+    ) where TContext : DbContext
 {
     private readonly TContext _baseContext = baseContext;
 

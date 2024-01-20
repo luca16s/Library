@@ -1,6 +1,6 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="Repository.cs" company="Îakaré Software'Oka">
-//     Copyright (c) Îakaré Software'Oka.
+// <copyright file="Repository.cs" company="Îakaré Softwareoka Inc.">
+//     Copyright (c) Îakaré Softwareoka Inc..
 //     All rights reserved.
 //     Licensed under the MIT license.
 //     See LICENSE file in the project root for full license information.
@@ -22,51 +22,52 @@ using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 
-public class Repository<TContext, TEntity> : IRepository<TEntity>
+public abstract class Repository<TContext, TEntity>(
+    TContext context,
+    IUnitOfWork unitOfWork
+) : IRepository<TEntity>
     where TContext : DbContext
     where TEntity : Entity
 {
-    private TContext Context { get; }
-    private IUnitOfWork UnitOfWork { get; set; }
-    protected DbSet<TEntity> DbSet { get; set; }
+    private TContext Context { get; } = context;
+    private IUnitOfWork UnitOfWork { get; set; } = unitOfWork;
+    protected DbSet<TEntity> DbSet { get; set; } = context.Set<TEntity>();
 
-    public Repository(
-        TContext context,
-        IUnitOfWork unitOfWork
-    )
-    {
-        Context = context;
-        UnitOfWork = unitOfWork;
-        DbSet = Context.Set<TEntity>();
-    }
+    public async Task CreateAsync(
+        TEntity item
+    ) => await CreateAsync(item, CancellationToken.None);
 
-    public async Task Create(
+    public async Task CreateAsync(
         TEntity item,
         CancellationToken cancellationToken
     )
     {
-        var transaction = await UnitOfWork.BeginTransactionAsync();
+        var transaction = await UnitOfWork.BeginTransactionAsync(cancellationToken);
 
         try
         {
             EntityEntry<TEntity> entity = await DbSet.AddAsync(item, cancellationToken);
             entity.State = EntityState.Added;
 
-            await UnitOfWork.CommitTransactionAsync(transaction);
+            await UnitOfWork.CommitTransactionAsync(transaction, cancellationToken);
         }
         catch (DbUpdateException e)
         {
-            await UnitOfWork.RollbackTransactionAsync();
+            await UnitOfWork.RollbackTransactionAsync(cancellationToken);
             throw new Exception(e.Message);
         }
     }
 
-    public async Task Create(
+    public async Task CreateAsync(
+        IEnumerable<TEntity> items
+    ) => await CreateAsync(items, CancellationToken.None);
+
+    public async Task CreateAsync(
         IEnumerable<TEntity> items,
         CancellationToken cancellationToken
     )
     {
-        var transaction = await UnitOfWork.BeginTransactionAsync();
+        var transaction = await UnitOfWork.BeginTransactionAsync(cancellationToken);
 
         try
         {
@@ -75,17 +76,17 @@ public class Repository<TContext, TEntity> : IRepository<TEntity>
                 EntityEntry<TEntity> entity = await DbSet.AddAsync(item, cancellationToken);
                 entity.State = EntityState.Added;
 
-                await UnitOfWork.CommitTransactionAsync(transaction);
+                await UnitOfWork.CommitTransactionAsync(transaction, cancellationToken);
             }
         }
         catch (DbUpdateException e)
         {
-            await UnitOfWork.RollbackTransactionAsync();
+            await UnitOfWork.RollbackTransactionAsync(cancellationToken);
             throw new Exception(e.Message);
         }
     }
 
-    public async Task Delete(
+    public async Task DeleteAsync(
         TEntity item
     )
     {
@@ -106,7 +107,7 @@ public class Repository<TContext, TEntity> : IRepository<TEntity>
         }
     }
 
-    public async Task Update(
+    public async Task UpdateAsync(
         long id,
         TEntity item
     )
@@ -127,14 +128,18 @@ public class Repository<TContext, TEntity> : IRepository<TEntity>
             entry.State = EntityState.Modified;
             await UnitOfWork.CommitTransactionAsync(transaction);
         }
-        catch (Exception e)
+        catch
         {
             await UnitOfWork.RollbackTransactionAsync();
-            throw new Exception(e.Message);
+            throw;
         }
     }
 
-    public async Task<TEntity?> Get(
+    public async Task<TEntity?> GetAsync(
+        long id
+    ) => await GetAsync(id, CancellationToken.None);
+
+    public async Task<TEntity?> GetAsync(
         long id,
         CancellationToken cancellationToken
     )
@@ -150,12 +155,17 @@ public class Repository<TContext, TEntity> : IRepository<TEntity>
         int amountToTake = 25
     )
     {
-        return DbSet.AsQueryable()
+        return DbSet
+            .AsQueryable()
+            .AsNoTracking()
             .Skip(amountToSkip)
             .Take(amountToTake);
     }
 
-    public async Task<long> Count(
+    public async Task<long> CountAsync()
+        => await CountAsync(CancellationToken.None);
+
+    public async Task<long> CountAsync(
         CancellationToken cancellationToken
     )
     {
@@ -169,14 +179,18 @@ public class Repository<TContext, TEntity> : IRepository<TEntity>
         return DbSet.Where(predicate);
     }
 
-    public async Task<TResult> Max<TResult>(
+    public async Task<TResult> MinAsync<TResult>(
+        Expression<Func<TEntity, TResult>> predicate
+    ) => await MinAsync(predicate, CancellationToken.None);
+
+    public async Task<TResult> MinAsync<TResult>(
         Expression<Func<TEntity, TResult>> predicate,
         CancellationToken cancellationToken
     )
     {
         try
         {
-            return await DbSet.MaxAsync(predicate, cancellationToken);
+            return await DbSet.MinAsync(predicate, cancellationToken);
         }
         catch (Exception ex)
         {
@@ -187,14 +201,18 @@ public class Repository<TContext, TEntity> : IRepository<TEntity>
         }
     }
 
-    public async Task<TResult> Min<TResult>(
+    public async Task<TResult> MaxAsync<TResult>(
+        Expression<Func<TEntity, TResult>> predicate
+    ) => await MaxAsync(predicate, CancellationToken.None);
+
+    public async Task<TResult> MaxAsync<TResult>(
         Expression<Func<TEntity, TResult>> predicate,
         CancellationToken cancellationToken
     )
     {
         try
         {
-            return await DbSet.MinAsync(predicate, cancellationToken);
+            return await DbSet.MaxAsync(predicate, cancellationToken);
         }
         catch (Exception ex)
         {

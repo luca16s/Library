@@ -8,7 +8,7 @@ using System;
 
 using Xunit;
 
-public class EnumItemNotFoundExceptionTests
+public class EnumItemNotFoundExceptionTest
 {
     [Fact]
     public void ShouldShowCustomizedMessage()

@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 using Xunit;
 
-public class ValueObjectTests
+public class ValueObjectTest
 {
     public class ObjetoValor : ValueObject
     {

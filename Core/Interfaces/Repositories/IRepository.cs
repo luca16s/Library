@@ -1,6 +1,6 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="IRepository.cs" company="Îakaré Software'Oka">
-//     Copyright (c) Îakaré Software'Oka.
+// <copyright file="IRepository.cs" company="Îakaré Softwareoka Inc.">
+//     Copyright (c) Îakaré Softwareoka Inc..
 //     All rights reserved.
 //     Licensed under the MIT license.
 //     See LICENSE file in the project root for full license information.
@@ -30,12 +30,33 @@ public interface IRepository<TEntity>
     /// <param name="item">
     /// Entidade a ser salva.
     /// </param>
+    Task CreateAsync(
+        TEntity item
+    );
+
+    /// <summary>
+    /// Adiciona nova entidade no banco de dados de forma assíncrona.
+    /// </summary>
+    /// <param name="item">
+    /// Entidade a ser salva.
+    /// </param>
     /// <param name="cancellationToken">
     /// Um <see cref="CancellationToken" /> para observar enquanto espera a conclusão da tarefa.
     /// </param>
-    Task Create(
+    Task CreateAsync(
         TEntity item,
         CancellationToken cancellationToken
+    );
+
+    /// <summary>
+    /// Adiciona de forma assíncrona diversos items ao banco de dados.
+    /// </summary>
+    /// <param name="items">
+    /// Entidades para serem salvas.
+    /// </param>
+    /// <returns></returns>
+    Task CreateAsync(
+        IEnumerable<TEntity> items
     );
 
     /// <summary>
@@ -48,7 +69,7 @@ public interface IRepository<TEntity>
     /// Um <see cref="CancellationToken" /> para observar enquanto espera a conclusão da tarefa.
     /// </param>
     /// <returns></returns>
-    Task Create(
+    Task CreateAsync(
         IEnumerable<TEntity> items,
         CancellationToken cancellationToken
     );
@@ -59,7 +80,7 @@ public interface IRepository<TEntity>
     /// <param name="item">
     /// Entidade a ser deletada.
     /// </param>
-    Task Delete(
+    Task DeleteAsync(
         TEntity item
     );
 
@@ -72,9 +93,22 @@ public interface IRepository<TEntity>
     /// <param name="item">
     /// Entidade a ser atualizada.
     /// </param>
-    Task Update(
+    Task UpdateAsync(
         long id,
         TEntity item
+    );
+
+    /// <summary>
+    /// Retorna uma entidade com base em um identificador de forma assíncrona.
+    /// </summary>
+    /// <param name="id">
+    /// Identificador da entidade.
+    /// </param>
+    /// <returns>
+    /// Entidade encontrada.
+    /// </returns>
+    Task<TEntity?> GetAsync(
+        long id
     );
 
     /// <summary>
@@ -89,7 +123,7 @@ public interface IRepository<TEntity>
     /// <returns>
     /// Entidade encontrada.
     /// </returns>
-    Task<TEntity?> Get(
+    Task<TEntity?> GetAsync(
         long id,
         CancellationToken cancellationToken
     );
@@ -127,18 +161,26 @@ public interface IRepository<TEntity>
     /// <summary>
     /// Realiza a contagem de items salvos para determinada tabela.
     /// </summary>
+    /// <returns>
+    /// Retorna total de items salvos no banco de dados.
+    /// </returns>
+    Task<long> CountAsync();
+
+    /// <summary>
+    /// Realiza a contagem de items salvos para determinada tabela.
+    /// </summary>
     /// <param name="cancellationToken">
     /// Um <see cref="CancellationToken" /> para observar enquanto espera a conclusão da tarefa.
     /// </param>
     /// <returns>
     /// Retorna total de items salvos no banco de dados.
     /// </returns>
-    Task<long> Count(
+    Task<long> CountAsync(
         CancellationToken cancellationToken
     );
 
     /// <summary>
-    /// Realiza a busca do maior item salvo no banco de dados.
+    /// Realiza a busca do menor item salvo no banco de dados.
     /// </summary>
     /// <typeparam name="TReturn">
     /// Tipo do resultado da operação
@@ -146,15 +188,11 @@ public interface IRepository<TEntity>
     /// <param name="predicate">
     /// Termo de busca.
     /// </param>
-    /// <param name="cancellationToken">
-    /// Um <see cref="CancellationToken" /> para observar enquanto espera a conclusão da tarefa.
-    /// </param>
     /// <returns>
-    /// Retorna maior item encontrado.
+    /// Retorna menor item encontrado.
     /// </returns>
-    Task<TReturn> Max<TReturn>(
-        Expression<Func<TEntity, TReturn>> predicate,
-        CancellationToken cancellationToken
+    Task<TReturn> MinAsync<TReturn>(
+        Expression<Func<TEntity, TReturn>> predicate
     );
 
     /// <summary>
@@ -172,7 +210,43 @@ public interface IRepository<TEntity>
     /// <returns>
     /// Retorna menor item encontrado.
     /// </returns>
-    Task<TReturn> Min<TReturn>(
+    Task<TReturn> MinAsync<TReturn>(
+        Expression<Func<TEntity, TReturn>> predicate,
+        CancellationToken cancellationToken
+    );
+
+    /// <summary>
+    /// Realiza a busca do maior item salvo no banco de dados.
+    /// </summary>
+    /// <typeparam name="TReturn">
+    /// Tipo do resultado da operação
+    /// </typeparam>
+    /// <param name="predicate">
+    /// Termo de busca.
+    /// </param>
+    /// <returns>
+    /// Retorna maior item encontrado.
+    /// </returns>
+    Task<TReturn> MaxAsync<TReturn>(
+        Expression<Func<TEntity, TReturn>> predicate
+    );
+
+    /// <summary>
+    /// Realiza a busca do maior item salvo no banco de dados.
+    /// </summary>
+    /// <typeparam name="TReturn">
+    /// Tipo do resultado da operação
+    /// </typeparam>
+    /// <param name="predicate">
+    /// Termo de busca.
+    /// </param>
+    /// <param name="cancellationToken">
+    /// Um <see cref="CancellationToken" /> para observar enquanto espera a conclusão da tarefa.
+    /// </param>
+    /// <returns>
+    /// Retorna maior item encontrado.
+    /// </returns>
+    Task<TReturn> MaxAsync<TReturn>(
         Expression<Func<TEntity, TReturn>> predicate,
         CancellationToken cancellationToken
     );

@@ -6,8 +6,8 @@
     <Nullable>enable</Nullable>
     <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
     <PackageId>ISO.$(AssemblyName)</PackageId>
-    <Title>Îakaré Software'Oka - Mediator Library</Title>
-    <Authors>Îakaré Software'Oka</Authors>
+    <Title>Îakaré Softwareoka Inc. - Mediator Library</Title>
+    <Authors>Îakaré Softwareoka Inc.</Authors>
     <Copyright>$(Authors)</Copyright>
     <PackageProjectUrl>https://github.com/luca16s/IakareLibraries</PackageProjectUrl>
     <RepositoryUrl>https://github.com/luca16s/IakareLibraries</RepositoryUrl>

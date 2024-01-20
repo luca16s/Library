@@ -1,4 +1,4 @@
-namespace Library.Tests.Web;
+namespace Library.Tests.Api;
 
 using FluentAssertions;
 

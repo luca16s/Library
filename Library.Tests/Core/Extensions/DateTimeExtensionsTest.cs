@@ -8,7 +8,7 @@ using System;
 
 using Xunit;
 
-public class DateTimeExtensionsTests
+public class DateTimeExtensionsTest
 {
     [Fact]
     public void ShouldReturnUnixDateFormat()

@@ -1,6 +1,6 @@
 ﻿namespace Library.Tests.Common;
 
-using Api.Controller;
+using global::Api.Controller;
 
 using Library.Tests.Common.Interfaces;
 

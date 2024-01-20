@@ -5,12 +5,12 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <PackageId>ISO.$(AssemblyName)</PackageId>
-    <Authors>Îakaré Software'Oka</Authors>
+    <Authors>Îakaré Softwareoka Inc.</Authors>
     <Copyright>$(Authors)</Copyright>
     <PackageProjectUrl>https://github.com/luca16s/IakareLibraries</PackageProjectUrl>
     <RepositoryUrl>https://github.com/luca16s/IakareLibraries</RepositoryUrl>
     <NeutralLanguage>pt-BR</NeutralLanguage>
-    <Title>Îakaré Software'Oka - Data Library</Title>
+    <Title>Îakaré Softwareoka Inc. - Data Library</Title>
     <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
     <AssemblyVersion>$(VersionPrefix)</AssemblyVersion>
     <FileVersion>$(VersionPrefix)</FileVersion>

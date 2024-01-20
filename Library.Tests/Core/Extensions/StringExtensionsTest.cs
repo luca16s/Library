@@ -9,7 +9,7 @@ using Library.Tests.Core;
 
 using Xunit;
 
-public class StringExtensionsTests
+public class StringExtensionsTest
 {
     [Fact]
     public void ShouldReturnEnumValueFromText()

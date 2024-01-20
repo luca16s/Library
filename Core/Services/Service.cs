@@ -1,6 +1,6 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="Service.cs" company="Îakaré Software'Oka">
-//     Copyright (c) Îakaré Software'Oka.
+// <copyright file="Service.cs" company="Îakaré Softwareoka Inc.">
+//     Copyright (c) Îakaré Softwareoka Inc..
 //     All rights reserved.
 //     Licensed under the MIT license.
 //     See LICENSE file in the project root for full license information.
@@ -21,7 +21,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-public class Service<TRepository, TEntity>(
+public abstract class Service<TRepository, TEntity>(
     IUnitOfWork unitOfWork,
     TRepository repository
     ) : IService<TEntity>
@@ -29,44 +29,52 @@ public class Service<TRepository, TEntity>(
     where TRepository : IRepository<TEntity>
 {
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
-    public readonly TRepository _repository = repository;
+    protected readonly TRepository _repository = repository;
 
-    public async Task Create(
+    public async Task CreateAsync(
+        TEntity item
+    ) => await CreateAsync(item, CancellationToken.None);
+
+    public async Task CreateAsync(
         TEntity item,
         CancellationToken cancellationToken
     )
     {
-        using IDbContextTransaction transaction = await _unitOfWork.BeginTransactionAsync();
+        using IDbContextTransaction transaction = await _unitOfWork.BeginTransactionAsync(cancellationToken);
         try
         {
-            await _repository.Create(item, cancellationToken);
+            await _repository.CreateAsync(item, cancellationToken);
         }
         catch (Exception)
         {
-            await _unitOfWork.RollbackTransactionAsync();
+            await _unitOfWork.RollbackTransactionAsync(cancellationToken);
             throw new InvalidOperationException("");
         }
 
-        await _unitOfWork.CommitTransactionAsync(transaction);
+        await _unitOfWork.CommitTransactionAsync(transaction, cancellationToken);
     }
 
-    public async Task Create(
+    public async Task CreateAsync(
+        IEnumerable<TEntity> items
+    ) => await CreateAsync(items, CancellationToken.None);
+
+    public async Task CreateAsync(
         IEnumerable<TEntity> items,
         CancellationToken cancellationToken
     )
     {
-        using IDbContextTransaction transaction = await _unitOfWork.BeginTransactionAsync();
+        using IDbContextTransaction transaction = await _unitOfWork.BeginTransactionAsync(cancellationToken);
         try
         {
-            await _repository.Create(items, cancellationToken);
+            await _repository.CreateAsync(items, cancellationToken);
         }
         catch (Exception)
         {
-            await _unitOfWork.RollbackTransactionAsync();
+            await _unitOfWork.RollbackTransactionAsync(cancellationToken);
             throw new InvalidOperationException("");
         }
 
-        await _unitOfWork.CommitTransactionAsync(transaction);
+        await _unitOfWork.CommitTransactionAsync(transaction, cancellationToken);
     }
 
     public async Task Delete(
@@ -74,7 +82,7 @@ public class Service<TRepository, TEntity>(
     )
     {
         using IDbContextTransaction transaction = await _unitOfWork.BeginTransactionAsync();
-        await _repository.Delete(item);
+        await _repository.DeleteAsync(item);
 
         await _unitOfWork.CommitTransactionAsync(transaction);
     }
@@ -87,7 +95,7 @@ public class Service<TRepository, TEntity>(
         using IDbContextTransaction transaction = await _unitOfWork.BeginTransactionAsync();
         try
         {
-            await _repository.Update(id, item);
+            await _repository.UpdateAsync(id, item);
         }
         catch (Exception)
         {
@@ -98,12 +106,16 @@ public class Service<TRepository, TEntity>(
         await _unitOfWork.CommitTransactionAsync(transaction);
     }
 
-    public async Task<TEntity?> Get(
+    public async Task<TEntity?> GetAsync(
+        long id
+    ) => await GetAsync(id, CancellationToken.None);
+
+    public async Task<TEntity?> GetAsync(
         long id,
         CancellationToken cancellationToken
     )
     {
-        return await _repository.Get(id, cancellationToken);
+        return await _repository.GetAsync(id, cancellationToken);
     }
 
     public IQueryable<TEntity> GetAll(

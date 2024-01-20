@@ -10,7 +10,7 @@ using Library.Tests.Core;
 
 using Xunit;
 
-public class EnumModelTests
+public class EnumModelTest
 {
     [Fact]
     public void EnumModelShouldNotBeNull()

@@ -8,19 +8,20 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Threading;
 
 using Xunit;
 
-public class ServiceTests
+public class ServiceTest
 {
     [Fact]
     public void DeveVerificarSeMetodoCreateFoiChamadoParaUmItem()
     {
         var repositorio = new Mock<IPessoaRepository>();
         var servico = new PessoaService(repositorio.Object);
-        _ = servico.Create(new Pessoa(1));
+        _ = servico.CreateAsync(new Pessoa(1));
 
-        repositorio.Verify(x => x.Create(It.IsAny<Pessoa>()), Times.Once);
+        repositorio.Verify(x => x.CreateAsync(It.IsAny<Pessoa>(), It.IsAny<CancellationToken>()), Times.Once);
     }
 
     [Fact]
@@ -28,9 +29,9 @@ public class ServiceTests
     {
         var repositorio = new Mock<IPessoaRepository>();
         var servico = new PessoaService(repositorio.Object);
-        _ = servico.Create(new List<Pessoa>());
+        _ = servico.CreateAsync(new List<Pessoa>());
 
-        repositorio.Verify(x => x.Create(It.IsAny<List<Pessoa>>()), Times.Once);
+        repositorio.Verify(x => x.CreateAsync(It.IsAny<List<Pessoa>>(), It.IsAny<CancellationToken>()), Times.Once);
     }
 
     [Fact]
@@ -40,7 +41,7 @@ public class ServiceTests
         var servico = new PessoaService(repositorio.Object);
         _ = servico.Delete(new Pessoa(1));
 
-        repositorio.Verify(x => x.Delete(It.IsAny<Pessoa>()), Times.Once);
+        repositorio.Verify(x => x.DeleteAsync(It.IsAny<Pessoa>()), Times.Once);
     }
 
     [Fact]
@@ -48,9 +49,9 @@ public class ServiceTests
     {
         var repositorio = new Mock<IPessoaRepository>();
         var servico = new PessoaService(repositorio.Object);
-        _ = servico.Get((long)1);
+        _ = servico.GetAsync(1);
 
-        repositorio.Verify(x => x.Get(It.IsAny<long>()), Times.Once);
+        repositorio.Verify(x => x.GetAsync(It.IsAny<long>(), It.IsAny<CancellationToken>()), Times.Once);
     }
 
     [Fact]
@@ -80,7 +81,7 @@ public class ServiceTests
         var servico = new PessoaService(repositorio.Object);
         _ = servico.Update(1, new Pessoa(1));
 
-        repositorio.Verify(x => x.Update(It.IsAny<long>(), It.IsAny<Pessoa>()), Times.Once);
+        repositorio.Verify(x => x.UpdateAsync(It.IsAny<long>(), It.IsAny<Pessoa>()), Times.Once);
     }
 
     [Fact]
