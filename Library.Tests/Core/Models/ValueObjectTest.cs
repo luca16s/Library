@@ -106,7 +106,7 @@ public class ValueObjectTest
     {
         // Arrange
         var obj1 = new Endereco { Nome = "Test" };
-        var obj2 = new Endereco { Nome = "Test" };
+        var obj2 = new Endereco { Nome = "Test2" };
 
         // Act
         var hashCode1 = obj1.GetHashCode();
