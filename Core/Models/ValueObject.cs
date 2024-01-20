@@ -27,16 +27,12 @@ public abstract class ValueObject
     public override bool Equals(object? obj)
     {
         if (obj is null || obj.GetType() != GetType())
-        {
             return false;
-        }
 
         if (ReferenceEquals(this, obj))
-        {
             return true;
-        }
 
-        ValueObject? other = (ValueObject)obj;
+        ValueObject other = (ValueObject)obj;
 
         return GetEqualityComponents().SequenceEqual(other.GetEqualityComponents());
     }

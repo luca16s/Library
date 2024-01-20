@@ -15,6 +15,7 @@ using Xunit;
 public class ServiceTest
 {
     [Fact]
+    [Trait("Método: ", "CreateAsync")]
     public void DeveVerificarSeMetodoCreateFoiChamadoParaUmItem()
     {
         var repositorio = new Mock<IPessoaRepository>();
@@ -25,6 +26,7 @@ public class ServiceTest
     }
 
     [Fact]
+    [Trait("Método: ", "CreateAsync")]
     public void DeveVerificarSeMetodoCreateFoiChamadoParaVariosItems()
     {
         var repositorio = new Mock<IPessoaRepository>();
@@ -35,6 +37,7 @@ public class ServiceTest
     }
 
     [Fact]
+    [Trait("Método: ", "Delete")]
     public void DeveVerificarSeMetodoDeleteFoiChamado()
     {
         var repositorio = new Mock<IPessoaRepository>();
@@ -45,6 +48,7 @@ public class ServiceTest
     }
 
     [Fact]
+    [Trait("Método: ", "GetAsync")]
     public void DeveVerificarSeMetodoGetFoiChamado()
     {
         var repositorio = new Mock<IPessoaRepository>();
@@ -55,6 +59,7 @@ public class ServiceTest
     }
 
     [Fact]
+    [Trait("Método: ", "GetAll")]
     public void DeveVerificarSeMetodoGetAllFoiChamado()
     {
         var repositorio = new Mock<IPessoaRepository>();
@@ -65,6 +70,7 @@ public class ServiceTest
     }
 
     [Fact]
+    [Trait("Método: ", "Search")]
     public void DeveVerificarSeMetodoSearchFoiChamado()
     {
         var repositorio = new Mock<IPessoaRepository>();
@@ -75,6 +81,7 @@ public class ServiceTest
     }
 
     [Fact]
+    [Trait("Método: ", "Update")]
     public void DeveVerificarSeMetodoUpdateFoiChamado()
     {
         var repositorio = new Mock<IPessoaRepository>();
@@ -85,6 +92,7 @@ public class ServiceTest
     }
 
     [Fact]
+    [Trait("Método: ", "GetStringValue")]
     public void DeveVerificarSeMetodoDerivadoDoRepositorioFoiChamado()
     {
         var repositorio = new Mock<IPessoaRepository>();

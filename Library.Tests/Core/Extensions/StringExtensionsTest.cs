@@ -12,6 +12,7 @@ using Xunit;
 public class StringExtensionsTest
 {
     [Fact]
+    [Trait("Método: ", "GetEnumValueFromDescription")]
     public void ShouldReturnEnumValueFromText()
     {
         string texto = "TESTE 1";
@@ -22,6 +23,7 @@ public class StringExtensionsTest
     }
 
     [Fact]
+    [Trait("Método: ", "GetEnumValueFromDescription")]
     public void ShouldThrowExceptionWhenItemNotEncoutered()
     {
         string texto = "ABC 1";
@@ -33,6 +35,7 @@ public class StringExtensionsTest
     }
 
     [Fact]
+    [Trait("Método: ", "FormatMessage")]
     public void ShouldReturnFormatedMessage()
     {
         var expected = "Mensagem teste Nome";

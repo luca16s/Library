@@ -75,13 +75,8 @@ public abstract class Repository<TContext, TEntity>(
 
         try
         {
-            foreach (var item in items)
-            {
-                EntityEntry<TEntity> entity = await DbSet.AddAsync(item, cancellationToken);
-                entity.State = EntityState.Added;
-
-                await UnitOfWork.CommitTransactionAsync(transaction, cancellationToken);
-            }
+            await DbSet.AddRangeAsync(items, cancellationToken);
+            await UnitOfWork.CommitTransactionAsync(transaction, cancellationToken);
         }
         catch (DbUpdateException e)
         {

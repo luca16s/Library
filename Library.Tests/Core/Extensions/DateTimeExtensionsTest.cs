@@ -11,6 +11,7 @@ using Xunit;
 public class DateTimeExtensionsTest
 {
     [Fact]
+    [Trait("Método: ", "ToUnixEpochDate")]
     public void ShouldReturnUnixDateFormat()
     {
         double expected = 1659139200;
@@ -21,6 +22,7 @@ public class DateTimeExtensionsTest
     }
 
     [Fact]
+    [Trait("Método: ", "ToUnixEpockDateToString")]
     public void ShouldReturnUnixDateFormatInString()
     {
         var expected = "1659139200";

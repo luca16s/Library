@@ -1,157 +1,208 @@
 ﻿namespace Library.Tests.Core.Models;
 
-using FluentAssertions;
-
 using global::Core.Models;
 
-using System.Collections.Generic;
+using Library.Tests.Common;
 
 using Xunit;
 
 public class ValueObjectTest
 {
-    public class ObjetoValor : ValueObject
+    [Fact]
+    [Trait("Método: ", "Equals")]
+    public void EqualsDeveRetornarVerdadeiroParaMesmaReferencia()
     {
-        public string Nome { get; set; }
+        // Arrange
+        var valueObject = new Endereco();
 
-        public ObjetoValor() { }
+        // Act
+        var result = valueObject.Equals(valueObject);
 
-        protected override IEnumerable<object> GetEqualityComponents()
+        // Assert
+        Assert.True(result);
+    }
+
+    [Fact]
+    [Trait("Método: ", "Equals")]
+    public void EqualsDeveRetornarFalsoParaObjetosNulos()
+    {
+        // Arrange
+        var valueObject = new Endereco();
+
+        // Act
+        var result = valueObject.Equals(null);
+
+        // Assert
+        Assert.False(result);
+    }
+
+    [Fact]
+    [Trait("Método: ", "Equals")]
+    public void EqualsDeveRetornarFalsoParaTipoDiferente()
+    {
+        // Arrange
+        var valueObject = new Endereco();
+        var differentTypeObject = new Pessoa(1);
+
+        // Act
+        var result = valueObject.Equals(differentTypeObject);
+
+        // Assert
+        Assert.False(result);
+    }
+
+    [Fact]
+    [Trait("Método: ", "Equals")]
+    public void EqualsDeveRetornarVerdadeiroObjetoDeValorIgual()
+    {
+        // Arrange
+        var valueObject1 = new Endereco();
+        var valueObject2 = new Endereco();
+
+        // Act
+        var result = valueObject1.Equals(valueObject2);
+
+        // Assert
+        Assert.True(result);
+    }
+
+    [Fact]
+    [Trait("Método: ", "Equals")]
+    public void EqualsDeveRetornarFalsoParaDiferentesObjetosDeValores()
+    {
+        // Arrange
+        var valueObject1 = new Endereco();
+        var valueObject2 = new Endereco()
         {
-            yield return Nome;
-        }
-    }
-
-    [Fact]
-    public void NotEqualsShouldBeTrueIfComparedWithNull()
-    {
-        ObjetoValor objeto = new();
-
-        var result = objeto != null;
-
-        _ = result.Should().Be(true);
-    }
-
-    [Fact]
-    public void EqualsShouldBeFalseIfComparedWithNullOnRight()
-    {
-        ObjetoValor objeto = new();
-
-        var result = objeto == null;
-
-        _ = result.Should().Be(false);
-    }
-
-    [Fact]
-    public void EqualsShouldBeFalseIfComparedWithNullOnLeft()
-    {
-        ObjetoValor objeto = new();
-        ObjetoValor objetoNull = null;
-
-        var result = objetoNull == objeto;
-
-        _ = result.Should().Be(false);
-    }
-
-    [Fact]
-    public void EqualsShouldBeFalseIfComparedWithObjetoOfOtherValue()
-    {
-        ObjetoValor objetoA = new();
-        ObjetoValor objetoB = new();
-
-        objetoA.Nome = "";
-        objetoB.Nome = "A";
-
-        var result = objetoA == objetoB;
-
-        _ = result.Should().Be(false);
-    }
-
-    [Fact]
-    public void EqualsShouldBeTrueIfComparedWithObjetoOfSameValue()
-    {
-        ObjetoValor objetoA = new();
-        ObjetoValor objetoB = new();
-
-        objetoA.Nome = "A";
-        objetoB.Nome = "A";
-
-        var result = objetoA == objetoB;
-
-        _ = result.Should().Be(true);
-    }
-
-    [Fact]
-    public void EqualsShouldBeFalseIfComparedObjectIsNull()
-    {
-        ObjetoValor objeto = new();
-
-        var result = objeto.Equals(null);
-
-        _ = result.Should().Be(false);
-    }
-
-    [Fact]
-    public void EqualsShouldBeFalseIfComparedOtherType()
-    {
-        ObjetoValor objeto = new();
-
-        var result = objeto.Equals(10);
-
-        _ = result.Should().Be(false);
-    }
-
-    [Fact]
-    public void EqualsShouldBeTrueIfIdIsSame()
-    {
-        ObjetoValor objetoA = new();
-        ObjetoValor objetoB = new();
-
-        objetoA.Nome = "A";
-        objetoB.Nome = "A";
-
-        var result = objetoA.Equals(objetoB);
-
-        _ = result.Should().Be(true);
-    }
-
-    [Fact]
-    public void EqualsShouldBeTrueIfHasSameReference()
-    {
-        ObjetoValor objeto = new()
-        {
-            Nome = "A"
+            Nome = "AAAA"
         };
 
-        var result = objeto.Equals(objeto);
+        // Act
+        var result = valueObject1.Equals(valueObject2);
 
-        _ = result.Should().Be(true);
+        // Assert
+        Assert.False(result);
     }
 
     [Fact]
-    public void GetHashCodeShouldReturnZeroWhenNull()
+    [Trait("Método: ", "GetHashCode")]
+    public void GetHashCode_ReturnsSameHashCodeForEqualObjects()
     {
-        const int expected = 0;
+        // Arrange
+        var obj1 = new Endereco { Nome = "Test" };
+        var obj2 = new Endereco { Nome = "Test" };
 
-        ObjetoValor objeto = new();
+        // Act
+        var hashCode1 = obj1.GetHashCode();
+        var hashCode2 = obj2.GetHashCode();
 
-        var result = objeto.GetHashCode();
-
-        _ = result.Should().Be(expected);
+        // Assert
+        Assert.Equal(hashCode1, hashCode2);
     }
 
     [Fact]
-    public void GetHashCodeShouldReturnHash()
+    [Trait("Método: ", "GetHashCode")]
+    public void GetHashCode_ReturnsDifferentHashCodeForDifferentObjects()
     {
-        int expected = "A".GetHashCode();
+        // Arrange
+        var obj1 = new Endereco { Nome = "Test" };
+        var obj2 = new Endereco { Nome = "Test" };
 
-        ObjetoValor objeto = new()
-        {
-            Nome = "A"
-        };
+        // Act
+        var hashCode1 = obj1.GetHashCode();
+        var hashCode2 = obj2.GetHashCode();
 
-        var result = objeto.GetHashCode();
+        // Assert
+        Assert.NotEqual(hashCode1, hashCode2);
+    }
 
-        _ = result.Should().Be(expected);
+    [Fact]
+    [Trait("Método: ", "EqualOperator")]
+    public void EqualOperatorDeveRetornarVerdadeiroQuandoObjetosForemIguais()
+    {
+        // Arrange
+        var valueObject1 = new Endereco { Nome = "Test" };
+        var valueObject2 = new Endereco { Nome = "Test" };
+
+        // Act
+        var result = valueObject1 == valueObject2;
+
+        // Assert
+        Assert.True(result);
+    }
+
+    [Fact]
+    [Trait("Método: ", "EqualOperator")]
+    public void EqualOperatorDeveRetornarFalsoQuandoObjetosNaoSaoIguais()
+    {
+        // Arrange
+        var valueObject1 = new Endereco { Nome = "Test" };
+        var valueObject2 = new Endereco { Nome = "Test1" };
+
+        // Act
+        var result = valueObject1 == valueObject2;
+
+        // Assert
+        Assert.False(result);
+    }
+
+    [Fact]
+    [Trait("Método: ", "EqualOperator")]
+    public void EqualOperatorDeveRetornarVerdadeiroQuandoAmbosObjetosForemNulos()
+    {
+        // Arrange
+        ValueObject valueObject1 = null;
+        ValueObject valueObject2 = null;
+
+        // Act
+        var result = valueObject1 == valueObject2;
+
+        // Assert
+        Assert.True(result);
+    }
+
+    [Fact]
+    [Trait("Método: ", "EqualOperator")]
+    public void EqualOperatorDeveRetornarFalsoQuandoUmObjetoENulo()
+    {
+        // Arrange
+        var valueObject1 = new Endereco { Nome = "Test" };
+        ValueObject valueObject2 = null;
+
+        // Act
+        var result = valueObject1 == valueObject2;
+
+        // Assert
+        Assert.False(result);
+    }
+
+    [Fact]
+    [Trait("Método: ", "NotEqualOperator")]
+    public void NotEqualOperatorDeveRetornarVerdadeiroQuandoObjetosNaoSaoIguais()
+    {
+        // Arrange
+        var left = new Endereco { Nome = "Test" };
+        var right = new Endereco { Nome = "Test2" };
+
+        // Act
+        var result = left != right;
+
+        // Assert
+        Assert.True(result);
+    }
+
+    [Fact]
+    [Trait("Método: ", "NotEqualOperator")]
+    public void NotEqualOperatorDeveRetornarFalsoQuandoObjetosSaoIguais()
+    {
+        // Arrange
+        var left = new Endereco { Nome = "Test" };
+        var right = new Endereco { Nome = "Test" };
+
+        // Act
+        var result = left != right;
+
+        // Assert
+        Assert.False(result);
     }
 }

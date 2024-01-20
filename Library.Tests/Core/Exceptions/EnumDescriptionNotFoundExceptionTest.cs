@@ -11,6 +11,7 @@ using Xunit;
 public class EnumDescriptionNotFoundExceptionTest
 {
     [Fact]
+    [Trait("Método: ", "Throw")]
     public void ShouldShowCustomizedMessage()
     {
         _ = this.Invoking(g => throw new EnumDescriptionNotFoundException("Teste"))
@@ -20,6 +21,7 @@ public class EnumDescriptionNotFoundExceptionTest
     }
 
     [Fact]
+    [Trait("Método: ", "Throw")]
     public void ShouldShowDefaultMessage()
     {
         _ = this.Invoking(g => throw new EnumDescriptionNotFoundException())
@@ -29,6 +31,7 @@ public class EnumDescriptionNotFoundExceptionTest
     }
 
     [Fact]
+    [Trait("Método: ", "Throw")]
     public void ShouldShowSecondMessageWithInnerException()
     {
         _ = this.Invoking(g => throw new EnumDescriptionNotFoundException("Teste", new ArgumentException()))

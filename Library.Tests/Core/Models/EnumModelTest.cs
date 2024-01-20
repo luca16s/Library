@@ -13,6 +13,7 @@ using Xunit;
 public class EnumModelTest
 {
     [Fact]
+    [Trait("Método: ", "Model")]
     public void EnumModelShouldNotBeNull()
     {
         EnumModel enumModelo = new Faker<EnumModel>()
@@ -23,6 +24,7 @@ public class EnumModelTest
     }
 
     [Fact]
+    [Trait("Método: ", "Value")]
     public void EnumValueShouldNotReturnNull()
     {
         EnumModel enumModelo = new Faker<EnumModel>()
@@ -33,6 +35,7 @@ public class EnumModelTest
     }
 
     [Fact]
+    [Trait("Método: ", "Description")]
     public void EnumDescriptionShouldNotReturnNull()
     {
         EnumModel enumModelo = new Faker<EnumModel>()

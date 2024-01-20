@@ -44,9 +44,7 @@ public abstract class Entity(long id)
     public override int GetHashCode()
     {
         if (!_requestedHashCode.HasValue)
-        {
             _requestedHashCode = Id.GetHashCode() ^ 31;
-        }
 
         return _requestedHashCode.Value;
     }

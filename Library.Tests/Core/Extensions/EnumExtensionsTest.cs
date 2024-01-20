@@ -16,6 +16,7 @@ using Xunit;
 public class EnumExtensionsTest
 {
     [Fact]
+    [Trait("Método: ", "Throw")]
     public void DescriptionShouldStringEmptyWhenNull()
     {
         _ = this.Invoking(g => default(Enum).Description())
@@ -25,6 +26,7 @@ public class EnumExtensionsTest
     }
 
     [Fact]
+    [Trait("Método: ", "Throw")]
     public void GetAllValuesAndDescriptionsShouldReturnListOfItems()
     {
         EnumModel[] listaModelo =
@@ -43,6 +45,7 @@ public class EnumExtensionsTest
     }
 
     [Fact]
+    [Trait("Método: ", "Throw")]
     public void DescriptionShouldReturnValueOfDescriptionAnnotation()
     {
         string description = EOK.TESTE1.Description();
@@ -51,6 +54,7 @@ public class EnumExtensionsTest
     }
 
     [Fact]
+    [Trait("Método: ", "Throw")]
     public void DescriptionShouldThrowExceptionWhenNoDescriptionIsProvided()
     {
         _ = this.Invoking(g => EError.TESTE3.Description())

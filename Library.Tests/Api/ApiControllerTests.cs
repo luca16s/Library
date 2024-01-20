@@ -18,6 +18,7 @@ using Xunit;
 public class ApiControllerTests
 {
     [Fact]
+    [Trait("Método: ", "IsOperacaoValida")]
     public void DeveRetornarTrueQuandoExistemNotificacoes()
     {
         var repositorio = new Mock<IPessoaRepository>().Object;
@@ -37,6 +38,7 @@ public class ApiControllerTests
     }
 
     [Fact]
+    [Trait("Método: ", "IsOperacaoValida")]
     public void DeveRetornarFalseQuandoExistemNotificacoes()
     {
         var repositorio = new Mock<IPessoaRepository>().Object;
@@ -57,6 +59,7 @@ public class ApiControllerTests
     }
 
     [Fact]
+    [Trait("Método: ", "IsOperacaoValida")]
     public void DeveRetornarTrueQuandoNaoExistemNotificacoes()
     {
         var repositorio = new Mock<IPessoaRepository>().Object;
@@ -74,6 +77,7 @@ public class ApiControllerTests
     }
 
     [Fact]
+    [Trait("Método: ", "GetValue")]
     public void DeveVerificarSeMetodoDerivadoDoServicoFoiChamado()
     {
         var servico = new Mock<IPessoaService>();
@@ -94,6 +98,7 @@ public class ApiControllerTests
     }
 
     [Fact]
+    [Trait("Método: ", "IsOperacaoValida")]
     public void DeveRetornarFalseQuandoNotificacoesNaoInstanciadas()
     {
         var repositorio = new Mock<IPessoaRepository>().Object;
