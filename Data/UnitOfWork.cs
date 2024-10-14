@@ -9,6 +9,8 @@
 
 namespace Data;
 
+using Core.Interfaces;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata;
@@ -16,6 +18,7 @@ using Microsoft.EntityFrameworkCore.Storage;
 
 using System;
 using System.Data;
+using System.Threading;
 
 /// <summary>
 /// Classe com comportamentos padrões da interface de UnitOfWork.
@@ -26,14 +29,14 @@ using System.Data;
 /// <remarks>
 /// Inicializa uma nova instância da classe de UnitOfWork.
 /// </remarks>
-/// <param name="baseContext">
+/// <param name="context">
 /// Contexto a ser Manipulado.
 /// </param>
 public class UnitOfWork<TContext>(
-    TContext baseContext
-    ) where TContext : DbContext
+    TContext context
+) : IUnitOfWork where TContext : DbContext
 {
-    private readonly TContext _baseContext = baseContext;
+    private readonly TContext context = context;
 
     /// <summary>
     /// Retorna a transação atual.
@@ -46,16 +49,27 @@ public class UnitOfWork<TContext>(
     /// <returns>
     /// Retorna a transação.
     /// </returns>
-    public async Task<IDbContextTransaction> BeginTransactionAsync()
+    public async Task<IDbContextTransaction> BeginTransactionAsync(
+    )
     {
         if (CurrentTransaction is not null)
             return await CurrentTransaction;
 
-        _baseContext.Database.OpenConnection();
+        await context.Database.OpenConnectionAsync();
 
-        CurrentTransaction = _baseContext.Database.BeginTransactionAsync(IsolationLevel.ReadCommitted);
+        CurrentTransaction = context.Database.BeginTransactionAsync(IsolationLevel.ReadCommitted);
 
         return await CurrentTransaction;
+    }
+
+    public Task<IDbContextTransaction> BeginTransactionAsync(
+        CancellationToken cancellationToken
+    )
+    {
+        if (cancellationToken.IsCancellationRequested)
+            cancellationToken.ThrowIfCancellationRequested();
+
+        return BeginTransactionAsync();
     }
 
     /// <summary>
@@ -67,7 +81,7 @@ public class UnitOfWork<TContext>(
     /// <returns>
     /// Retorna a task.
     /// </returns>
-    public async Task CommitTransactionAsync(
+    public async Task CommitAsync(
         IDbContextTransaction transaction
     )
     {
@@ -81,11 +95,11 @@ public class UnitOfWork<TContext>(
 
         try
         {
-            _baseContext.ChangeTracker.DetectChanges();
-            bool isObjectSavedAsync = _baseContext.SaveChanges() > 0;
+            context.ChangeTracker.DetectChanges();
+            bool isObjectSavedAsync = (await context.SaveChangesAsync()) > 0;
 
             if (isObjectSavedAsync)
-                transaction.Commit();
+                await transaction.CommitAsync();
         }
         catch (DbUpdateConcurrencyException ex)
         {
@@ -107,7 +121,7 @@ public class UnitOfWork<TContext>(
         }
         catch (Exception ex)
         {
-            foreach (EntityEntry entry in _baseContext.ChangeTracker.Entries().Where(e => e?.State != EntityState.Unchanged))
+            foreach (EntityEntry entry in context.ChangeTracker.Entries().Where(e => e?.State != EntityState.Unchanged))
             {
                 foreach (IProperty prop in entry.CurrentValues.Properties)
                 {
@@ -121,15 +135,37 @@ public class UnitOfWork<TContext>(
         }
     }
 
+    public Task CommitAsync(
+        IDbContextTransaction transaction,
+        CancellationToken cancellationToken
+    )
+    {
+        if (cancellationToken.IsCancellationRequested)
+            cancellationToken.ThrowIfCancellationRequested();
+
+        return CommitAsync(transaction);
+    }
+
     /// <summary>
     /// Reverte alterações.
     /// </summary>
-    public async Task RollbackTransactionAsync()
+    public async Task RollbackTransactionAsync(
+    )
     {
         if (CurrentTransaction is null)
             throw new InvalidOperationException("Não é possível dar rollback sem uma transação aberta.");
 
         await (await CurrentTransaction).RollbackAsync();
         CurrentTransaction = null!;
+    }
+
+    public Task RollbackTransactionAsync(
+        CancellationToken cancellationToken
+    )
+    {
+        if (cancellationToken.IsCancellationRequested)
+            cancellationToken.ThrowIfCancellationRequested();
+
+        return RollbackTransactionAsync();
     }
 }

@@ -38,7 +38,9 @@ public class ErrorHandlingMiddleware(RequestDelegate next)
     /// </param>
     /// <returns>
     /// </returns>
-    public async Task Invoke(HttpContext context)
+    public async Task Invoke(
+        HttpContext context
+    )
     {
         try
         {
@@ -60,11 +62,13 @@ public class ErrorHandlingMiddleware(RequestDelegate next)
     /// <see cref="Exception"/>
     /// </param>
     /// <returns></returns>
-    private static Task HandleExceptionAsync(HttpContext context, Exception exception)
+    private static Task HandleExceptionAsync(
+        HttpContext context,
+        Exception exception
+    )
     {
-        const HttpStatusCode code = HttpStatusCode.InternalServerError;
         context.Response.ContentType = "application/json";
-        context.Response.StatusCode = (int)code;
+        context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
         return context.Response.WriteAsync(JsonConvert.SerializeObject(exception));
     }
 }

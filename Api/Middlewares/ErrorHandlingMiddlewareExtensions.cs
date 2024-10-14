@@ -27,8 +27,5 @@ public static class ErrorHandlingMiddlewareExtensions
     /// </returns>
     public static IApplicationBuilder UseErrorHandling(
         this IApplicationBuilder app
-    )
-    {
-        return app.UseMiddleware<ErrorHandlingMiddleware>();
-    }
+    ) => app.UseMiddleware<ErrorHandlingMiddleware>();
 }

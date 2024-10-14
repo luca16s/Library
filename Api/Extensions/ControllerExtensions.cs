@@ -9,6 +9,7 @@
 
 namespace Api.Extensions;
 
+using Api.Conventions;
 using Api.Helpers;
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -36,10 +37,7 @@ public static class ControllerExtensions
     public static IServiceCollection AddHttpContextAccessor
     (
         this IServiceCollection services
-    )
-    {
-        return services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-    }
+    ) => services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
     /// <summary>
     /// Adiciona configuração de autorização.
@@ -53,19 +51,16 @@ public static class ControllerExtensions
     public static IServiceCollection AddAuthorization
     (
         this IServiceCollection services
-    )
+    ) => services.AddAuthorization(authOptions =>
     {
-        return services.AddAuthorization(authOptions =>
-        {
-            authOptions.AddPolicy(
-                JwtBearerDefaults.AuthenticationScheme,
-                new AuthorizationPolicyBuilder()
-                .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme‌​)
-                .RequireAuthenticatedUser()
-                .Build()
-            );
-        });
-    }
+        authOptions.AddPolicy(
+            JwtBearerDefaults.AuthenticationScheme,
+            new AuthorizationPolicyBuilder()
+            .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme‌​)
+            .RequireAuthenticatedUser()
+            .Build()
+        );
+    });
 
     /// <summary>
     /// Adiciona configurações de controller.
@@ -79,20 +74,14 @@ public static class ControllerExtensions
     public static IMvcBuilder AddController
     (
         this IServiceCollection services
-    )
+    ) => services.AddControllers(config =>
     {
-        return services.AddControllers(config =>
-        {
-            AuthorizationPolicy? policy = new AuthorizationPolicyBuilder()
-                .RequireAuthenticatedUser()
-                .Build();
+        AuthorizationPolicy? policy = new AuthorizationPolicyBuilder()
+            .RequireAuthenticatedUser()
+            .Build();
 
-            config.Filters.Add(new AuthorizeFilter(policy));
-            config.Conventions.Add(
-                new RouteTokenTransformerConvention(
-                    new URLTransformer()
-                    )
-            );
-        }).AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
-    }
+        config.Filters.Add(new AuthorizeFilter(policy));
+        config.Conventions.Add(new ApiExplorerGroupPerVersionConvention());
+        config.Conventions.Add(new RouteTokenTransformerConvention(new URLTransformer()));
+    }).AddNewtonsoftJson(o => o.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
 }

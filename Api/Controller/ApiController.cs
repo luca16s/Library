@@ -11,14 +11,9 @@ namespace Api.Controller;
 
 using AutoMapper;
 
-using Core.Interfaces.Services;
-using Core.Models;
-
-using Mediator.Interfaces;
-using Mediator.Notifications;
+using Core.Interfaces;
 
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 /// <summary>
 /// Controller base para API.
@@ -26,76 +21,10 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 /// <typeparam name="TEntity">
 /// Tipo da entidade usada no serviço.
 /// </typeparam>
-public class ApiController<TEntity>
-    : ControllerBase
-    where TEntity : Entity
+public class ApiController<TId, TEntity> : ControllerBase
+    where TId : notnull
+    where TEntity : IEntity<TId>
 {
-    private readonly IDomainNotificationHandler handler;
-    protected readonly IMediatorHandler mediator;
-
-    /// <summary>
-    /// Constrói uma nova instância da classe de api de controller.
-    /// </summary>
-    /// <param name="mediator">
-    /// Injeção do mediator.
-    /// </param>
-    /// <param name="handler">
-    /// Injeção do manipulador de Notificações.
-    /// </param>
-    public ApiController
-    (
-        IMediatorHandler mediator,
-        IDomainNotificationHandler handler
-    )
-    {
-        ArgumentNullException.ThrowIfNull(mediator);
-        ArgumentNullException.ThrowIfNull(handler);
-
-        this.handler = handler;
-        this.mediator = mediator;
-    }
-
-    [NonAction]
-    protected bool IsOperationValid() => handler is not null && !handler.HasNotifications();
-
-    [NonAction]
-    protected IActionResult GetResponse(
-    )
-    {
-        List<string> errors = [.. handler.GetNotifications().Select(p => p.Value)];
-
-        return IsOperationValid() ?
-            Ok() :
-            BadRequest(new { errors })
-        ;
-    }
-
-    [NonAction]
-    protected async Task NotifyError(
-        string codigo,
-        string mensagem
-    )
-    {
-        await mediator.RaiseError(new ErrorNotification { StackTrace = mensagem, Exception = codigo });
-    }
-
-    [NonAction]
-    protected async Task NotifyInvalidErrorModelAsync(
-        string typeName
-    )
-    {
-        IEnumerable<ModelError>? erros = ModelState.Values.SelectMany(m => m.Errors) ?? new List<ModelError>();
-
-        foreach (var erro in erros)
-        {
-            string? erroMsg = erro.Exception == null ?
-                erro.ErrorMessage :
-                erro.Exception.Message;
-
-            await NotifyError(typeName, erroMsg);
-        }
-    }
-
     [NonAction]
     protected IActionResult GetResponse<Response, ViewModel>(
         IMapper mapper,
@@ -104,13 +33,9 @@ public class ApiController<TEntity>
         where Response : notnull
         where ViewModel : notnull
     {
-        List<string> errors = [.. handler.GetNotifications().Select(p => p.Value)];
-
         return response is null ?
             NoContent() :
-            IsOperationValid() ?
-            Ok(mapper.Map<ViewModel>(response)) :
-            BadRequest(new { errors });
+            Ok(mapper.Map<ViewModel>(response));
     }
 }
 
@@ -125,14 +50,12 @@ public class ApiController<TEntity>
 /// </typeparam>
 [ApiController]
 [Produces("application/json")]
-public class ApiController<TEntity, TService>
-    : ControllerBase
-    where TEntity : Entity
-    where TService : IService<TEntity>
+public class ApiController<TId, TEntity, TService> : ControllerBase
+    where TId : notnull
+    where TEntity : IEntity<TId>
+    where TService : IService<TId, TEntity>
 {
-    private readonly IDomainNotificationHandler handler;
     protected readonly TService service;
-    protected readonly IMediatorHandler mediator;
 
     /// <summary>
     /// Constrói uma nova instância da classe de api de controller.
@@ -154,63 +77,12 @@ public class ApiController<TEntity, TService>
     /// </param>
     public ApiController
     (
-        TService service,
-        IMediatorHandler mediator,
-        IDomainNotificationHandler handler
+        TService service
     )
     {
-        if (service is null)
-        {
-            throw new ArgumentNullException(nameof(service));
-        }
-
-        ArgumentNullException.ThrowIfNull(handler);
-        ArgumentNullException.ThrowIfNull(mediator);
+        ArgumentNullException.ThrowIfNull(service);
 
         this.service = service;
-        this.handler = handler;
-        this.mediator = mediator;
-    }
-
-    [NonAction]
-    protected bool IsOperationValid() => handler is not null && !handler.HasNotifications();
-
-    [NonAction]
-    protected IActionResult GetResponse(
-    )
-    {
-        List<string> errors = [.. handler.GetNotifications().Select(p => p.Value)];
-
-        return IsOperationValid() ?
-            Ok() :
-            BadRequest(new { errors })
-        ;
-    }
-
-    [NonAction]
-    protected async Task NotifyError(
-        string codigo,
-        string mensagem
-    )
-    {
-        await mediator.RaiseError(new ErrorNotification { StackTrace = mensagem, Exception = codigo });
-    }
-
-    [NonAction]
-    protected async Task NotifyInvalidErrorModelAsync(
-        string typeName
-    )
-    {
-        IEnumerable<ModelError>? erros = ModelState.Values.SelectMany(m => m.Errors) ?? new List<ModelError>();
-
-        foreach (var erro in erros)
-        {
-            string? erroMsg = erro.Exception == null ?
-                erro.ErrorMessage :
-                erro.Exception.Message;
-
-            await NotifyError(typeName, erroMsg);
-        }
     }
 
     [NonAction]
@@ -221,12 +93,8 @@ public class ApiController<TEntity, TService>
         where Response : notnull
         where ViewModel : notnull
     {
-        List<string> errors = [.. handler.GetNotifications().Select(p => p.Value)];
-
         return response is null ?
             NoContent() :
-            IsOperationValid() ?
-            Ok(mapper.Map<ViewModel>(response)) :
-            BadRequest(new { errors });
+            Ok(mapper.Map<ViewModel>(response));
     }
 }

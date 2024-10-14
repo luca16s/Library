@@ -17,12 +17,16 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 /// <summary>
 /// Classe de configuração base do banco de dados.
 /// </summary>
+/// <typeparam name="TId">
+/// Tipo da entidade a ser salva.
+/// </typeparam>
 /// <typeparam name="TEntity">
 /// Entidade.
 /// </typeparam>
-public abstract class ConfigurationBase<TEntity> :
+public abstract class ConfigurationBase<TId, TEntity> :
     IEntityTypeConfiguration<TEntity>
-    where TEntity : Entity
+    where TId : notnull
+    where TEntity : Entity<TId>
 {
     /// <summary>
     /// Configuração base da Entidade.
@@ -30,10 +34,11 @@ public abstract class ConfigurationBase<TEntity> :
     /// <param name="builder">
     /// API para configuração da chamada do banco de dados.
     /// </param>
-    public virtual void Configure(EntityTypeBuilder<TEntity> builder)
+    public virtual void Configure(
+        EntityTypeBuilder<TEntity> builder
+    )
     {
-        _ = builder.HasKey(u => u.Id);
-
+        _ = builder.HasKey(p => p.Id);
         _ = builder.Ignore(p => p.ValidationResult);
     }
 }

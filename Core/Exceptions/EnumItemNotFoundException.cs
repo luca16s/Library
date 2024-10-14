@@ -28,7 +28,9 @@ public class EnumItemNotFoundException : Exception
     /// <param name="message">
     /// Mensagem a ser mostrada.
     /// </param>
-    public EnumItemNotFoundException(string message)
+    public EnumItemNotFoundException(
+        string message
+    )
         : base($"{Resources.EnumItemNotFound}\n - {message}") { }
 
     /// <summary>
@@ -40,6 +42,9 @@ public class EnumItemNotFoundException : Exception
     /// <param name="inner">
     /// Mensagem herdada.
     /// </param>
-    public EnumItemNotFoundException(string message, Exception inner)
+    public EnumItemNotFoundException(
+        string message,
+        Exception inner
+    )
         : base($"{Resources.EnumItemNotFound}\n - {message}", inner) { }
 }

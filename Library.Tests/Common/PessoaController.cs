@@ -4,8 +4,6 @@ using global::Api.Controller;
 
 using Library.Tests.Common.Interfaces;
 
-using Mediator.Interfaces;
-
 using Microsoft.AspNetCore.Mvc;
 
 public class PessoaController(

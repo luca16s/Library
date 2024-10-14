@@ -24,22 +24,19 @@ public static class ContextExtensions
     ) where TContext : DbContext
     {
         string? connectionString =
-            settings
-            .ConnectionStrings
-            .FirstOrDefault(c => c.Nome.Equals(schema, StringComparison.Ordinal))
-           ?.Url;
+            settings.ConnectionStrings.FirstOrDefault(c => c.Nome.Equals(schema, StringComparison.Ordinal))?.Url;
 
         return string.IsNullOrWhiteSpace(connectionString)
             ? throw new InvalidOperationException(
                 "String de conexão com o banco de dados não pode ser nula."
             )
             : services
-            .AddEntityFrameworkProxies()
             .AddDbContext<TContext>(options =>
             {
                 _ = options
-                .UseLazyLoadingProxies()
-                .UseSqlServer(connectionString);
+                    .UseSqlServer(connectionString)
+                    .UseLazyLoadingProxies(true)
+                    ;
             });
     }
 }

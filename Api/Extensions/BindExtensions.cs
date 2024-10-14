@@ -76,11 +76,11 @@ public static class BindExtensions
     /// Assembly contendo as configurações de MediatR
     /// <see cref="Assembly"/>
     /// </param>
-    public static void AddAutoMapper
-    (
-        this IServiceCollection services,
-       Assembly assembly
-    ) => _ = services.AddAutoMapper(cfg => cfg.AddMaps(assembly), assembly);
+    //public static void AddAutoMappers
+    //(
+    //    this IServiceCollection services,
+    //   Assembly assembly
+    //) => _ = services.AddAutoMapper(assembly);
 
     /// <summary>
     /// Adiciona configuração de CORS.
@@ -101,9 +101,7 @@ public static class BindExtensions
     (
         this IServiceCollection services,
         Settings settings
-    )
-    {
-        return settings is null
+    ) => settings is null
             ? throw new ArgumentNullException(nameof(settings))
             : services.AddCors(options =>
         {
@@ -118,7 +116,6 @@ public static class BindExtensions
                 }
             });
         });
-    }
 
     /// <summary>
     /// Adiciona configuração de JWT.
@@ -140,7 +137,7 @@ public static class BindExtensions
             throw new NullReferenceException(nameof(settings));
         }
 
-        Signing signing = new(settings.Secret);
+        Signing signing = new(settings.Jwt.Secret);
 
         _ = services.AddAuthentication(authOptions =>
         {

@@ -12,6 +12,7 @@ using Core.Exceptions;
 using Core.Models;
 
 using System.ComponentModel;
+using System.Reflection;
 
 /// <summary>
 /// Classe de extensão para operações com enumeradores.
@@ -30,7 +31,9 @@ public static class EnumExtension
     /// <exception cref="EnumDescriptionNotFoundException">
     /// Descrição não encontrada.
     /// </exception>
-    public static string Description(this Enum value)
+    public static string Description(
+        this Enum value
+    )
     {
         if (value is null)
         {
@@ -38,7 +41,9 @@ public static class EnumExtension
         }
 
         Type valueType = value.GetType();
-        System.Reflection.FieldInfo field = valueType.GetField(value.ToString()) ?? throw new NullReferenceException("Field não é válido.");
+        FieldInfo field = valueType.GetField(value.ToString())
+            ?? throw new NullReferenceException("Field não é válido.");
+
         object[] attributes = field.GetCustomAttributes(typeof(DescriptionAttribute), false) ?? Array.Empty<Array>();
 
         return attributes.Length > 0 &&
@@ -56,13 +61,13 @@ public static class EnumExtension
     /// <returns>
     /// Lista dos itens do enumerador.
     /// </returns>
-    public static IEnumerable<EnumModel> GetAllValuesAndDescriptions(this Enum value)
-    {
-        return Enum.GetValues(value.GetType()).Cast<Enum>().Select((e)
+    public static IEnumerable<EnumModel> GetAllValuesAndDescriptions(
+        this Enum value
+    )
+        => Enum.GetValues(value.GetType()).Cast<Enum>().Select((e)
             => new EnumModel()
             {
                 Value = e,
                 Description = e.Description()
             }).ToList();
-    }
 }

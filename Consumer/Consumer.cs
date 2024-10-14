@@ -28,7 +28,7 @@ public class Consumer<TResponse>
     }
 
     public async Task<IEnumerable<TResponse>> GetItemsAsync(
-        string url = "https://api.bcb.gov.br/dados/serie/bcdata.sgs.4390/dados"
+        string url = ""
     )
     {
         Client.BaseAddress = new Uri(url);

@@ -10,7 +10,7 @@
     <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
     <PackageId>ISO.$(AssemblyName)</PackageId>
     <Copyright>$(Authors)</Copyright>
-    <PackageProjectUrl>https://github.com/luca16s/IakareLibraries</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/Iakare-Softwareoka-Inc/Library</PackageProjectUrl>
     <RepositoryUrl>https://github.com/luca16s/IakareLibraries</RepositoryUrl>
     <RepositoryType></RepositoryType>
     <Title>Îakaré Softwareoka Inc. - Core Library</Title>
@@ -26,8 +26,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="FluentValidation" Version="11.9.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.1" />
+    <PackageReference Include="Ardalis.GuardClauses" Version="5.0.0" />
+    <PackageReference Include="FluentValidation" Version="11.10.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Core.Interfaces\Core.Interfaces.csproj" />
+    <ProjectReference Include="..\Core.Models\Core.Models.csproj" />
   </ItemGroup>
 
   <ItemGroup>

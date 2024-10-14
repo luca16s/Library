@@ -33,12 +33,15 @@ public static class StringExtension
     /// <exception cref="ArgumentException">
     /// Item não encontrado.
     /// </exception>
-    public static TEnum? GetEnumValueFromDescription<TEnum>(this string value) where TEnum : Enum
+    public static TEnum? GetEnumValueFromDescription<TEnum>(
+        this string value
+    ) where TEnum : Enum
     {
         foreach (FieldInfo field in typeof(TEnum).GetFields())
         {
-            if (Attribute.GetCustomAttribute(field, typeof(DescriptionAttribute))
-                is DescriptionAttribute descriptionAttribute)
+            if (
+                Attribute.GetCustomAttribute(field, typeof(DescriptionAttribute)) is DescriptionAttribute descriptionAttribute
+            )
             {
                 if (descriptionAttribute.Description.Equals(value, StringComparison.Ordinal))
                 {
@@ -62,8 +65,8 @@ public static class StringExtension
     /// <returns>
     /// Mensagem formatada.
     /// </returns>
-    public static string FormatMessage(this string message, params string[] property)
-    {
-        return string.Format(message, property);
-    }
+    public static string FormatMessage(
+        this string message,
+        params string[] property
+    ) => string.Format(message, property);
 }

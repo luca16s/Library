@@ -9,7 +9,7 @@
 
 namespace Data.Repositories;
 
-using Core.Interfaces.Repositories;
+using Core.Interfaces;
 using Core.Models;
 
 using Microsoft.EntityFrameworkCore;
@@ -22,12 +22,13 @@ using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 
-public abstract class Repository<TContext, TEntity>(
+public abstract class Repository<TContext, TId, TEntity>(
     TContext context,
     IUnitOfWork unitOfWork
-) : IRepository<TEntity>
+) : IRepository<TId, TEntity>
+    where TId : notnull
     where TContext : DbContext
-    where TEntity : Entity
+    where TEntity : Entity<TId>
 {
     private TContext Context { get; } = context;
     private IUnitOfWork UnitOfWork { get; set; } = unitOfWork;
@@ -51,7 +52,7 @@ public abstract class Repository<TContext, TEntity>(
             EntityEntry<TEntity> entity = await DbSet.AddAsync(item, cancellationToken);
             entity.State = EntityState.Added;
 
-            await UnitOfWork.CommitTransactionAsync(transaction, cancellationToken);
+            await UnitOfWork.CommitAsync(transaction, cancellationToken);
         }
         catch (DbUpdateException e)
         {
@@ -76,7 +77,7 @@ public abstract class Repository<TContext, TEntity>(
         try
         {
             await DbSet.AddRangeAsync(items, cancellationToken);
-            await UnitOfWork.CommitTransactionAsync(transaction, cancellationToken);
+            await UnitOfWork.CommitAsync(transaction, cancellationToken);
         }
         catch (DbUpdateException e)
         {
@@ -97,7 +98,7 @@ public abstract class Repository<TContext, TEntity>(
         {
             EntityEntry<TEntity> entity = DbSet.Remove(item);
             entity.State = EntityState.Deleted;
-            await UnitOfWork.CommitTransactionAsync(transaction);
+            await UnitOfWork.CommitAsync(transaction);
         }
         catch (Exception e)
         {
@@ -107,7 +108,7 @@ public abstract class Repository<TContext, TEntity>(
     }
 
     public async Task UpdateAsync(
-        long id,
+        TId id,
         TEntity item
     )
     {
@@ -125,7 +126,7 @@ public abstract class Repository<TContext, TEntity>(
             EntityEntry<TEntity> entry = DbSet.Update(item);
             entry.CurrentValues.SetValues(item);
             entry.State = EntityState.Modified;
-            await UnitOfWork.CommitTransactionAsync(transaction);
+            await UnitOfWork.CommitAsync(transaction);
         }
         catch
         {
@@ -135,31 +136,25 @@ public abstract class Repository<TContext, TEntity>(
     }
 
     public async Task<TEntity?> GetAsync(
-        long id
+        TId id
     ) => await GetAsync(id, CancellationToken.None);
 
     public async Task<TEntity?> GetAsync(
-        long id,
+        TId id,
         CancellationToken cancellationToken
-    )
-    {
-        return await DbSet.FindAsync(
-            [id, cancellationToken],
-            cancellationToken
-        );
-    }
+    ) => await DbSet.FindAsync(
+        [id, cancellationToken],
+        cancellationToken
+    );
 
     public IQueryable<TEntity> GetAll(
         int amountToSkip = 0,
         int amountToTake = 25
-    )
-    {
-        return DbSet
+    ) => DbSet
             .AsQueryable()
             .AsNoTracking()
             .Skip(amountToSkip)
             .Take(amountToTake);
-    }
 
     public async Task<long> CountAsync(
     )
@@ -167,17 +162,11 @@ public abstract class Repository<TContext, TEntity>(
 
     public async Task<long> CountAsync(
         CancellationToken cancellationToken
-    )
-    {
-        return await DbSet.CountAsync(cancellationToken);
-    }
+    ) => await DbSet.CountAsync(cancellationToken);
 
     public IQueryable<TEntity> Search(
         Expression<Func<TEntity, bool>> predicate
-    )
-    {
-        return DbSet.Where(predicate);
-    }
+    ) => DbSet.Where(predicate);
 
     public async Task<TResult> MinAsync<TResult>(
         Expression<Func<TEntity, TResult>> predicate

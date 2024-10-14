@@ -32,7 +32,12 @@ public class Swagger
     /// <summary>
     /// Versão da aplicação.
     /// </summary>
-    public string AppVersion { get; set; } = string.Empty;
+    public string Version { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Versão do Swagger.
+    /// </summary>
+    public long[] SwaggerVersions { get; set; } = [];
 
     /// <summary>
     /// Nome da companhia responsável pela aplicação.
@@ -55,12 +60,12 @@ public class Swagger
     public string OAuthScheme { get; set; } = string.Empty;
 
     /// <summary>
-    /// Descrição curta do esquema de segurança.
-    /// </summary>
-    public string SecuritySchemeDescription { get; set; } = string.Empty;
-
-    /// <summary>
     /// Nome do header de segurança.
     /// </summary>
     public string SecuritySchemeHeaderName { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Descrição curta do esquema de segurança.
+    /// </summary>
+    public string SecuritySchemeDescription { get; set; } = string.Empty;
 }

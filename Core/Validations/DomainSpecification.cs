@@ -21,7 +21,7 @@ using System.Diagnostics.CodeAnalysis;
 /// </typeparam>
 [ExcludeFromCodeCoverage]
 public abstract class DomainSpecification<TEntity>
-    where TEntity : Entity
+    where TEntity : Entity<long>
 {
     protected readonly TEntity _entidade;
 

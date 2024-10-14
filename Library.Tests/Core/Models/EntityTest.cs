@@ -2,9 +2,6 @@
 
 using FluentValidation.Results;
 
-using global::Core.Models;
-using global::Core.Validations;
-
 using Library.Tests.Common;
 
 using System.Collections.Generic;

@@ -33,13 +33,10 @@ public static class FluentValidationExtensions
     /// </returns>
     public static IRuleBuilderOptions<TEntity, string> ShouldOnlyHaveDigits<TEntity>(
         this IRuleBuilder<TEntity, string> ruleBuilder
-    )
+    ) => ruleBuilder.Must(property =>
     {
-        return ruleBuilder.Must(property =>
-        {
-            return !string.IsNullOrWhiteSpace(property) &&
-            property is string value &&
-            value.All(c => c is >= '0' and <= '9');
-        });
-    }
+        return !string.IsNullOrWhiteSpace(property) &&
+                property is string value &&
+                value.All(c => c is >= '0' and <= '9');
+    });
 }

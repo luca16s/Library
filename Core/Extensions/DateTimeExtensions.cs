@@ -25,10 +25,10 @@ public static class DateExtensions
     /// <returns>
     /// Total em segundos.
     /// </returns>
-    public static double ToUnixEpochDate(this DateTime date)
-    {
-        return (date - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalSeconds;
-    }
+    public static double ToUnixEpochDate(
+        this DateTime date
+    )
+        => (date - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalSeconds;
 
     /// <summary>
     /// Converte DateTime para formato UNIX em texto.
@@ -39,8 +39,8 @@ public static class DateExtensions
     /// <returns>
     /// Total em segundos em formato de texto.
     /// </returns>
-    public static string ToUnixEpochDateToString(this DateTime date)
-    {
-        return $"{date.ToUnixEpochDate()}";
-    }
+    public static string ToUnixEpochDateToString(
+        this DateTime date
+    )
+        => $"{date.ToUnixEpochDate()}";
 }

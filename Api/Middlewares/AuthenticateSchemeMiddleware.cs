@@ -23,7 +23,10 @@ using System.Threading.Tasks;
 /// </remarks>
 /// <param name="next">Próximo middleware do pipeline</param>
 /// <param name="scheme">Schema de autenticação</param>
-public class AuthenticateSchemeMiddleware(RequestDelegate next, string scheme)
+public class AuthenticateSchemeMiddleware(
+    RequestDelegate next,
+    string scheme
+)
 {
     private readonly RequestDelegate _next = next;
     private readonly string _scheme = scheme ?? throw new ArgumentNullException(nameof(scheme));
@@ -37,7 +40,9 @@ public class AuthenticateSchemeMiddleware(RequestDelegate next, string scheme)
     /// </param>
     /// <returns>
     /// </returns>
-    public async Task Invoke(HttpContext httpContext)
+    public async Task Invoke(
+        HttpContext httpContext
+    )
     {
         AuthenticateResult? result = await httpContext.AuthenticateAsync(_scheme);
 

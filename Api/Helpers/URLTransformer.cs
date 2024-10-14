@@ -20,9 +20,8 @@ public partial class URLTransformer : IOutboundParameterTransformer
 
     public string? TransformOutbound(
         object? value
-    ) => ControllerRegex()
-            .Replace(
-                value?.ToString() ?? string.Empty,
-                "$1-$2"
-            ).ToLower();
+    ) => ControllerRegex().Replace(
+        value?.ToString() ?? string.Empty,
+        "$1-$2"
+        ).ToLower();
 }

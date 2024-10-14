@@ -22,8 +22,8 @@ public static class AuthenticateMiddlewareExtensions
     /// <param name="app">Builder de pipeline da aplicação</param>
     /// <param name="scheme">Schema de autenticação</param>
     /// <returns>Builder de pipeline da aplicação</returns>
-    public static IApplicationBuilder UseAuthenticationScheme(this IApplicationBuilder app, string scheme)
-    {
-        return app.UseMiddleware<AuthenticateSchemeMiddleware>(scheme);
-    }
+    public static IApplicationBuilder UseAuthenticationScheme(
+        this IApplicationBuilder app,
+        string scheme
+    ) => app.UseMiddleware<AuthenticateSchemeMiddleware>(scheme);
 }

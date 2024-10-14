@@ -5,10 +5,6 @@ using FluentAssertions;
 using Library.Tests.Common;
 using Library.Tests.Common.Interfaces;
 
-using Mediator.Handlers;
-using Mediator.Interfaces;
-using Mediator.Notifications;
-
 using Moq;
 
 using System.Threading;

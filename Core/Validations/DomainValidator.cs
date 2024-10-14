@@ -23,7 +23,7 @@ using System.Diagnostics.CodeAnalysis;
 /// </typeparam>
 [ExcludeFromCodeCoverage]
 public abstract class DomainValidator<TEntity> : AbstractValidator<TEntity>
-    where TEntity : Entity
+    where TEntity : Entity<long>
 {
     protected readonly TEntity _entidade;
 
