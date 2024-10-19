@@ -1,4 +1,4 @@
-name: Core Library CD
+name: Library CD
 on:
   push:
     tags:

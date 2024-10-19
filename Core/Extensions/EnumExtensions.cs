@@ -32,24 +32,21 @@ public static class EnumExtension
     /// Descrição não encontrada.
     /// </exception>
     public static string Description(
-        this Enum value
+        this Enum? value
     )
     {
-        if (value is null)
-        {
-            throw new ArgumentNullException(nameof(value), "Valor do enum não pode ser nulo.");
-        }
+        FieldInfo? field = value?.GetType()?.GetField($"{value}")
+            ?? throw new ArgumentNullException(nameof(value), "Valor do enum não pode ser nulo.");
 
-        Type valueType = value.GetType();
-        FieldInfo field = valueType.GetField(value.ToString())
-            ?? throw new NullReferenceException("Field não é válido.");
+        DescriptionAttribute attribute = field?.GetCustomAttributes(
+            typeof(DescriptionAttribute), 
+            false
+        )?.FirstOrDefault() as DescriptionAttribute ?? throw new EnumDescriptionNotFoundException();
 
-        object[] attributes = field.GetCustomAttributes(typeof(DescriptionAttribute), false) ?? Array.Empty<Array>();
+        if (string.IsNullOrWhiteSpace(attribute?.Description))
+            throw new EnumDescriptionNotFoundException();
 
-        return attributes.Length > 0 &&
-            attributes.First() is DescriptionAttribute description
-            ? description.Description
-            : throw new EnumDescriptionNotFoundException();
+        return attribute.Description;
     }
 
     /// <summary>
@@ -63,11 +60,10 @@ public static class EnumExtension
     /// </returns>
     public static IEnumerable<EnumModel> GetAllValuesAndDescriptions(
         this Enum value
-    )
-        => Enum.GetValues(value.GetType()).Cast<Enum>().Select((e)
-            => new EnumModel()
-            {
-                Value = e,
-                Description = e.Description()
-            }).ToList();
+    ) => Enum.GetValues(value.GetType()).Cast<Enum>().Select((e)
+        => new EnumModel()
+        {
+            Value = e,
+            Description = e.Description()
+        }).ToList();
 }

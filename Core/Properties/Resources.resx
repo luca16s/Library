@@ -123,4 +123,7 @@
   <data name="EnumItemNotFound" xml:space="preserve">
     <value>Item não encontrado no enumerador.</value>
   </data>
+  <data name="EnumBaseMessage" xml:space="preserve">
+    <value>{0} {1}</value>
+  </data>
 </root>

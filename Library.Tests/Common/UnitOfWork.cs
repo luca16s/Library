@@ -1,7 +1,5 @@
 ﻿namespace Library.Tests.Common;
 
-using global::Core.Interfaces.Repositories;
-
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 

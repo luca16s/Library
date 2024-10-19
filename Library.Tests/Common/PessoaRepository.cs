@@ -1,8 +1,5 @@
 ﻿namespace Library.Tests.Common;
 
-using global::Core.Interfaces.Repositories;
-using global::Data.Repositories;
-
 using Library.Tests.Common.Interfaces;
 
 internal class PessoaRepository(
