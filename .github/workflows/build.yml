@@ -1,4 +1,4 @@
-name: Library CI
+name: "CI"
 on:
   push:
     branches: [main]
@@ -16,10 +16,6 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 8.x
-      - name: Iniciando CodeQL
-        uses: github/codeql-action/init@v3
-        with:
-          languages: csharp
       - name: Restaurando pacotes
         run: dotnet restore
       - name: Construindo projetos
@@ -35,5 +31,3 @@ jobs:
           name: codecov-umbrella
           fail_ci_if_error: true
           verbose: true
-      - name: Realizando análise de código
-        uses: github/codeql-action/analyze@v3
