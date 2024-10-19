@@ -11,7 +11,7 @@ on:
       - "**.cs"
       - "**.csproj"
   schedule:
-    - cron: "*/5 * * * *"
+    - cron: "0 0 * * *"
 jobs:
   analyze:
     name: analyze
