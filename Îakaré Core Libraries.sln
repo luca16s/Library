@@ -3,20 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31512.422
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "Core\Core.csproj", "{B622B827-6CA5-4209-82AB-CC4EF31536D4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Services", "Core.Services\Core.Services.csproj", "{B622B827-6CA5-4209-82AB-CC4EF31536D4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Api", "Api\Api.csproj", "{B6CDEA8A-8B06-4E66-9D99-BC8CDEEBFE6D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Api", "Core.Api\Core.Api.csproj", "{B6CDEA8A-8B06-4E66-9D99-BC8CDEEBFE6D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data", "Data\Data.csproj", "{87807EF5-CE58-4709-BF8A-D14360AABE7A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Data", "Core.Data\Core.Data.csproj", "{87807EF5-CE58-4709-BF8A-D14360AABE7A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0 - Sources", "0 - Sources", "{6A35284D-E871-4B9D-BF37-D568BEF49109}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1 - Tests", "1 - Tests", "{76491630-F118-465C-82DB-B11E8333DBF3}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Itens de Solução", "Itens de Solução", "{1306DFE5-3B17-4D6E-8690-21B08E0A437A}"
-	ProjectSection(SolutionItems) = preProject
-		.editorconfig = .editorconfig
-	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Models", "Core.Models\Core.Models.csproj", "{51556F5C-48E1-4303-99FA-E22BCA9573FF}"
 EndProject
@@ -88,8 +85,9 @@ Global
 		{BF94D942-5B2F-4F7D-AF89-BF8626F71D5C} = {6A35284D-E871-4B9D-BF37-D568BEF49109}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		        SolutionGuid = {1D8FB574-F9C8-49B5-B6D6-A0E1841D6149}
-		                SolutionGuid = {380AABB2-C952-4293-BD29-BFF0FB066A4C}
-		SolutionGuid = {AF7E1B3C-87AC-4631-9BCF-8C3AF48ABBE2}
+		                SolutionGuid = {AF7E1B3C-87AC-4631-9BCF-8C3AF48ABBE2}
+		                                SolutionGuid = {380AABB2-C952-4293-BD29-BFF0FB066A4C}
+		                        SolutionGuid = {1D8FB574-F9C8-49B5-B6D6-A0E1841D6149}
+		        SolutionGuid = {79D7AAF2-E809-4D59-A93E-01FA0774B62F}
 	EndGlobalSection
 EndGlobal

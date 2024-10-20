@@ -4,6 +4,11 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <Title>Îakaré Softwareoka Inc. - Model Library</Title>
+    <Authors>Îakaré Softwareoka Inc.</Authors>
+    <Copyright>$(Authors)</Copyright>
+    <PackageProjectUrl>https://github.com/Iakare-Softwareoka-Inc/Library</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Iakare-Softwareoka-Inc/Library</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>

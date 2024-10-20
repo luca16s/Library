@@ -1,6 +1,6 @@
 ﻿namespace Core.Tests.Extensions;
 
-using Core.Extensions;
+using Core.Services.Extensions;
 
 using FluentAssertions;
 

@@ -1,5 +1,5 @@
 ﻿namespace Core.Tests.Exceptions;
-using Core.Exceptions;
+using Core.Services.Exceptions;
 
 using FluentAssertions;
 

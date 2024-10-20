@@ -1,7 +1,7 @@
 ﻿namespace Core.Tests.Extensions;
 
-using Core.Exceptions;
-using Core.Extensions;
+using Core.Services.Exceptions;
+using Core.Services.Extensions;
 using Core.Models;
 
 using FluentAssertions;

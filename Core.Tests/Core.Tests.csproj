@@ -29,7 +29,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Core\Core.csproj" />
+    <ProjectReference Include="..\Core.Services\Core.Services.csproj" />
     <ProjectReference Include="..\Test.Types\Test.Types.csproj" />
   </ItemGroup>
 
