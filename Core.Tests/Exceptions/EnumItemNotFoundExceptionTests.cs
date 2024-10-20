@@ -9,7 +9,7 @@ using System.Diagnostics.CodeAnalysis;
 using Test.Types;
 
 [ExcludeFromCodeCoverage]
-[Trait("Core", "Exception")]
+[Trait("Core", "Exceptions")]
 public class EnumItemNotFoundExceptionTests
 {
     [Test]

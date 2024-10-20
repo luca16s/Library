@@ -22,7 +22,7 @@ using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 
-public abstract class Repository<TContext, TId, TEntity>(
+public abstract class Repository<TId, TEntity, TContext>(
     TContext context,
     IUnitOfWork unitOfWork
 ) : IRepository<TId, TEntity>

@@ -6,9 +6,11 @@ using Core.Extensions;
 using FluentAssertions;
 
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 
 using Test.Types;
 
+[ExcludeFromCodeCoverage]
 [Trait("Core", "Extensions")]
 public class StringExtensionsTests
 {

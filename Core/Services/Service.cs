@@ -19,7 +19,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-public abstract class Service<TRepository, TId, TEntity>(
+public abstract class Service<TId, TEntity, TRepository>(
     IUnitOfWork unitOfWork,
     TRepository repository
     ) : IService<TId, TEntity>
