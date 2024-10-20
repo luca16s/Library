@@ -1,6 +1,6 @@
 ﻿// -----------------------------------------------------------------------
 // <copyright file="EnumExtension.cs" company="Îakaré Softwareoka Inc.">
-//     Copyright (c) Îakaré Softwareoka Inc..
+//     Copyright (c) Îakaré Softwareoka Inc.
 //     All rights reserved.
 //     Licensed under the MIT license.
 //     See LICENSE file in the project root for full license information.
@@ -17,7 +17,7 @@ using System.Reflection;
 /// <summary>
 /// Classe de extensão para operações com enumeradores.
 /// </summary>
-public static class EnumExtension
+public static class EnumExtensions
 {
     /// <summary>
     /// Busca a descrição do Enumerador passado.
@@ -35,18 +35,20 @@ public static class EnumExtension
         this Enum? value
     )
     {
-        FieldInfo? field = value?.GetType()?.GetField($"{value}")
+        ArgumentNullException.ThrowIfNull(value);
+
+        FieldInfo field = value.GetType().GetField($"{value}")
             ?? throw new ArgumentNullException(nameof(value), "Valor do enum não pode ser nulo.");
 
-        DescriptionAttribute attribute = field?.GetCustomAttributes(
+        DescriptionAttribute attribute = field.GetCustomAttributes(
             typeof(DescriptionAttribute), 
             false
-        )?.FirstOrDefault() as DescriptionAttribute ?? throw new EnumDescriptionNotFoundException();
+        ).FirstOrDefault() as DescriptionAttribute
+            ?? throw new EnumDescriptionNotFoundException();
 
-        if (string.IsNullOrWhiteSpace(attribute?.Description))
-            throw new EnumDescriptionNotFoundException();
-
-        return attribute.Description;
+        return string.IsNullOrWhiteSpace(attribute.Description)
+            ? throw new EnumDescriptionNotFoundException()
+            : attribute.Description;
     }
 
     /// <summary>
@@ -58,12 +60,15 @@ public static class EnumExtension
     /// <returns>
     /// Lista dos itens do enumerador.
     /// </returns>
-    public static IEnumerable<EnumModel> GetAllValuesAndDescriptions(
+    public static List<EnumModel> GetValuesAndDescriptions(
         this Enum value
-    ) => Enum.GetValues(value.GetType()).Cast<Enum>().Select((e)
-        => new EnumModel()
-        {
-            Value = e,
-            Description = e.Description()
-        }).ToList();
+    )
+    {
+        ArgumentNullException.ThrowIfNull(value);
+
+        return Enum.GetValues(value.GetType())
+            .Cast<Enum>()
+            .Select(static (e) => new EnumModel(e, e.Description()))
+            .ToList();
+    }
 }

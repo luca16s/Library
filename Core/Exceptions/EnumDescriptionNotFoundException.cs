@@ -1,6 +1,6 @@
 ﻿// ------------------------------------------------------------------------------------
 // <copyright file="EnumDescriptionNotFoundException.cs" company="Îakaré Softwareoka Inc.">
-//     Copyright (c) Îakaré Softwareoka Inc..
+//     Copyright (c) Îakaré Softwareoka Inc.
 //     All rights reserved.
 //     Licensed under the MIT license.
 //     See LICENSE file in the project root for full license information.
@@ -9,6 +9,7 @@
 
 namespace Core.Exceptions;
 
+using Core.Extensions;
 using Core.Properties;
 
 /// <summary>
@@ -30,7 +31,7 @@ public class EnumDescriptionNotFoundException : Exception
     /// </param>
     public EnumDescriptionNotFoundException(
         string message
-    ) : base(string.Format(Resources.EnumBaseMessage, Resources.EnumDescriptionNotFound, message)) { }
+    ) : base(Resources.EnumBaseMessage.FormatMessage(Resources.EnumDescriptionNotFound, message)) { }
 
     /// <summary>
     /// Inicia uma nova instância da classe <see cref="EnumDescriptionNotFoundException" />.
@@ -44,5 +45,5 @@ public class EnumDescriptionNotFoundException : Exception
     public EnumDescriptionNotFoundException(
         string message,
         Exception inner
-    ) : base(string.Format(Resources.EnumBaseMessage, Resources.EnumDescriptionNotFound, message), inner) { }
+    ) : base(Resources.EnumBaseMessage.FormatMessage(Resources.EnumDescriptionNotFound, message), inner) { }
 }

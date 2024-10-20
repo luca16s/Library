@@ -14,6 +14,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1 - Tests", "1 - Tests", "{76491630-F118-465C-82DB-B11E8333DBF3}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Itens de Solução", "Itens de Solução", "{1306DFE5-3B17-4D6E-8690-21B08E0A437A}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Models", "Core.Models\Core.Models.csproj", "{51556F5C-48E1-4303-99FA-E22BCA9573FF}"
 EndProject
@@ -25,7 +28,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Interfaces", "Core.Int
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Tests", "Core.Tests\Core.Tests.csproj", "{27FA044F-FEBA-4A48-9C0B-D5C850F7442E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test.Types", "Test.Types\Test.Types.csproj", "{BF94D942-5B2F-4F7D-AF89-BF8626F71D5C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test.Types", "Test.Types\Test.Types.csproj", "{BF94D942-5B2F-4F7D-AF89-BF8626F71D5C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -85,8 +88,8 @@ Global
 		{BF94D942-5B2F-4F7D-AF89-BF8626F71D5C} = {6A35284D-E871-4B9D-BF37-D568BEF49109}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {AF7E1B3C-87AC-4631-9BCF-8C3AF48ABBE2}
-		                SolutionGuid = {380AABB2-C952-4293-BD29-BFF0FB066A4C}
 		        SolutionGuid = {1D8FB574-F9C8-49B5-B6D6-A0E1841D6149}
+		                SolutionGuid = {380AABB2-C952-4293-BD29-BFF0FB066A4C}
+		SolutionGuid = {AF7E1B3C-87AC-4631-9BCF-8C3AF48ABBE2}
 	EndGlobalSection
 EndGlobal

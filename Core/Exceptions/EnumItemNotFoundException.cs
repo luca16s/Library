@@ -1,6 +1,6 @@
 ﻿// -----------------------------------------------------------------------
 // <copyright file="EnumItemNotFoundException.cs" company="Îakaré Softwareoka Inc.">
-//     Copyright (c) Îakaré Softwareoka Inc..
+//     Copyright (c) Îakaré Softwareoka Inc.
 //     All rights reserved.
 //     Licensed under the MIT license.
 //     See LICENSE file in the project root for full license information.
@@ -9,6 +9,7 @@
 
 namespace Core.Exceptions;
 
+using Core.Extensions;
 using Core.Properties;
 
 /// <summary>
@@ -30,7 +31,7 @@ public class EnumItemNotFoundException : Exception
     /// </param>
     public EnumItemNotFoundException(
         string message
-    ) : base(string.Format(Resources.EnumBaseMessage, Resources.EnumItemNotFound, message)) { }
+    ) : base(Resources.EnumBaseMessage.FormatMessage(Resources.EnumItemNotFound, message)) { }
 
     /// <summary>
     /// Inicia uma nova instância da classe <see cref="EnumItemNotFoundException" />.
@@ -44,5 +45,5 @@ public class EnumItemNotFoundException : Exception
     public EnumItemNotFoundException(
         string message,
         Exception inner
-    ) : base(string.Format(Resources.EnumBaseMessage, Resources.EnumItemNotFound, message), inner) { }
+    ) : base(Resources.EnumBaseMessage.FormatMessage(Resources.EnumItemNotFound, message), inner) { }
 }

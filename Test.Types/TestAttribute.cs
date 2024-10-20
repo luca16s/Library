@@ -1,9 +1,11 @@
 ﻿namespace Test.Types;
 
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 
 using Xunit;
 
+[ExcludeFromCodeCoverage]
 public class TestAttribute : FactAttribute
 {
     public TestAttribute(

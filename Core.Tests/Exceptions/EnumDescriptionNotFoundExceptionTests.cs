@@ -3,8 +3,11 @@ using Core.Exceptions;
 
 using FluentAssertions;
 
+using System.Diagnostics.CodeAnalysis;
+
 using Test.Types;
 
+[ExcludeFromCodeCoverage]
 [Trait("Core", "Exception")]
 public class EnumDescriptionNotFoundExceptionTests
 {
