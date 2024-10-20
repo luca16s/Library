@@ -6,6 +6,8 @@ on:
 jobs:
   build:
     runs-on: windows-latest
+    permissions:
+      packages: write
     steps:
       - name: Realizando checkout
         uses: actions/checkout@v4
