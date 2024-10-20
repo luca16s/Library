@@ -21,6 +21,8 @@ using Microsoft.AspNetCore.Mvc;
 /// <typeparam name="TEntity">
 /// Tipo da entidade usada no serviço.
 /// </typeparam>
+[ApiController]
+[Produces("application/json")]
 public class ApiController<TId, TEntity> : ControllerBase
     where TId : notnull
     where TEntity : IEntity<TId>
