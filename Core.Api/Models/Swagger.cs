@@ -9,25 +9,17 @@
 
 namespace Core.Api.Models;
 
+using Core.CrossCutting;
+
 /// <summary>
 /// Informações para preenchimento do swagger.
 /// </summary>
 public class Swagger
 {
     /// <summary>
-    /// Site da aplicação.
+    /// Informações da aplicação.
     /// </summary>
-    public string Site { get; set; } = string.Empty;
-
-    /// <summary>
-    /// E-Mail para contato com responsável pela aplicação.
-    /// </summary>
-    public string Email { get; set; } = string.Empty;
-
-    /// <summary>
-    /// Nome da aplicação.
-    /// </summary>
-    public string AppName { get; set; } = string.Empty;
+    public ApplicationInfo AppInfo { get; set; } = new();
 
     /// <summary>
     /// Versão da aplicação.
@@ -38,11 +30,6 @@ public class Swagger
     /// Versão do Swagger.
     /// </summary>
     public long[] SwaggerVersions { get; set; } = [];
-
-    /// <summary>
-    /// Nome da companhia responsável pela aplicação.
-    /// </summary>
-    public string Company { get; set; } = string.Empty;
 
     /// <summary>
     /// Descrição da aplicação.

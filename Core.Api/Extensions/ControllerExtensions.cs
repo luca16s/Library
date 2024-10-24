@@ -10,7 +10,6 @@
 namespace Core.Api.Extensions;
 
 using Api.Conventions;
-using Api.Helpers;
 
 using global::Api.Helpers;
 

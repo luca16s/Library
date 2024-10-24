@@ -4,19 +4,11 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <Title>Îakaré Softwareoka Inc. - Interface Library</Title>
-    <Authors>Îakaré Softwareoka Inc.</Authors>
     <PackageProjectUrl>https://github.com/Iakare-Softwareoka-Inc/Library</PackageProjectUrl>
-    <Copyright>$(Authors)</Copyright>
     <RepositoryUrl>https://github.com/Iakare-Softwareoka-Inc/Library</RepositoryUrl>
+    <Copyright>$(Authors)</Copyright>
+    <Authors>Îakaré Softwareoka Inc.</Authors>
+    <Title>Îakaré Softwareoka Inc. - Cross Cutting Library</Title>
   </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.10" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Core.CrossCutting\Core.CrossCutting.csproj" />
-  </ItemGroup>
 
 </Project>

@@ -8,7 +8,7 @@
     <Authors>Îakaré Softwareoka Inc.</Authors>
     <Copyright>$(Authors)</Copyright>
     <PackageProjectUrl>https://github.com/Iakare-Softwareoka-Inc/Library</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/luca16s/IakareLibraries</RepositoryUrl>
+    <RepositoryUrl>https://github.com/Iakare-Softwareoka-Inc/Library</RepositoryUrl>
     <NeutralLanguage>pt-BR</NeutralLanguage>
     <Title>Îakaré Softwareoka Inc. - Data Library</Title>
     <GeneratePackageOnBuild>False</GeneratePackageOnBuild>

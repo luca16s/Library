@@ -1,39 +1,24 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+    <Title>Îakaré Softwareoka Inc. - Consumer Library</Title>
     <Authors>Îakaré Softwareoka Inc.</Authors>
-    <NeutralLanguage>pt-BR</NeutralLanguage>
-    <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
-    <PackageId>ISO.$(AssemblyName)</PackageId>
     <Copyright>$(Authors)</Copyright>
-    <PackageProjectUrl>https://github.com/Iakare-Softwareoka-Inc/Library</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Iakare-Softwareoka-Inc/Library</RepositoryUrl>
-    <RepositoryType></RepositoryType>
-    <Title>Îakaré Softwareoka Inc. - Core Library</Title>
-	<AssemblyVersion>$(VersionPrefix)</AssemblyVersion>
-	<FileVersion>$(VersionPrefix)</FileVersion>
-	<Version>$(VersionPrefix)</Version>
+    <PackageProjectUrl>https://github.com/Iakare-Softwareoka-Inc/Library</PackageProjectUrl>
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Utils\**" />
-    <EmbeddedResource Remove="Utils\**" />
-    <None Remove="Utils\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Ardalis.GuardClauses" Version="5.0.0" />
-    <PackageReference Include="FluentValidation" Version="11.10.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Core.CrossCutting\Core.CrossCutting.csproj" />
     <ProjectReference Include="..\Core.Interfaces\Core.Interfaces.csproj" />
-    <ProjectReference Include="..\Core.Models\Core.Models.csproj" />
+    <ProjectReference Include="..\Core.Services\Core.Services.csproj" />
   </ItemGroup>
 
   <ItemGroup>

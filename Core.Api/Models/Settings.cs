@@ -13,8 +13,8 @@ using System.Collections.Generic;
 
 public class Settings
 {
-    public Jwt Jwt { get; set; } = new Jwt();
-    public Swagger Swagger { get; set; } = new Swagger();
+    public Jwt Jwt { get; set; } = new();
+    public Swagger Swagger { get; set; } = new();
     public string CorsPolicyName { get; set; } = string.Empty;
     public IEnumerable<Connection> ApiUrls { get; set; } = [];
     public IEnumerable<string> AllowedDomains { get; set; } = [];
