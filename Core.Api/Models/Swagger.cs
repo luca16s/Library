@@ -17,11 +17,6 @@ using Core.CrossCutting;
 public class Swagger
 {
     /// <summary>
-    /// Informações da aplicação.
-    /// </summary>
-    public ApplicationInfo AppInfo { get; set; } = new();
-
-    /// <summary>
     /// Versão da aplicação.
     /// </summary>
     public string Version { get; set; } = string.Empty;

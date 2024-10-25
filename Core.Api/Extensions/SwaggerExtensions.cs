@@ -48,14 +48,14 @@ public static class SwaggerExtensions
                 $"v{version}",
                 new OpenApiInfo
                 {
-                    Title = settings.Swagger.AppInfo.Name,
+                    Title = settings.AppInfo.Name,
                     Version = settings.Swagger.Version,
                     Description = settings.Swagger.Description,
                     Contact = new OpenApiContact
                     {
-                        Email = settings.Swagger.AppInfo.Email,
-                        Name = settings.Swagger.AppInfo.Company,
-                        Url = new(settings.Swagger.AppInfo.Site ?? string.Empty),
+                        Email = settings.AppInfo.Email,
+                        Name = settings.AppInfo.Company,
+                        Url = new(settings.AppInfo.Site ?? string.Empty),
                     },
                 }
             );
@@ -149,7 +149,7 @@ public static class SwaggerExtensions
                         }
                     """.ReplaceLineEndings(string.Empty)
                 );
-                c.DocumentTitle = settings.Swagger.AppInfo.Name;
+                c.DocumentTitle = settings.AppInfo.Name;
                 foreach (var version in settings.Swagger.SwaggerVersions)
                     c.SwaggerEndpoint($"/swagger/v{version}/swagger.json", $"v{version}");
             });
