@@ -78,6 +78,34 @@ public class Consumer<TResponse>(
     public async Task<TResponse?> GetAsync(
         string url,
         string requestUri,
+        int requestTimeout,
+        ApplicationInfo appInfo
+    ) => await GetAsync(
+            url: url,
+            appInfo: appInfo,
+            token: string.Empty,
+            requestUri: requestUri,
+            requestTimeout: requestTimeout
+        );
+
+    public async Task<TResponse?> PostAsync<TContent>(
+        string url,
+        string requestUri,
+        TContent content,
+        int? requestTimeout,
+        ApplicationInfo appInfo
+    ) => await PostAsync(
+            url: url,
+            appInfo: appInfo,
+            content: content,
+            token: string.Empty,
+            requestUri: requestUri,
+            requestTimeout: requestTimeout
+        );
+
+    public async Task<TResponse?> GetAsync(
+        string url,
+        string requestUri,
         string token,
         int requestTimeout,
         ApplicationInfo appInfo
