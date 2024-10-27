@@ -8,9 +8,6 @@
 // -----------------------------------------------------------------------
 
 namespace Core.Api.Models;
-
-using Core.CrossCutting;
-
 /// <summary>
 /// Informações para preenchimento do swagger.
 /// </summary>

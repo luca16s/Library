@@ -48,7 +48,7 @@ public class EnumExtensionsTests
     }
 
     [Test]
-    public void DeveLancarExceptionCasoValorPassadoNulo()
+    public void DescriptionDeveLancarExceptionCasoValorPassadoNulo()
     {
         EnumTeste? enumTeste = null;
 
@@ -56,7 +56,7 @@ public class EnumExtensionsTests
     }
 
     [Test]
-    public void DeveLancarExceptionCasoValorPassadoDeOutroTipo()
+    public void DescriptionDeveLancarExceptionCasoValorPassadoDeOutroTipo()
     {
         EnumTeste enumTeste = (EnumTeste)EnumTeste2.D;
 
@@ -64,19 +64,19 @@ public class EnumExtensionsTests
     }
 
     [Test]
-    public void DeveLancarExceptionCasoEnumSemDescricao()
+    public void DescriptionDeveLancarExceptionCasoEnumSemDescricao()
     {
         Assert.Throws<EnumDescriptionNotFoundException>(EnumTeste.C.Description);
     }
 
     [Test]
-    public void DeveLancarExceptionCasoEnumDescricaoVazia()
+    public void DescriptionDeveLancarExceptionCasoEnumDescricaoVazia()
     {
         Assert.Throws<EnumDescriptionNotFoundException>(EnumTeste.B.Description);
     }
 
     [Test]
-    public void DeveRetornarDescricaoEnum()
+    public void DescriptionDeveRetornarDescricaoEnum()
     {
         var result = EnumTeste.A.Description();
 
@@ -84,7 +84,7 @@ public class EnumExtensionsTests
     }
 
     [Test]
-    public void DeveRetornarTodosItensDoEnum()
+    public void GetValuesAndDescriptionsDeveRetornarTodosItensDoEnum()
     {
         var expected = new List<EnumModel>
         {

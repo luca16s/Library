@@ -1,13 +1,13 @@
 namespace Core.Types;
 // https://learn.microsoft.com/en-us/ef/core/modeling/constructors
-public record BirthDate
+public record Birth
 {
     // EF Core
-    private BirthDate() { }
+    private Birth() { }
 
     public DateTime Value { get; private set; }
 
-    public static BirthDate Of(DateTime value)
+    public static Birth Of(DateTime value)
     {
         // validations should be placed here instead of constructor
         //if (value == default)
@@ -20,8 +20,8 @@ public record BirthDate
         //if (value < minDateOfBirth || value > maxDateOfBirth)
         //    throw new DomainException("The minimum age has to be 15 years.");
 
-        return new BirthDate { Value = value };
+        return new Birth { Value = value };
     }
 
-    public static implicit operator DateTime(BirthDate value) => value.Value;
+    public static implicit operator DateTime(Birth value) => value.Value;
 }

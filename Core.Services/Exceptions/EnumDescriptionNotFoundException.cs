@@ -31,7 +31,7 @@ public class EnumDescriptionNotFoundException : Exception
     /// </param>
     public EnumDescriptionNotFoundException(
         string message
-    ) : base(Resources.EnumBaseMessage.FormatMessage(Resources.EnumDescriptionNotFound, message)) { }
+    ) : base(Resources.EnumBaseMessage.FormatText(Resources.EnumDescriptionNotFound, message)) { }
 
     /// <summary>
     /// Inicia uma nova instância da classe <see cref="EnumDescriptionNotFoundException" />.
@@ -45,5 +45,5 @@ public class EnumDescriptionNotFoundException : Exception
     public EnumDescriptionNotFoundException(
         string message,
         Exception inner
-    ) : base(Resources.EnumBaseMessage.FormatMessage(Resources.EnumDescriptionNotFound, message), inner) { }
+    ) : base(Resources.EnumBaseMessage.FormatText(Resources.EnumDescriptionNotFound, message), inner) { }
 }

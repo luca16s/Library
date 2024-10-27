@@ -8,8 +8,15 @@
 // -----------------------------------------------------------------------
 
 namespace Core.Interfaces;
-public interface IAggregate : IEntity
+public interface IAggregate : IVersion
 { }
 
-public interface IAggregate<TId> : IAggregate, IEntity<TId>
-{ }
+public interface IAggregate<TId> : IAggregate
+{
+    TId Id { get; set; }
+    bool IsDeleted { get; set; }
+    long? CreatedBy { get; set; }
+    DateTime? CreatedAt { get; set; }
+    long? LastModifiedBy { get; set; }
+    DateTime? LastModified { get; set; }
+}

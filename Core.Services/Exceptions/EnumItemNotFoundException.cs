@@ -31,7 +31,7 @@ public class EnumItemNotFoundException : Exception
     /// </param>
     public EnumItemNotFoundException(
         string message
-    ) : base(Resources.EnumBaseMessage.FormatMessage(Resources.EnumItemNotFound, message)) { }
+    ) : base(Resources.EnumBaseMessage.FormatText(Resources.EnumItemNotFound, message)) { }
 
     /// <summary>
     /// Inicia uma nova instância da classe <see cref="EnumItemNotFoundException" />.
@@ -45,5 +45,5 @@ public class EnumItemNotFoundException : Exception
     public EnumItemNotFoundException(
         string message,
         Exception inner
-    ) : base(Resources.EnumBaseMessage.FormatMessage(Resources.EnumItemNotFound, message), inner) { }
+    ) : base(Resources.EnumBaseMessage.FormatText(Resources.EnumItemNotFound, message), inner) { }
 }

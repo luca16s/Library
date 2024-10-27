@@ -48,25 +48,25 @@ public static class StringExtension
     }
 
     /// <summary>
-    /// Formata mensagem utilizando string.Format.
+    /// Formata string utilizando string.Format.
     /// </summary>
-    /// <param name="message">
-    /// Mensagem a ser passada.
+    /// <param name="text">
+    /// String a ser formatada.
     /// </param>
-    /// <param name="extraMessages">
-    /// Lista de mensagens extras.
+    /// <param name="extraTexts">
+    /// Lista de strings extras.
     /// </param>
     /// <returns>
-    /// Mensagem formatada.
+    /// String formatada.
     /// </returns>
-    public static string FormatMessage(
-        this string message,
-        params string[] extraMessages
+    public static string FormatText(
+        this string text,
+        params string[] extraTexts
     )
     {
-        if (extraMessages is null || extraMessages.Length == 0)
-            return string.Format(message, string.Empty).TrimEnd();
+        if (extraTexts is null || extraTexts.Length == 0)
+            return string.Format(text, string.Empty).TrimEnd();
 
-        return string.Format(message, extraMessages);
+        return string.Format(text, extraTexts);
     }
 }

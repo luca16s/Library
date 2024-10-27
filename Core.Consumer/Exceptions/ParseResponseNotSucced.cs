@@ -1,4 +1,13 @@
-﻿namespace Core.Consumer.Exceptions;
+﻿// -----------------------------------------------------------------------
+// <copyright file="ParseResponseNotSucced.cs" company="Îakaré Softwareoka Inc.">
+//     Copyright (c) Îakaré Softwareoka Inc.
+//     All rights reserved.
+//     Licensed under the MIT license.
+//     See LICENSE file in the project root for full license information.
+// </copyright>
+// -----------------------------------------------------------------------
+
+namespace Core.Consumer.Exceptions;
 
 using Core.Consumer.Properties;
 using Core.Services.Extensions;
@@ -28,7 +37,7 @@ public class ParseResponseNotSucced : Exception
     public ParseResponseNotSucced(
         string url,
         string tipo
-    ) : base(Resources.ParseErrorMessage.FormatMessage(tipo, url)) { }
+    ) : base(Resources.ParseErrorMessage.FormatText(tipo, url)) { }
 
     /// <summary>
     /// Inicia uma nova instância da classe <see cref="ParseResponseNotSucced" />.
@@ -46,5 +55,5 @@ public class ParseResponseNotSucced : Exception
         string url,
         string tipo,
         Exception inner
-    ) : base(Resources.ParseErrorMessage.FormatMessage(tipo, url), inner) { }
+    ) : base(Resources.ParseErrorMessage.FormatText(tipo, url), inner) { }
 }

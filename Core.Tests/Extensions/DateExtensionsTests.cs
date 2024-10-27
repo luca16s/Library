@@ -13,7 +13,7 @@ using Test.Types;
 public class DateExtensionsTests
 {
     [Test]
-    public void DeveRetornarDataEmFormatoUnix()
+    public void ToUnixEpochDeveRetornarDataEmFormatoUnix()
     {
         var date = DateTime.Now;
         var expected = ((DateTimeOffset)date.ToUniversalTime()).ToUnixTimeSeconds();
@@ -24,7 +24,7 @@ public class DateExtensionsTests
     }
 
     [Test]
-    public void DeveRetornarDataEmFormatoUnixComoString()
+    public void ToUnixEpochToStringDeveRetornarDataEmFormatoUnixComoString()
     {
         var date = DateTime.Now;
         var expected = ((DateTimeOffset)date.ToUniversalTime()).ToUnixTimeSeconds().ToString();

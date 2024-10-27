@@ -38,15 +38,15 @@ public class Settings
     /// <summary>
     /// Url de APIs a serem consumidas.
     /// </summary>
-    public IEnumerable<Connection> ApiUrls { get; set; } = [];
+    public List<ApiUrl> ApiUrls { get; set; } = [];
 
     /// <summary>
     /// Domínios permitidos para acesso.
     /// </summary>
-    public IEnumerable<string> AllowedDomains { get; set; } = [];
+    public List<string> AllowedDomains { get; set; } = [];
 
     /// <summary>
     /// Strings de conexão.
     /// </summary>
-    public IEnumerable<Connection> ConnectionStrings { get; set; } = [];
+    public List<Connection> ConnectionStrings { get; set; } = [];
 }

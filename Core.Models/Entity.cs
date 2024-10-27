@@ -42,12 +42,6 @@ public abstract class Entity<TId> : IEntity<TId>
     /// Obtém identificador da entidade.
     /// </summary>
     public TId Id { get; set; }
-    public long Version { get; set; }
-    public bool IsDeleted { get; set; }
-    public long? CreatedBy { get; set; }
-    public DateTime? CreatedAt { get; set; }
-    public long? LastModifiedBy { get; set; }
-    public DateTime? LastModified { get; set; }
 
     /// <summary>
     /// Lista com as validações executadas para entidade.

@@ -6,9 +6,9 @@ using System.Collections.Generic;
 
 public interface IAggregateEventSourcing : IProjection, IEntity
 {
-    IReadOnlyList<IDomainEvent> DomainEvents { get; }
     IDomainEvent[] ClearDomainEvents();
+    IReadOnlyList<IDomainEvent> DomainEvents { get; }
 }
 
-public interface IAggregateEventSourcing<TId> : IAggregateEventSourcing, IEntity<TId>
+public interface IAggregateEventSourcing<TId> : IAggregateEventSourcing, IAggregate<TId>
 { }

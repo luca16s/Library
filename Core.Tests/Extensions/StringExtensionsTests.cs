@@ -24,37 +24,37 @@ public class StringExtensionsTests
     }
 
     [Test]
-    public void DeveRetornarMensagemFormatada()
+    public void FormatTextDeveRetornarMensagemFormatada()
     {
         var expected = "Esta é a mensagem base. Esta é a mensagem do usuário.";
 
-        var result = "Esta é a mensagem base. {0}".FormatMessage("Esta é a mensagem do usuário.");
+        var result = "Esta é a mensagem base. {0}".FormatText("Esta é a mensagem do usuário.");
 
         result.Should().Be(expected);
     }
 
     [Test]
-    public void DeveRetornarMensagemBaseQuandoSemItensExtras()
+    public void FormatTextDeveRetornarMensagemBaseQuandoSemItensExtras()
     {
         var expected = "Esta é a mensagem base.";
 
-        var result = "Esta é a mensagem base. {0}".FormatMessage();
+        var result = "Esta é a mensagem base. {0}".FormatText();
 
         result.Should().Be(expected);
     }
 
     [Test]
-    public void DeveRetornarMensagemBaseQuandoItemExtraNulo()
+    public void FormatTextDeveRetornarMensagemBaseQuandoItemExtraNulo()
     {
         var expected = "Esta é a mensagem base.";
 
-        var result = "Esta é a mensagem base. {0}".FormatMessage(null);
+        var result = "Esta é a mensagem base. {0}".FormatText(null);
 
         result.Should().Be(expected);
     }
 
     [Test]
-    public void DeveRetornarEnumEquivalenteTexto()
+    public void GetEnumFromDescriptionDeveRetornarEnumEquivalenteTexto()
     {
         var expected = EnumTeste.A;
 
@@ -64,7 +64,7 @@ public class StringExtensionsTests
     }
 
     [Test]
-    public void DeveLancarExceptionCasoItemVazio()
+    public void GetEnumFromDescriptionDeveLancarExceptionCasoItemVazio()
     {
         _ = Assert.Throws<ArgumentException>(static () => {
             _ = string.Empty.GetEnumFromDescription<EnumTeste>();
@@ -72,7 +72,7 @@ public class StringExtensionsTests
     }
 
     [Test]
-    public void DeveLancarExceptionCasoItemNaoEncontrado()
+    public void GetEnumFromDescriptionDeveLancarExceptionCasoItemNaoEncontrado()
     {
         _ = Assert.Throws<EnumItemNotFoundException>(static () => {
             _ = "Item - C".GetEnumFromDescription<EnumTeste>();

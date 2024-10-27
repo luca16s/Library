@@ -50,7 +50,9 @@ public abstract class Repository<TId, TEntity, TContext>(
         try
         {
             EntityEntry<TEntity> entity = await DbSet.AddAsync(item, cancellationToken);
-            entity.State = EntityState.Added;
+
+            if (entity is not null)
+                entity.State = EntityState.Added;
 
             await UnitOfWork.CommitAsync(transaction, cancellationToken);
         }
@@ -97,7 +99,10 @@ public abstract class Repository<TId, TEntity, TContext>(
         try
         {
             EntityEntry<TEntity> entity = DbSet.Remove(item);
-            entity.State = EntityState.Deleted;
+
+            if (entity is not null)
+                entity.State = EntityState.Deleted;
+
             await UnitOfWork.CommitAsync(transaction);
         }
         catch (Exception e)
@@ -121,11 +126,17 @@ public abstract class Repository<TId, TEntity, TContext>(
             TEntity? entity = DbSet.Find(id) ??
                 throw new NullReferenceException("Item pesquisado não existente no banco de dados.");
 
-            Context.Entry(entity).State = EntityState.Detached;
+            if (Context.Entry(entity) is not null)
+                Context.Entry(entity).State = EntityState.Detached;
 
             EntityEntry<TEntity> entry = DbSet.Update(item);
-            entry.CurrentValues.SetValues(item);
-            entry.State = EntityState.Modified;
+
+            if (entry is not null)
+            {
+                entry.CurrentValues.SetValues(item);
+                entry.State = EntityState.Modified;
+            }
+
             await UnitOfWork.CommitAsync(transaction);
         }
         catch
@@ -157,8 +168,7 @@ public abstract class Repository<TId, TEntity, TContext>(
             .Take(amountToTake);
 
     public async Task<long> CountAsync(
-    )
-        => await CountAsync(CancellationToken.None);
+    ) => await CountAsync(CancellationToken.None);
 
     public async Task<long> CountAsync(
         CancellationToken cancellationToken

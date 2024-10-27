@@ -16,14 +16,25 @@ using System.Security.Claims;
 
 public static class JwtExtensions
 {
-    public static string CreateJwtToken(
+    /// <summary>
+    /// Cria o token JWT.
+    /// </summary>
+    /// <param name="_">
+    /// Informações de identidade.
+    /// </param>
+    /// <param name="jwt">
+    /// Configurações para criação do token JWT.
+    /// </param>
+    /// <returns></returns>
+    public static string CreateToken(
         this ClaimsIdentity? _,
-        Settings settings
-    ) => new JwtSecurityTokenHandler()
-        .WriteToken(new JwtSecurityToken(
-            issuer: settings.Jwt.Issuer,
-            audience: settings.Jwt.Audience,
-            expires: DateTime.Now.AddMinutes(120),
-            signingCredentials: new Signing(settings.Jwt.Secret).Credentials)
+        Jwt jwt
+    ) => new JwtSecurityTokenHandler().WriteToken(
+        new JwtSecurityToken(
+            issuer: jwt.Issuer,
+            audience: jwt.Audience,
+            expires: DateTime.Now.AddMinutes(jwt.ExpireInMinutes),
+            signingCredentials: new Signing(jwt.Secret).Credentials
+        )
     );
 }

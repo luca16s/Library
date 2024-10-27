@@ -20,7 +20,6 @@ using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
@@ -59,6 +58,7 @@ public static class SwaggerExtensions
                     },
                 }
             );
+
         c.OrderActionsBy(
             (apiDesc) => $"{apiDesc.ActionDescriptor.RouteValues["controller"]}_{apiDesc.HttpMethod}"
         );
@@ -113,17 +113,15 @@ public static class SwaggerExtensions
                         Id = JwtBearerDefaults.AuthenticationScheme,
                     },
                 },
-                new List<string>()
+                []
             }
         });
     });
 
-    public static void Swagger(
-        this WebApplication app,
+    public static IApplicationBuilder Swagger(
+        this IApplicationBuilder app,
         Settings settings
-    )
-    {
-        _ = app.UseSwagger()
+    ) => app.UseSwagger()
             .UseSwaggerUI(c =>
             {
                 c.UseRequestInterceptor(
@@ -153,5 +151,4 @@ public static class SwaggerExtensions
                 foreach (var version in settings.Swagger.SwaggerVersions)
                     c.SwaggerEndpoint($"/swagger/v{version}/swagger.json", $"v{version}");
             });
-    }
 }
