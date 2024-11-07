@@ -9,6 +9,7 @@
     <Copyright>$(Authors)</Copyright>
     <PackageProjectUrl>https://github.com/Iakare-Softwareoka-Inc/Library</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Iakare-Softwareoka-Inc/Library</RepositoryUrl>
+    <PackageId>ISO.$(AssemblyName)</PackageId>
   </PropertyGroup>
 
   <ItemGroup>

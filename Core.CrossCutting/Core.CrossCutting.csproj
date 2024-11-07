@@ -9,6 +9,7 @@
     <Copyright>$(Authors)</Copyright>
     <Authors>Îakaré Softwareoka Inc.</Authors>
     <Title>Îakaré Softwareoka Inc. - Cross Cutting Library</Title>
+    <PackageId>ISO.$(AssemblyName)</PackageId>
   </PropertyGroup>
 
 </Project>
