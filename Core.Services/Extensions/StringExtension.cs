@@ -61,12 +61,15 @@ public static class StringExtension
     /// </returns>
     public static string FormatText(
         this string text,
-        params string[] extraTexts
+        params string?[] extraTexts
     )
     {
-        if (extraTexts is null || extraTexts.Length == 0)
-            return string.Format(text, string.Empty).TrimEnd();
+        var filteredTexts = extraTexts?.Where(t => !string.IsNullOrWhiteSpace(t));
 
-        return string.Format(text, extraTexts);
+        if (filteredTexts?.Any() != true)
+            return string.Format(text, string.Empty)
+                .TrimEnd();
+
+        return string.Format(text, [.. filteredTexts]);
     }
 }

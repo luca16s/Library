@@ -48,7 +48,7 @@ public class StringExtensionsTests
     {
         var expected = "Esta é a mensagem base.";
 
-        var result = "Esta é a mensagem base. {0}".FormatText(null);
+        var result = "Esta é a mensagem base. {0}".FormatText(null as string);
 
         result.Should().Be(expected);
     }
