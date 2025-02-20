@@ -3,7 +3,7 @@
 using Core.Services.Exceptions;
 using Core.Services.Extensions;
 
-using FluentAssertions;
+using Shouldly;
 
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
@@ -30,7 +30,7 @@ public class StringExtensionsTests
 
         var result = "Esta é a mensagem base. {0}".FormatText("Esta é a mensagem do usuário.");
 
-        result.Should().Be(expected);
+        result.ShouldBe(expected);
     }
 
     [Test]
@@ -40,7 +40,7 @@ public class StringExtensionsTests
 
         var result = "Esta é a mensagem base. {0}".FormatText();
 
-        result.Should().Be(expected);
+        result.ShouldBe(expected);
     }
 
     [Test]
@@ -50,7 +50,7 @@ public class StringExtensionsTests
 
         var result = "Esta é a mensagem base. {0}".FormatText(null as string);
 
-        result.Should().Be(expected);
+        result.ShouldBe(expected);
     }
 
     [Test]
@@ -60,7 +60,7 @@ public class StringExtensionsTests
 
         var result = "Item - A".GetEnumFromDescription<EnumTeste>();
 
-        result.Should().Be(expected);
+        result.ShouldBe(expected);
     }
 
     [Test]

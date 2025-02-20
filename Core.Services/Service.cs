@@ -44,10 +44,10 @@ public abstract class Service<TId, TEntity, TRepository>(
         {
             await _repository.CreateAsync(item, cancellationToken);
         }
-        catch (Exception)
+        catch
         {
             await _unitOfWork.RollbackTransactionAsync(cancellationToken);
-            throw new InvalidOperationException("");
+            throw;
         }
 
         await _unitOfWork.CommitAsync(transaction, cancellationToken);
@@ -76,7 +76,7 @@ public abstract class Service<TId, TEntity, TRepository>(
         await _unitOfWork.CommitAsync(transaction, cancellationToken);
     }
 
-    public async Task Delete(
+    public async Task DeleteAsync(
         TEntity item
     )
     {
@@ -86,7 +86,7 @@ public abstract class Service<TId, TEntity, TRepository>(
         await _unitOfWork.CommitAsync(transaction);
     }
 
-    public async Task Update(
+    public async Task UpdateAsync(
         TId id,
         TEntity item
     )

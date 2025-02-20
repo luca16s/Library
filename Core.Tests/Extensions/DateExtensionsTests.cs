@@ -2,7 +2,7 @@
 
 using Core.Services.Extensions;
 
-using FluentAssertions;
+using Shouldly;
 
 using System.Diagnostics.CodeAnalysis;
 
@@ -20,7 +20,7 @@ public class DateExtensionsTests
 
         var result = date.ToUnixEpoch();
 
-        result.Should().Be(expected);
+        result.ShouldBe(expected);
     }
 
     [Test]
@@ -31,6 +31,6 @@ public class DateExtensionsTests
 
         var result = date.ToUnixEpochToString();
 
-        result.Should().Be(expected);
+        result.ShouldBe(expected);
     }
 }

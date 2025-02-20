@@ -2,7 +2,7 @@
 
 using Core.Services.Exceptions;
 
-using FluentAssertions;
+using Shouldly;
 
 using System.Diagnostics.CodeAnalysis;
 
@@ -19,7 +19,7 @@ public class EnumItemNotFoundExceptionTests
 
         var exception = new EnumItemNotFoundException();
 
-        exception.Message.Should().Be(expected);
+        exception.Message.ShouldBe(expected);
     }
 
     [Test]
@@ -30,7 +30,7 @@ public class EnumItemNotFoundExceptionTests
 
         var exception = new EnumItemNotFoundException(message);
 
-        exception.Message.Should().Be(expected);
+        exception.Message.ShouldBe(expected);
     }
 
     [Test]
@@ -42,8 +42,8 @@ public class EnumItemNotFoundExceptionTests
 
         var exception = new EnumItemNotFoundException(message, new Exception(innerMessage));
 
-        exception.Message.Should().Be(expected);
-        exception.InnerException.Should().NotBeNull();
-        exception.InnerException?.Message.Should().Be(innerMessage);
+        exception.Message.ShouldBe(expected);
+        exception.InnerException.ShouldNotBeNull();
+        exception.InnerException?.Message.ShouldBe(innerMessage);
     }
 }

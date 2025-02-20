@@ -32,8 +32,9 @@ public abstract class Entity<TId> : IEntity<TId>
 
     protected Entity()
     {
-        if (Id is null)
-            throw new ArgumentNullException(nameof(Id));
+        if (Id is not null) return;
+
+        throw new ArgumentNullException(nameof(Id));
     }
 
     protected Entity(TId id) => Id = id;
@@ -60,6 +61,19 @@ public abstract class Entity<TId> : IEntity<TId>
             _requestedHashCode = Id.GetHashCode() ^ 31;
 
         return _requestedHashCode.Value;
+    }
+
+    public void AddError(
+        string propertyName,
+        string errorMessage
+    )
+    {
+        ValidationResult.Errors.Add(
+            new ValidationFailure(
+                propertyName,
+                errorMessage
+            )
+        );
     }
 
     /// <summary>

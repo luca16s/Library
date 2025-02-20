@@ -1,7 +1,7 @@
 ﻿namespace Core.Tests.Exceptions;
 using Core.Services.Exceptions;
 
-using FluentAssertions;
+using Shouldly;
 
 using System.Diagnostics.CodeAnalysis;
 
@@ -18,7 +18,7 @@ public class EnumDescriptionNotFoundExceptionTests
 
         var exception = new EnumDescriptionNotFoundException();
 
-        exception.Message.Should().Be(expected);
+        exception.Message.ShouldBe(expected);
     }
 
     [Test]
@@ -29,7 +29,7 @@ public class EnumDescriptionNotFoundExceptionTests
 
         var exception = new EnumDescriptionNotFoundException(message);
 
-        exception.Message.Should().Be(expected);
+        exception.Message.ShouldBe(expected);
     }
 
     [Test]
@@ -41,8 +41,8 @@ public class EnumDescriptionNotFoundExceptionTests
 
         var exception = new EnumDescriptionNotFoundException(message, new Exception(innerMessage));
 
-        exception.Message.Should().Be(expected);
-        exception.InnerException.Should().NotBeNull();
-        exception.InnerException?.Message.Should().Be(innerMessage);
+        exception.Message.ShouldBe(expected);
+        exception.InnerException.ShouldNotBeNull();
+        exception.InnerException?.Message.ShouldBe(innerMessage);
     }
 }

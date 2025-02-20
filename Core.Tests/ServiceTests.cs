@@ -71,7 +71,7 @@ public class ServiceTest
         _unitOfWorkMock.Setup(u => u.BeginTransactionAsync()).ReturnsAsync(transactionMock.Object);
         _repositoryMock.Setup(r => r.DeleteAsync(entity)).Returns(Task.CompletedTask);
 
-        await _service.Delete(entity);
+        await _service.DeleteAsync(entity);
 
         _repositoryMock.Verify(r => r.DeleteAsync(entity), Times.Once);
         _unitOfWorkMock.Verify(u => u.CommitAsync(transactionMock.Object), Times.Once);
@@ -86,7 +86,7 @@ public class ServiceTest
         _unitOfWorkMock.Setup(u => u.BeginTransactionAsync()).ReturnsAsync(transactionMock.Object);
         _repositoryMock.Setup(r => r.UpdateAsync(entity.Id, entity)).Returns(Task.CompletedTask);
 
-        await _service.Update(entity.Id, entity);
+        await _service.UpdateAsync(entity.Id, entity);
 
         _repositoryMock.Verify(r => r.UpdateAsync(entity.Id, entity), Times.Once);
         _unitOfWorkMock.Verify(u => u.CommitAsync(transactionMock.Object), Times.Once);
@@ -101,7 +101,7 @@ public class ServiceTest
         _unitOfWorkMock.Setup(u => u.BeginTransactionAsync()).ReturnsAsync(transactionMock.Object);
         _repositoryMock.Setup(r => r.UpdateAsync(entity.Id, entity)).ThrowsAsync(new Exception());
 
-        await Assert.ThrowsAsync<InvalidOperationException>(() => _service.Update(entity.Id, entity));
+        await Assert.ThrowsAsync<InvalidOperationException>(() => _service.UpdateAsync(entity.Id, entity));
 
         _unitOfWorkMock.Verify(u => u.RollbackTransactionAsync(), Times.Once);
     }

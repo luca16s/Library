@@ -80,7 +80,7 @@ public interface IService<TId, TEntity>
     /// <param name="item">
     /// Entidade a ser deletada.
     /// </param>
-    Task Delete(
+    Task DeleteAsync(
         TEntity item
     );
 
@@ -93,7 +93,7 @@ public interface IService<TId, TEntity>
     /// <param name="item">
     /// Entidade a ser atualizada.
     /// </param>
-    Task Update(
+    Task UpdateAsync(
         TId id,
         TEntity item
     );

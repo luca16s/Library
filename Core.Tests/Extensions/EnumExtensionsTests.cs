@@ -4,13 +4,12 @@ using Core.Services.Exceptions;
 using Core.Services.Extensions;
 using Core.Models;
 
-using FluentAssertions;
-
 using System;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 
 using Test.Types;
+using Shouldly;
 
 [ExcludeFromCodeCoverage]
 [Trait("Core", value: "Extensions")]
@@ -80,7 +79,7 @@ public class EnumExtensionsTests
     {
         var result = EnumTeste.A.Description();
 
-        result.Should().Be("Item - A");
+        result.ShouldBe("Item - A");
     }
 
     [Test]
@@ -108,6 +107,6 @@ public class EnumExtensionsTests
 
         var result = EnumTeste3.A.GetValuesAndDescriptions();
 
-        result.Should().BeEquivalentTo(expected);
+        result.ShouldBeEquivalentTo(expected);
     }
 }

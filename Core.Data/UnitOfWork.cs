@@ -119,7 +119,7 @@ public class UnitOfWork<TContext>(
                 entry.OriginalValues.SetValues(proposedValues);
             }
         }
-        catch (Exception ex)
+        catch
         {
             foreach (EntityEntry entry in context.ChangeTracker.Entries().Where(e => e?.State != EntityState.Unchanged))
             {
@@ -131,7 +131,7 @@ public class UnitOfWork<TContext>(
             }
 
             await RollbackTransactionAsync();
-            throw new DbUpdateException(ex.Message);
+            throw;
         }
     }
 
