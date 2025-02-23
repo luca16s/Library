@@ -176,7 +176,10 @@ public abstract class Repository<TId, TEntity, TContext>(
 
     public IQueryable<TEntity> Search(
         Expression<Func<TEntity, bool>> predicate
-    ) => DbSet.Where(predicate);
+    ) => DbSet
+        .AsQueryable()
+        .AsNoTracking()
+        .Where(predicate);
 
     public async Task<TResult> MinAsync<TResult>(
         Expression<Func<TEntity, TResult>> predicate

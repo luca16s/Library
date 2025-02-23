@@ -11,6 +11,7 @@ namespace Core.Services;
 
 using Core.Interfaces;
 
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 
 using System;
@@ -22,7 +23,7 @@ using System.Threading.Tasks;
 public abstract class Service<TId, TEntity, TRepository>(
     IUnitOfWork unitOfWork,
     TRepository repository
-    ) : IService<TId, TEntity>
+) : IService<TId, TEntity>
     where TId : notnull
     where TEntity : IEntity<TId>
     where TRepository : IRepository<TId, TEntity>
@@ -114,12 +115,18 @@ public abstract class Service<TId, TEntity, TRepository>(
         CancellationToken cancellationToken
     ) => await _repository.GetAsync(id, cancellationToken);
 
-    public IQueryable<TEntity> GetAll(
+    public async Task<List<TEntity>> GetAllAsync(
         int amountToSkip = 0,
         int amountToTake = 25
-    ) => _repository.GetAll(amountToSkip, amountToTake);
+    ) => await _repository
+        .GetAll(
+            amountToSkip,
+            amountToTake
+        ).ToListAsync();
 
-    public IQueryable<TEntity> Search(
+    public async Task<List<TEntity>> SearchAsync(
         Expression<Func<TEntity, bool>> predicate
-    ) => _repository.Search(predicate);
+    ) => await _repository
+        .Search(predicate)
+        .ToListAsync();
 }

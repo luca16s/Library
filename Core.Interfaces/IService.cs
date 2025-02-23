@@ -140,7 +140,7 @@ public interface IService<TId, TEntity>
     /// <returns>
     /// Todas as entidades.
     /// </returns>
-    IQueryable<TEntity> GetAll(
+    Task<List<TEntity>> GetAllAsync(
         int amountToSkip = 0,
         int amountToTake = 25
     );
@@ -154,7 +154,7 @@ public interface IService<TId, TEntity>
     /// <returns>
     /// Lista de itens encontrados.
     /// </returns>
-    IQueryable<TEntity> Search(
+    Task<List<TEntity>> SearchAsync(
         Expression<Func<TEntity, bool>> predicate
     );
 }
