@@ -85,6 +85,20 @@ public interface IService<TId, TEntity>
     );
 
     /// <summary>
+    /// Deleta uma entidade no banco de dados de forma assíncrona.
+    /// </summary>
+    /// <param name="item">
+    /// Entidade a ser deletada.
+    /// </param>
+    /// <param name="cancellationToken">
+    /// Um <see cref="CancellationToken" /> para observar enquanto espera a conclusão da tarefa.
+    /// </param>
+    Task DeleteAsync(
+        TEntity item,
+        CancellationToken cancellationToken
+    );
+
+    /// <summary>
     /// Atualiza uma entidade com base em um identificador passado de forma assíncrona.
     /// </summary>
     /// <param name="id">
@@ -96,6 +110,24 @@ public interface IService<TId, TEntity>
     Task UpdateAsync(
         TId id,
         TEntity item
+    );
+
+    /// <summary>
+    /// Atualiza uma entidade com base em um identificador passado de forma assíncrona.
+    /// </summary>
+    /// <param name="id">
+    /// Identificador da entidade.
+    /// </param>
+    /// <param name="item">
+    /// Entidade a ser atualizada.
+    /// </param>
+    /// <param name="cancellationToken">
+    /// Um <see cref="CancellationToken" /> para observar enquanto espera a conclusão da tarefa.
+    /// </param>
+    Task UpdateAsync(
+        TId id,
+        TEntity item,
+        CancellationToken cancellationToken
     );
 
     /// <summary>
@@ -140,9 +172,30 @@ public interface IService<TId, TEntity>
     /// <returns>
     /// Todas as entidades.
     /// </returns>
-    Task<List<TEntity>> GetAllAsync(
-        int amountToSkip = 0,
-        int amountToTake = 25
+    Task<IList<TEntity>> GetAllAsync(
+        int amountToSkip,
+        int amountToTake
+    );
+
+    /// <summary>
+    /// Retorna todas as entidades do banco de dados de forma assíncrona.
+    /// </summary>
+    /// <param name="amountToSkip">
+    /// Quantidade de itens a serem ignorados.
+    /// </param>
+    /// <param name="amountToTake">
+    /// Quantidade de itens a ser buscadas.
+    /// </param>
+    /// <param name="cancellationToken">
+    /// Um <see cref="CancellationToken" /> para observar enquanto espera a conclusão da tarefa.
+    /// </param>
+    /// <returns>
+    /// Todas as entidades.
+    /// </returns>
+    Task<IList<TEntity>> GetAllAsync(
+        int amountToSkip,
+        int amountToTake,
+        CancellationToken cancellationToken
     );
 
     /// <summary>
@@ -154,7 +207,24 @@ public interface IService<TId, TEntity>
     /// <returns>
     /// Lista de itens encontrados.
     /// </returns>
-    Task<List<TEntity>> SearchAsync(
+    Task<IList<TEntity>> SearchAsync(
         Expression<Func<TEntity, bool>> predicate
+    );
+
+    /// <summary>
+    /// Busca determinados itens na base de dados.
+    /// </summary>
+    /// <param name="predicate">
+    /// Termo de busca.
+    /// </param>
+    /// <param name="cancellationToken">
+    /// Um <see cref="CancellationToken" /> para observar enquanto espera a conclusão da tarefa.
+    /// </param>
+    /// <returns>
+    /// Lista de itens encontrados.
+    /// </returns>
+    Task<IList<TEntity>> SearchAsync(
+        Expression<Func<TEntity, bool>> predicate,
+        CancellationToken cancellationToken
     );
 }

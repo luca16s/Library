@@ -1,4 +1,5 @@
 ﻿namespace Core.Tests;
+
 using Core.Interfaces;
 using Core.Services;
 
@@ -22,88 +23,51 @@ using Xunit;
 [Trait("Core", "Service")]
 public class ServiceTest
 {
-    private readonly Mock<IUnitOfWork> _unitOfWorkMock;
     private readonly Mock<IRepository<int, TestEntity>> _repositoryMock;
     private readonly TestService _service;
 
     public ServiceTest()
     {
-        _unitOfWorkMock = new Mock<IUnitOfWork>();
         _repositoryMock = new Mock<IRepository<int, TestEntity>>();
-        _service = new TestService(_unitOfWorkMock.Object, _repositoryMock.Object);
+        _service = new TestService(_repositoryMock.Object);
     }
 
     [Test]
-    public async Task CreateAsyncDeveChamarRepositoryAndUnitOfWork()
+    public async Task CreateAsyncDeveChamarRepository()
     {
         var entity = new TestEntity { Id = 1 };
-        var transactionMock = new Mock<IDbContextTransaction>();
 
-        _unitOfWorkMock.Setup(u => u.BeginTransactionAsync(It.IsAny<CancellationToken>())).ReturnsAsync(transactionMock.Object);
         _repositoryMock.Setup(r => r.CreateAsync(entity, It.IsAny<CancellationToken>())).Returns(Task.CompletedTask);
 
         await _service.CreateAsync(entity);
 
         _repositoryMock.Verify(r => r.CreateAsync(entity, It.IsAny<CancellationToken>()), Times.Once);
-        _unitOfWorkMock.Verify(u => u.CommitAsync(transactionMock.Object, It.IsAny<CancellationToken>()), Times.Once);
     }
 
     [Test]
-    public async Task CreateAsyncDeveDarRollbackOnException()
+    public async Task DeleteDeveChamarRepository()
     {
         var entity = new TestEntity { Id = 1 };
         var transactionMock = new Mock<IDbContextTransaction>();
 
-        _unitOfWorkMock.Setup(u => u.BeginTransactionAsync(It.IsAny<CancellationToken>())).ReturnsAsync(transactionMock.Object);
-        _repositoryMock.Setup(r => r.CreateAsync(entity, It.IsAny<CancellationToken>())).ThrowsAsync(new Exception());
-
-        await Assert.ThrowsAsync<InvalidOperationException>(() => _service.CreateAsync(entity));
-
-        _unitOfWorkMock.Verify(u => u.RollbackTransactionAsync(It.IsAny<CancellationToken>()), Times.Once);
-    }
-
-    [Test]
-    public async Task DeleteDeveChamarRepositoryAndUnitOfWork()
-    {
-        var entity = new TestEntity { Id = 1 };
-        var transactionMock = new Mock<IDbContextTransaction>();
-
-        _unitOfWorkMock.Setup(u => u.BeginTransactionAsync()).ReturnsAsync(transactionMock.Object);
         _repositoryMock.Setup(r => r.DeleteAsync(entity)).Returns(Task.CompletedTask);
 
         await _service.DeleteAsync(entity);
 
         _repositoryMock.Verify(r => r.DeleteAsync(entity), Times.Once);
-        _unitOfWorkMock.Verify(u => u.CommitAsync(transactionMock.Object), Times.Once);
     }
 
     [Test]
-    public async Task UpdateDeveChamarRepositoryAndUnitOfWork()
+    public async Task UpdateDeveChamarRepository()
     {
         var entity = new TestEntity { Id = 1 };
         var transactionMock = new Mock<IDbContextTransaction>();
 
-        _unitOfWorkMock.Setup(u => u.BeginTransactionAsync()).ReturnsAsync(transactionMock.Object);
         _repositoryMock.Setup(r => r.UpdateAsync(entity.Id, entity)).Returns(Task.CompletedTask);
 
         await _service.UpdateAsync(entity.Id, entity);
 
         _repositoryMock.Verify(r => r.UpdateAsync(entity.Id, entity), Times.Once);
-        _unitOfWorkMock.Verify(u => u.CommitAsync(transactionMock.Object), Times.Once);
-    }
-
-    [Test]
-    public async Task UpdateDeveDarRollbackOnException()
-    {
-        var entity = new TestEntity { Id = 1 };
-        var transactionMock = new Mock<IDbContextTransaction>();
-
-        _unitOfWorkMock.Setup(u => u.BeginTransactionAsync()).ReturnsAsync(transactionMock.Object);
-        _repositoryMock.Setup(r => r.UpdateAsync(entity.Id, entity)).ThrowsAsync(new Exception());
-
-        await Assert.ThrowsAsync<InvalidOperationException>(() => _service.UpdateAsync(entity.Id, entity));
-
-        _unitOfWorkMock.Verify(u => u.RollbackTransactionAsync(), Times.Once);
     }
 
     [Test]
@@ -119,57 +83,41 @@ public class ServiceTest
     }
 
     [Test]
-    public void GetAllDeveRetornarEntidades()
+    public async Task GetAllDeveRetornarEntidadesAsync()
     {
         var entities = new List<TestEntity> { new() { Id = 1 }, new() { Id = 2 } }.AsQueryable();
 
         _repositoryMock.Setup(r => r.GetAll(It.IsAny<int>(), It.IsAny<int>())).Returns(entities);
 
-        var result = _service.GetAll();
+        var result = await _service.GetAllAsync();
 
         Assert.Equal(entities, result);
     }
 
     [Test]
-    public void SearchDeveRetornarEntidades()
+    public async Task SearchDeveRetornarEntidadesAsync()
     {
         var entities = new List<TestEntity> { new() { Id = 1 }, new() { Id = 2 } }.AsQueryable();
         Expression<Func<TestEntity, bool>> predicate = e => e.Id > 0;
 
         _repositoryMock.Setup(r => r.Search(predicate)).Returns(entities);
 
-        var result = _service.Search(predicate);
+        var result = await _service.SearchAsync(predicate);
 
         Assert.Equal(entities, result);
     }
 
     [Test]
-    public async Task CreateAsyncEnumerableDeveChamarRepositoryAndUnitOfWork()
+    public async Task CreateAsyncEnumerableDeveChamarRepository()
     {
         var entities = new List<TestEntity> { new() { Id = 1 }, new() { Id = 2 } };
         var transactionMock = new Mock<IDbContextTransaction>();
 
-        _unitOfWorkMock.Setup(u => u.BeginTransactionAsync(It.IsAny<CancellationToken>())).ReturnsAsync(transactionMock.Object);
         _repositoryMock.Setup(r => r.CreateAsync(entities, It.IsAny<CancellationToken>())).Returns(Task.CompletedTask);
 
         await _service.CreateAsync(entities);
 
         _repositoryMock.Verify(r => r.CreateAsync(entities, It.IsAny<CancellationToken>()), Times.Once);
-        _unitOfWorkMock.Verify(u => u.CommitAsync(transactionMock.Object, It.IsAny<CancellationToken>()), Times.Once);
-    }
-
-    [Test]
-    public async Task CreateAsyncEnumerableDeveDarRollbackOnException()
-    {
-        var entities = new List<TestEntity> { new() { Id = 1 }, new() { Id = 2 } };
-        var transactionMock = new Mock<IDbContextTransaction>();
-
-        _unitOfWorkMock.Setup(u => u.BeginTransactionAsync(It.IsAny<CancellationToken>())).ReturnsAsync(transactionMock.Object);
-        _repositoryMock.Setup(r => r.CreateAsync(entities, It.IsAny<CancellationToken>())).ThrowsAsync(new Exception());
-
-        await Assert.ThrowsAsync<InvalidOperationException>(() => _service.CreateAsync(entities));
-
-        _unitOfWorkMock.Verify(u => u.RollbackTransactionAsync(It.IsAny<CancellationToken>()), Times.Once);
     }
 
     public class TestEntity : IEntity<int>
@@ -184,8 +132,7 @@ public class ServiceTest
     }
 
     public class TestService(
-        IUnitOfWork unitOfWork,
         IRepository<int, TestEntity> repository
-    ) : Service<int, TestEntity, IRepository<int, TestEntity>>(unitOfWork, repository)
+    ) : Service<int, TestEntity, IRepository<int, TestEntity>>(repository)
     { }
 }

@@ -39,6 +39,38 @@ public abstract class Repository<TId, TEntity, TContext>(
     ) => await CreateAsync(item, CancellationToken.None);
 
     public async Task CreateAsync(
+        IEnumerable<TEntity> items
+    ) => await CreateAsync(items, CancellationToken.None);
+
+    public async Task DeleteAsync(
+        TEntity item
+    ) => await DeleteAsync(item, CancellationToken.None);
+
+    public async Task UpdateAsync(
+        TId id,
+        TEntity item
+    ) => await UpdateAsync(id, item, CancellationToken.None);
+
+    public async Task<TEntity?> GetAsync(
+        TId id
+    ) => await GetAsync(id, CancellationToken.None);
+
+    public async Task<TEntity?> GetManyAsync(
+        TId[] ids
+    ) => await GetManyAsync(ids, CancellationToken.None);
+
+    public async Task<long> CountAsync(
+    ) => await CountAsync(CancellationToken.None);
+
+    public async Task<TResult> MinAsync<TResult>(
+        Expression<Func<TEntity, TResult>> predicate
+    ) => await MinAsync(predicate, CancellationToken.None);
+
+    public async Task<TResult> MaxAsync<TResult>(
+        Expression<Func<TEntity, TResult>> predicate
+    ) => await MaxAsync(predicate, CancellationToken.None);
+
+    public async Task CreateAsync(
         TEntity item,
         CancellationToken cancellationToken
     )
@@ -56,16 +88,12 @@ public abstract class Repository<TId, TEntity, TContext>(
 
             await UnitOfWork.CommitAsync(transaction, cancellationToken);
         }
-        catch (DbUpdateException e)
+        catch
         {
             await UnitOfWork.RollbackTransactionAsync(cancellationToken);
-            throw new Exception(e.Message);
+            throw;
         }
     }
-
-    public async Task CreateAsync(
-        IEnumerable<TEntity> items
-    ) => await CreateAsync(items, CancellationToken.None);
 
     public async Task CreateAsync(
         IEnumerable<TEntity> items,
@@ -81,20 +109,22 @@ public abstract class Repository<TId, TEntity, TContext>(
             await DbSet.AddRangeAsync(items, cancellationToken);
             await UnitOfWork.CommitAsync(transaction, cancellationToken);
         }
-        catch (DbUpdateException e)
+        catch
         {
             await UnitOfWork.RollbackTransactionAsync(cancellationToken);
-            throw new Exception(e.Message);
+            throw;
         }
     }
 
     public async Task DeleteAsync(
-        TEntity item
+        TEntity item,
+        CancellationToken cancellationToken
     )
     {
         ArgumentNullException.ThrowIfNull(item);
+        cancellationToken.ThrowIfCancellationRequested();
 
-        var transaction = await UnitOfWork.BeginTransactionAsync();
+        var transaction = await UnitOfWork.BeginTransactionAsync(cancellationToken);
 
         try
         {
@@ -103,23 +133,25 @@ public abstract class Repository<TId, TEntity, TContext>(
             if (entity is not null)
                 entity.State = EntityState.Deleted;
 
-            await UnitOfWork.CommitAsync(transaction);
+            await UnitOfWork.CommitAsync(transaction, cancellationToken);
         }
-        catch (Exception e)
+        catch
         {
-            await UnitOfWork.RollbackTransactionAsync();
-            throw new Exception(e.Message);
+            await UnitOfWork.RollbackTransactionAsync(cancellationToken);
+            throw;
         }
     }
 
     public async Task UpdateAsync(
         TId id,
-        TEntity item
+        TEntity item,
+        CancellationToken cancellationToken
     )
     {
         ArgumentNullException.ThrowIfNull(item);
+        cancellationToken.ThrowIfCancellationRequested();
 
-        var transaction = await UnitOfWork.BeginTransactionAsync();
+        var transaction = await UnitOfWork.BeginTransactionAsync(cancellationToken);
 
         try
         {
@@ -137,26 +169,50 @@ public abstract class Repository<TId, TEntity, TContext>(
                 entry.State = EntityState.Modified;
             }
 
-            await UnitOfWork.CommitAsync(transaction);
+            await UnitOfWork.CommitAsync(transaction, cancellationToken);
         }
         catch
         {
-            await UnitOfWork.RollbackTransactionAsync();
+            await UnitOfWork.RollbackTransactionAsync(cancellationToken);
             throw;
         }
     }
 
     public async Task<TEntity?> GetAsync(
-        TId id
-    ) => await GetAsync(id, CancellationToken.None);
-
-    public async Task<TEntity?> GetAsync(
         TId id,
         CancellationToken cancellationToken
-    ) => await DbSet.FindAsync(
-        [id, cancellationToken],
-        cancellationToken
-    );
+    )
+    {
+        try
+        {
+            return await DbSet.FindAsync(
+                [id, cancellationToken],
+                cancellationToken
+            );
+        }
+        catch
+        {
+            throw;
+        }
+    }
+
+    public async Task<TEntity?> GetManyAsync(
+        TId[] ids,
+        CancellationToken cancellationToken
+    )
+    {
+        try
+        {
+            return await DbSet.FindAsync(
+                [ids, cancellationToken],
+                cancellationToken
+            );
+        }
+        catch
+        {
+            throw;
+        }
+    }
 
     public IQueryable<TEntity> GetAll(
         int amountToSkip = 0,
@@ -167,23 +223,36 @@ public abstract class Repository<TId, TEntity, TContext>(
             .Skip(amountToSkip)
             .Take(amountToTake);
 
-    public async Task<long> CountAsync(
-    ) => await CountAsync(CancellationToken.None);
+    public IQueryable<TEntity> Search(
+        Expression<Func<TEntity, bool>> predicate
+    )
+    {
+        try
+        {
+            return DbSet
+                .AsQueryable()
+                .AsNoTracking()
+                .Where(predicate);
+        }
+        catch
+        {
+            throw;
+        }
+    }
 
     public async Task<long> CountAsync(
         CancellationToken cancellationToken
-    ) => await DbSet.CountAsync(cancellationToken);
-
-    public IQueryable<TEntity> Search(
-        Expression<Func<TEntity, bool>> predicate
-    ) => DbSet
-        .AsQueryable()
-        .AsNoTracking()
-        .Where(predicate);
-
-    public async Task<TResult> MinAsync<TResult>(
-        Expression<Func<TEntity, TResult>> predicate
-    ) => await MinAsync(predicate, CancellationToken.None);
+    )
+    {
+        try
+        {
+            return await DbSet.CountAsync(cancellationToken);
+        }
+        catch
+        {
+            throw;
+        }
+    }
 
     public async Task<TResult> MinAsync<TResult>(
         Expression<Func<TEntity, TResult>> predicate,
@@ -194,18 +263,11 @@ public abstract class Repository<TId, TEntity, TContext>(
         {
             return await DbSet.MinAsync(predicate, cancellationToken);
         }
-        catch (InvalidOperationException ex)
+        catch
         {
-            throw new InvalidOperationException(
-                "Tabela não contém items ou foi passada uma entidade ao invés de uma propriedade.",
-                ex
-             );
+            throw;
         }
     }
-
-    public async Task<TResult> MaxAsync<TResult>(
-        Expression<Func<TEntity, TResult>> predicate
-    ) => await MaxAsync(predicate, CancellationToken.None);
 
     public async Task<TResult> MaxAsync<TResult>(
         Expression<Func<TEntity, TResult>> predicate,
@@ -216,12 +278,9 @@ public abstract class Repository<TId, TEntity, TContext>(
         {
             return await DbSet.MaxAsync(predicate, cancellationToken);
         }
-        catch (InvalidOperationException ex)
+        catch
         {
-            throw new InvalidOperationException(
-                "Tabela não contém items ou foi passada uma entidade ao invés de uma propriedade.",
-                ex
-             );
+            throw;
         }
     }
 }

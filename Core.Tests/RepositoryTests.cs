@@ -49,7 +49,7 @@ public class RepositoryTests
         await _repository.DeleteAsync(entity);
 
         _mockDbSet.Verify(m => m.Remove(entity), Times.Once);
-        _mockUnitOfWork.Verify(m => m.CommitAsync(It.IsAny<IDbContextTransaction>()), Times.Once);
+        _mockUnitOfWork.Verify(m => m.CommitAsync(It.IsAny<IDbContextTransaction>(), It.IsAny<CancellationToken>()), Times.Once);
     }
 
     [Test]
@@ -61,7 +61,7 @@ public class RepositoryTests
         await _repository.UpdateAsync(1, entity);
 
         _mockDbSet.Verify(m => m.Update(entity), Times.Once);
-        _mockUnitOfWork.Verify(m => m.CommitAsync(It.IsAny<IDbContextTransaction>()), Times.Once);
+        _mockUnitOfWork.Verify(m => m.CommitAsync(It.IsAny<IDbContextTransaction>(), It.IsAny<CancellationToken>()), Times.Once);
     }
 
     [Test]
@@ -92,7 +92,7 @@ public class RepositoryTests
         var entity = new TestEntity { Id = 1 };
         _mockDbSet.Setup(m => m.AddAsync(entity, It.IsAny<CancellationToken>())).ThrowsAsync(new DbUpdateException());
 
-        await Assert.ThrowsAsync<Exception>(async () =>
+        await Assert.ThrowsAsync<DbUpdateException>(async () =>
             await _repository.CreateAsync(entity));
     }
 
@@ -101,8 +101,8 @@ public class RepositoryTests
     {
         var entities = new List<TestEntity>
         {
-            new TestEntity { Id = 1 },
-            new TestEntity { Id = 2 }
+            new() { Id = 1 },
+            new() { Id = 2 }
         };
 
         await _repository.CreateAsync(entities);
@@ -116,12 +116,12 @@ public class RepositoryTests
     {
         var entities = new List<TestEntity>
         {
-            new TestEntity { Id = 1 },
-            new TestEntity { Id = 2 }
+            new() { Id = 1 },
+            new() { Id = 2 }
         };
         _mockDbSet.Setup(m => m.AddRangeAsync(entities, It.IsAny<CancellationToken>())).ThrowsAsync(new DbUpdateException());
 
-        await Assert.ThrowsAsync<Exception>(async () =>
+        await Assert.ThrowsAsync<DbUpdateException>(async () =>
             await _repository.CreateAsync(entities));
     }
 
