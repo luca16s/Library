@@ -16,7 +16,7 @@ jobs:
       - name: Preparando .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 8.x
+          dotnet-version: 9.x
       - name: Restaurando pacotes
         run: dotnet restore
       - name: Construindo projetos
@@ -27,4 +27,4 @@ jobs:
           $tag=$tagArray[2].Split("v")
           $VERSION=$tag[1]
           dotnet pack -p:PackageVersion=$VERSION --configuration Release --property:PackageOutputPath=..\
-          dotnet nuget push "*.nupkg" --api-key ${{ secrets.GITHUB_TOKEN }} --source "https://nuget.pkg.github.com/Iakare-Softwareoka-Inc/index.json" --skip-duplicate
+          dotnet nuget push "*.nupkg" --api-key ${{ secrets.GITHUB_TOKEN }} --source "https://nuget.pkg.github.com/luca16s/index.json" --skip-duplicate
