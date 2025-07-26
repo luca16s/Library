@@ -14,8 +14,8 @@
 
   <ItemGroup>
     <PackageReference Include="Google.Protobuf" Version="3.31.1" />
-    <PackageReference Include="MassTransit" Version="8.4.1" />
-    <PackageReference Include="MediatR" Version="12.5.0" />
+    <PackageReference Include="MassTransit" Version="8.5.1" />
+    <PackageReference Include="MediatR" Version="13.0.0" />
     <PackageReference Include="RabbitMQ.Client" Version="7.1.2" />
   </ItemGroup>
 
