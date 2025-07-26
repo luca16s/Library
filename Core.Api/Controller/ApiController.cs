@@ -13,6 +13,9 @@ using AutoMapper;
 
 using Core.Interfaces;
 
+using FluentValidation;
+using FluentValidation.Results;
+
 using Microsoft.AspNetCore.Mvc;
 
 /// <summary>
@@ -99,4 +102,22 @@ public class ApiController<TId, TEntity, TService> : ControllerBase
             NoContent() :
             Ok(mapper.Map<ViewModel>(response));
     }
+
+    [NonAction]
+    protected async Task<ValidationResult> GetValidationResultAsync<TDto>(
+        TDto dto,
+        IValidator<TDto> validator
+    ) => await validator.ValidateAsync(dto);
+
+    [NonAction]
+    protected TEntity MapToDataModel<TDto>(
+        TDto dto,
+        IMapper mapper
+    ) => mapper.Map<TEntity>(dto);
+
+    [NonAction]
+    protected TDto MapToDto<TDto>(
+        TEntity dto,
+        IMapper mapper
+    ) => mapper.Map<TDto>(dto);
 }
