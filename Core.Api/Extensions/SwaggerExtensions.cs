@@ -150,5 +150,9 @@ public static class SwaggerExtensions
                 c.DocumentTitle = settings.AppInfo.Name;
                 foreach (var version in settings.Swagger.SwaggerVersions)
                     c.SwaggerEndpoint($"/swagger/v{version}/swagger.json", $"v{version}");
+                c.DisplayOperationId();
+                c.DisplayRequestDuration();
+                c.EnableTryItOutByDefault();
+                c.EnableSwaggerDocumentUrlsEndpoint();
             });
 }
