@@ -104,20 +104,20 @@ public class ApiController<TId, TEntity, TService> : ControllerBase
     }
 
     [NonAction]
-    protected async Task<ValidationResult> GetValidationResultAsync<TDto>(
-        TDto dto,
-        IValidator<TDto> validator
+    protected async Task<ValidationResult> GetValidationResultAsync<TDTO>(
+        TDTO dto,
+        IValidator<TDTO> validator
     ) => await validator.ValidateAsync(dto);
 
     [NonAction]
-    protected TEntity MapToDataModel<TDto>(
-        TDto dto,
+    protected TEntity MapToDataModel<TDTO>(
+        TDTO dto,
         IMapper mapper
     ) => mapper.Map<TEntity>(dto);
 
     [NonAction]
-    protected TDto MapToDto<TDto>(
-        TEntity dto,
+    protected TDTO MapToDTO<TDTO>(
+        TEntity entity,
         IMapper mapper
-    ) => mapper.Map<TDto>(dto);
+    ) => mapper.Map<TDTO>(entity);
 }
