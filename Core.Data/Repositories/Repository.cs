@@ -81,10 +81,10 @@ public abstract class Repository<TId, TEntity, TContext>(
 
         try
         {
-            EntityEntry<TEntity> entity = await DbSet.AddAsync(item, cancellationToken);
+            var entityEntry = await DbSet.AddAsync(item, cancellationToken);
 
-            if (entity is not null)
-                entity.State = EntityState.Added;
+            if (entityEntry.State != EntityState.Added)
+                throw new Exception("Entidade já adicionada ao banco de dados.");
 
             await UnitOfWork.CommitAsync(transaction, cancellationToken);
         }

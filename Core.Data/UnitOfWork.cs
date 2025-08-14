@@ -121,7 +121,9 @@ public class UnitOfWork<TContext>(
         }
         catch
         {
-            foreach (EntityEntry entry in context.ChangeTracker.Entries().Where(e => e?.State != EntityState.Unchanged))
+            foreach (EntityEntry entry in
+                context.ChangeTracker.Entries().Where(e => e?.State != EntityState.Unchanged)
+            )
             {
                 foreach (IProperty prop in entry.CurrentValues.Properties)
                 {
