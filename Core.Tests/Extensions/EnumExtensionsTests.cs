@@ -51,7 +51,7 @@ public class EnumExtensionsTests
     {
         EnumTeste? enumTeste = null;
 
-        Assert.Throws<ArgumentNullException>(enumTeste.Description);
+        _ = Assert.Throws<ArgumentNullException>(enumTeste.Description);
     }
 
     [Test]
@@ -59,19 +59,19 @@ public class EnumExtensionsTests
     {
         EnumTeste enumTeste = (EnumTeste)EnumTeste2.D;
 
-        Assert.Throws<ArgumentNullException>(enumTeste.Description);
+        _ = Assert.Throws<ArgumentNullException>(enumTeste.Description);
     }
 
     [Test]
     public void DescriptionDeveLancarExceptionCasoEnumSemDescricao()
     {
-        Assert.Throws<EnumDescriptionNotFoundException>(EnumTeste.C.Description);
+        _ = Assert.Throws<EnumDescriptionNotFoundException>(EnumTeste.C.Description);
     }
 
     [Test]
     public void DescriptionDeveLancarExceptionCasoEnumDescricaoVazia()
     {
-        Assert.Throws<EnumDescriptionNotFoundException>(EnumTeste.B.Description);
+        _ = Assert.Throws<EnumDescriptionNotFoundException>(EnumTeste.B.Description);
     }
 
     [Test]

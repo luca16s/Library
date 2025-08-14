@@ -16,8 +16,8 @@ public class Money
         string currency
     )
     {
-        Guard.Against.Negative(value, nameof(value));
-        Guard.Against.NullOrWhiteSpace(currency, nameof(currency));
+        _ = Guard.Against.Negative(value, nameof(value));
+        _ = Guard.Against.NullOrWhiteSpace(currency, nameof(currency));
 
         return new Money
         {
@@ -30,7 +30,7 @@ public class Money
         decimal value
     )
     {
-        Guard.Against.Negative(value, nameof(value));
+        _ = Guard.Against.Negative(value, nameof(value));
 
         return new Money
         {
@@ -42,7 +42,7 @@ public class Money
         Money value
     )
     {
-        Guard.Against.NegativeOrZero(value.Value, nameof(value));
+        _ = Guard.Against.NegativeOrZero(value.Value, nameof(value));
 
         return new Money
         {
@@ -54,56 +54,56 @@ public class Money
 
     public static Money operator +(int left, Money right)
     {
-        Guard.Against.Null(right, nameof(right));
+        _ = Guard.Against.Null(right, nameof(right));
 
         return Of(right.Value + left, right.Currency);
     }
 
     public static Money operator +(Money left, int right)
     {
-        Guard.Against.Null(left, nameof(left));
+        _ = Guard.Against.Null(left, nameof(left));
 
         return Of(left.Value + right, left.Currency);
     }
 
     public static Money operator -(int left, Money right)
     {
-        Guard.Against.Null(right, nameof(right));
+        _ = Guard.Against.Null(right, nameof(right));
 
         return Of(right.Value - left, right.Currency);
     }
 
     public static Money operator -(Money left, int right)
     {
-        Guard.Against.Null(left, nameof(left));
+        _ = Guard.Against.Null(left, nameof(left));
 
         return Of(left.Value - right, left.Currency);
     }
 
     public static Money operator *(int left, Money right)
     {
-        Guard.Against.Null(right, nameof(right));
+        _ = Guard.Against.Null(right, nameof(right));
 
         return Of(right.Value * left, right.Currency);
     }
 
     public static Money operator *(Money left, int right)
     {
-        Guard.Against.Null(left, nameof(left));
+        _ = Guard.Against.Null(left, nameof(left));
 
         return Of(left.Value * right, left.Currency);
     }
 
     public static Money operator /(int left, Money right)
     {
-        Guard.Against.Null(right, nameof(right));
+        _ = Guard.Against.Null(right, nameof(right));
 
         return Of(right.Value / left, right.Currency);
     }
 
     public static Money operator /(Money left, int right)
     {
-        Guard.Against.Null(left, nameof(left));
+        _ = Guard.Against.Null(left, nameof(left));
 
         return Of(left.Value / right, left.Currency);
     }
@@ -114,56 +114,56 @@ public class Money
 
     public static Money operator +(decimal left, Money right)
     {
-        Guard.Against.Null(right, nameof(right));
+        _ = Guard.Against.Null(right, nameof(right));
 
         return Of(right.Value + left, right.Currency);
     }
 
     public static Money operator +(Money left, decimal right)
     {
-        Guard.Against.Null(left, nameof(left));
+        _ = Guard.Against.Null(left, nameof(left));
 
         return Of(left.Value + right, left.Currency);
     }
 
     public static Money operator -(decimal left, Money right)
     {
-        Guard.Against.Null(right, nameof(right));
+        _ = Guard.Against.Null(right, nameof(right));
 
         return Of(right.Value - left, right.Currency);
     }
 
     public static Money operator -(Money left, decimal right)
     {
-        Guard.Against.Null(left, nameof(left));
+        _ = Guard.Against.Null(left, nameof(left));
 
         return Of(left.Value - right, left.Currency);
     }
 
     public static Money operator *(decimal left, Money right)
     {
-        Guard.Against.Null(right, nameof(right));
+        _ = Guard.Against.Null(right, nameof(right));
 
         return Of(right.Value * left, right.Currency);
     }
 
     public static Money operator *(Money left, decimal right)
     {
-        Guard.Against.Null(left, nameof(left));
+        _ = Guard.Against.Null(left, nameof(left));
 
         return Of(left.Value * right, left.Currency);
     }
 
     public static Money operator /(decimal left, Money right)
     {
-        Guard.Against.Null(right, nameof(right));
+        _ = Guard.Against.Null(right, nameof(right));
 
         return Of(right.Value / left, right.Currency);
     }
 
     public static Money operator /(Money left, decimal right)
     {
-        Guard.Against.Null(left, nameof(left));
+        _ = Guard.Against.Null(left, nameof(left));
 
         return Of(left.Value / right, left.Currency);
     }
@@ -174,32 +174,32 @@ public class Money
 
     public static Money operator +(Money left, Money right)
     {
-        Guard.Against.Null(left, nameof(left));
-        Guard.Against.Null(right, nameof(right));
+        _ = Guard.Against.Null(left, nameof(left));
+        _ = Guard.Against.Null(right, nameof(right));
 
         return left + right;
     }
 
     public static Money operator -(Money left, Money right)
     {
-        Guard.Against.Null(left, nameof(left));
-        Guard.Against.Null(right, nameof(right));
+        _ = Guard.Against.Null(left, nameof(left));
+        _ = Guard.Against.Null(right, nameof(right));
 
         return right - left;
     }
 
     public static Money operator *(Money left, Money right)
     {
-        Guard.Against.Null(left, nameof(left));
-        Guard.Against.Null(right, nameof(right));
+        _ = Guard.Against.Null(left, nameof(left));
+        _ = Guard.Against.Null(right, nameof(right));
 
         return right * left;
     }
 
     public static Money operator /(Money left, Money right)
     {
-        Guard.Against.Null(left, nameof(left));
-        Guard.Against.Null(right, nameof(right));
+        _ = Guard.Against.Null(left, nameof(left));
+        _ = Guard.Against.Null(right, nameof(right));
 
         return right / left;
     }

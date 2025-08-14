@@ -42,7 +42,7 @@ public class EnumDescriptionNotFoundExceptionTests
         var exception = new EnumDescriptionNotFoundException(message, new Exception(innerMessage));
 
         exception.Message.ShouldBe(expected);
-        exception.InnerException.ShouldNotBeNull();
+        _ = exception.InnerException.ShouldNotBeNull();
         exception.InnerException?.Message.ShouldBe(innerMessage);
     }
 }

@@ -30,8 +30,8 @@ public record Email
     {
         public EmailValidator()
         {
-            RuleFor(email => email).NotEmpty();
-            RuleFor(email => email).EmailAddress();
+            _ = RuleFor(email => email).NotEmpty();
+            _ = RuleFor(email => email).EmailAddress();
         }
     }
 }

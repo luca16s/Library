@@ -43,7 +43,7 @@ public class EnumItemNotFoundExceptionTests
         var exception = new EnumItemNotFoundException(message, new Exception(innerMessage));
 
         exception.Message.ShouldBe(expected);
-        exception.InnerException.ShouldNotBeNull();
+        _ = exception.InnerException.ShouldNotBeNull();
         exception.InnerException?.Message.ShouldBe(innerMessage);
     }
 }

@@ -26,7 +26,7 @@ public class RepositoryTests
         _mockContext = new Mock<DbContext>();
         _mockUnitOfWork = new Mock<IUnitOfWork>();
         _mockDbSet = new Mock<DbSet<TestEntity>>();
-        _mockContext.Setup(m => m.Set<TestEntity>()).Returns(_mockDbSet.Object);
+        _ = _mockContext.Setup(m => m.Set<TestEntity>()).Returns(_mockDbSet.Object);
         _repository = new TestRepository(_mockContext.Object, _mockUnitOfWork.Object);
     }
 
@@ -56,7 +56,7 @@ public class RepositoryTests
     public async Task UpdateAsyncDeveUpdateEntidade()
     {
         var entity = new TestEntity { Id = 1 };
-        _mockDbSet.Setup(m => m.Find(It.IsAny<int>())).Returns(entity);
+        _ = _mockDbSet.Setup(m => m.Find(It.IsAny<int>())).Returns(entity);
 
         await _repository.UpdateAsync(1, entity);
 
@@ -68,7 +68,7 @@ public class RepositoryTests
     public async Task GetAsyncDeveRetornarEntidade()
     {
         var entity = new TestEntity { Id = 1 };
-        _mockDbSet.Setup(m => m.FindAsync(It.IsAny<object[]>(), It.IsAny<CancellationToken>())).ReturnsAsync(entity);
+        _ = _mockDbSet.Setup(m => m.FindAsync(It.IsAny<object[]>(), It.IsAny<CancellationToken>())).ReturnsAsync(entity);
 
         var result = await _repository.GetAsync(1);
 
@@ -82,7 +82,7 @@ public class RepositoryTests
         var cancellationTokenSource = new CancellationTokenSource();
         cancellationTokenSource.Cancel();
 
-        await Assert.ThrowsAsync<OperationCanceledException>(async () =>
+        _ = await Assert.ThrowsAsync<OperationCanceledException>(async () =>
             await _repository.CreateAsync(entity, cancellationTokenSource.Token));
     }
 
@@ -90,9 +90,9 @@ public class RepositoryTests
     public async Task CreateAsyncComErroDeBancoDeDadosDeveLancarExcecao()
     {
         var entity = new TestEntity { Id = 1 };
-        _mockDbSet.Setup(m => m.AddAsync(entity, It.IsAny<CancellationToken>())).ThrowsAsync(new DbUpdateException());
+        _ = _mockDbSet.Setup(m => m.AddAsync(entity, It.IsAny<CancellationToken>())).ThrowsAsync(new DbUpdateException());
 
-        await Assert.ThrowsAsync<DbUpdateException>(async () =>
+        _ = await Assert.ThrowsAsync<DbUpdateException>(async () =>
             await _repository.CreateAsync(entity));
     }
 
@@ -119,9 +119,9 @@ public class RepositoryTests
             new() { Id = 1 },
             new() { Id = 2 }
         };
-        _mockDbSet.Setup(m => m.AddRangeAsync(entities, It.IsAny<CancellationToken>())).ThrowsAsync(new DbUpdateException());
+        _ = _mockDbSet.Setup(m => m.AddRangeAsync(entities, It.IsAny<CancellationToken>())).ThrowsAsync(new DbUpdateException());
 
-        await Assert.ThrowsAsync<DbUpdateException>(async () =>
+        _ = await Assert.ThrowsAsync<DbUpdateException>(async () =>
             await _repository.CreateAsync(entities));
     }
 
@@ -130,7 +130,7 @@ public class RepositoryTests
     {
         TestEntity? entity = null;
 
-        await Assert.ThrowsAsync<ArgumentNullException>(async () =>
+        _ = await Assert.ThrowsAsync<ArgumentNullException>(async () =>
             await _repository.DeleteAsync(entity!));
     }
 
@@ -139,7 +139,7 @@ public class RepositoryTests
     {
         TestEntity? entity = null;
 
-        await Assert.ThrowsAsync<ArgumentNullException>(async () =>
+        _ = await Assert.ThrowsAsync<ArgumentNullException>(async () =>
             await _repository.UpdateAsync(1, entity!));
     }
 
@@ -147,9 +147,9 @@ public class RepositoryTests
     public async Task UpdateAsyncComEntidadeNaoExistenteDeveLancarExcecao()
     {
         var entity = new TestEntity { Id = 1 };
-        _mockDbSet.Setup(m => m.Find(It.IsAny<int>())).Returns((TestEntity?)null);
+        _ = _mockDbSet.Setup(m => m.Find(It.IsAny<int>())).Returns((TestEntity?)null);
 
-        await Assert.ThrowsAsync<NullReferenceException>(async () =>
+        _ = await Assert.ThrowsAsync<NullReferenceException>(async () =>
             await _repository.UpdateAsync(1, entity));
     }
 

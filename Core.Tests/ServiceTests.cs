@@ -37,7 +37,7 @@ public class ServiceTest
     {
         var entity = new TestEntity { Id = 1 };
 
-        _repositoryMock.Setup(r => r.CreateAsync(entity, It.IsAny<CancellationToken>())).Returns(Task.CompletedTask);
+        _ = _repositoryMock.Setup(r => r.CreateAsync(entity, It.IsAny<CancellationToken>())).Returns(Task.CompletedTask);
 
         await _service.CreateAsync(entity);
 
@@ -50,7 +50,7 @@ public class ServiceTest
         var entity = new TestEntity { Id = 1 };
         var transactionMock = new Mock<IDbContextTransaction>();
 
-        _repositoryMock.Setup(r => r.DeleteAsync(entity)).Returns(Task.CompletedTask);
+        _ = _repositoryMock.Setup(r => r.DeleteAsync(entity)).Returns(Task.CompletedTask);
 
         await _service.DeleteAsync(entity);
 
@@ -63,7 +63,7 @@ public class ServiceTest
         var entity = new TestEntity { Id = 1 };
         var transactionMock = new Mock<IDbContextTransaction>();
 
-        _repositoryMock.Setup(r => r.UpdateAsync(entity.Id, entity)).Returns(Task.CompletedTask);
+        _ = _repositoryMock.Setup(r => r.UpdateAsync(entity.Id, entity)).Returns(Task.CompletedTask);
 
         await _service.UpdateAsync(entity.Id, entity);
 
@@ -75,7 +75,7 @@ public class ServiceTest
     {
         var entity = new TestEntity { Id = 1 };
 
-        _repositoryMock.Setup(r => r.GetAsync(entity.Id, It.IsAny<CancellationToken>())).ReturnsAsync(entity);
+        _ = _repositoryMock.Setup(r => r.GetAsync(entity.Id, It.IsAny<CancellationToken>())).ReturnsAsync(entity);
 
         var result = await _service.GetAsync(entity.Id);
 
@@ -87,7 +87,7 @@ public class ServiceTest
     {
         var entities = new List<TestEntity> { new() { Id = 1 }, new() { Id = 2 } }.AsQueryable();
 
-        _repositoryMock.Setup(r => r.GetAll(It.IsAny<int>(), It.IsAny<int>())).Returns(entities);
+        _ = _repositoryMock.Setup(r => r.GetAll(It.IsAny<int>(), It.IsAny<int>())).Returns(entities);
 
         var result = await _service.GetAllAsync();
 
@@ -100,7 +100,7 @@ public class ServiceTest
         var entities = new List<TestEntity> { new() { Id = 1 }, new() { Id = 2 } }.AsQueryable();
         Expression<Func<TestEntity, bool>> predicate = e => e.Id > 0;
 
-        _repositoryMock.Setup(r => r.Search(predicate)).Returns(entities);
+        _ = _repositoryMock.Setup(r => r.Search(predicate)).Returns(entities);
 
         var result = await _service.SearchAsync(predicate);
 
@@ -113,7 +113,7 @@ public class ServiceTest
         var entities = new List<TestEntity> { new() { Id = 1 }, new() { Id = 2 } };
         var transactionMock = new Mock<IDbContextTransaction>();
 
-        _repositoryMock.Setup(r => r.CreateAsync(entities, It.IsAny<CancellationToken>())).Returns(Task.CompletedTask);
+        _ = _repositoryMock.Setup(r => r.CreateAsync(entities, It.IsAny<CancellationToken>())).Returns(Task.CompletedTask);
 
         await _service.CreateAsync(entities);
 
